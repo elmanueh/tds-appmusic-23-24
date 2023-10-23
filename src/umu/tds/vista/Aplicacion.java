@@ -181,7 +181,7 @@ public class Aplicacion {
 		WindowLogin.add(textUser, gbc_textUser);
 		textUser.setColumns(20);
 		
-		lblPassword = new JLabel("Contraseña");
+		lblPassword = new JLabel("Contraseñaaa");
 		lblPassword.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
