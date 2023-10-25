@@ -5,23 +5,26 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class PlayList {
+	//ATRIBUTOS
     private String nombre;
-    private Collection<Cancion> lista;
+    private Collection<Cancion> listaCanciones;
 
-    public PlayList(String nombre_){
-        nombre = nombre_;
-        lista = new HashSet<Cancion>();
-    }
+    //CONSTRUCTOR
+    public PlayList(String nombre, HashSet<Cancion> listaCanciones) {
+		this.nombre = nombre;
+		this.listaCanciones = new HashSet<Cancion>(listaCanciones);
+	}
 
+    //METODOS
     public void addCancion(Cancion c){
-        lista.add(c);
+    	listaCanciones.add(c);
     }
 
     public void removeCancion(Cancion c){
-        lista.remove(c);
+    	listaCanciones.remove(c);
     }
 
     public Collection<Cancion> getCanciones(){
-        return new HashSet<Cancion>(lista);
+        return new HashSet<Cancion>(listaCanciones);
     }
 }
