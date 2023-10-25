@@ -26,14 +26,18 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
+import java.awt.Toolkit;
+import java.awt.FlowLayout;
 
 public class Aplicacion {
 
-	private JFrame frame;
+	private JFrame frmAppmusic;
 	private JTextField textUser;
 	private JLabel lblAppMusic;
 	private JLabel lblUser;
@@ -94,7 +98,7 @@ public class Aplicacion {
 				try {
 					UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
 					Aplicacion window = new Aplicacion();
-					window.frame.setVisible(true);
+					window.frmAppmusic.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -113,26 +117,30 @@ public class Aplicacion {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(30, 30, 30));
-		frame.setBackground(new Color(30, 30, 30));
-		frame.setAlwaysOnTop(true);
-		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 19));
-		frame.getContentPane().setForeground(new Color(255, 255, 255));
-		frame.setForeground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 563, 551);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frmAppmusic = new JFrame();
+		frmAppmusic.setTitle("AppMusic");
+		frmAppmusic.setIconImage(Toolkit.getDefaultToolkit().getImage(Aplicacion.class.getResource("/umu/tds/vista/imagenes/icono.png")));
+		frmAppmusic.getContentPane().setBackground(new Color(30, 30, 30));
+		frmAppmusic.setBackground(new Color(30, 30, 30));
+		frmAppmusic.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 19));
+		frmAppmusic.getContentPane().setForeground(new Color(255, 255, 255));
+		frmAppmusic.setForeground(new Color(255, 255, 255));
+		frmAppmusic.setBounds(100, 100, 563, 551);
+		frmAppmusic.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAppmusic.getContentPane().setLayout(new CardLayout(0, 0));
+		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension ventanaSize = frmAppmusic.getSize();
+		frmAppmusic.setLocation((pantalla.width - ventanaSize.width) / 2, (pantalla.height - ventanaSize.height) / 2);
 		
 		JPanel WindowLogin = new JPanel();
 		WindowLogin.setOpaque(false);
 		WindowLogin.setForeground(new Color(255, 255, 255));
 		WindowLogin.setBackground(new Color(255, 255, 255));
-		frame.getContentPane().add(WindowLogin, "WindowLogin");
+		frmAppmusic.getContentPane().add(WindowLogin, "WindowLogin");
 		GridBagLayout gbl_WindowLogin = new GridBagLayout();
-		gbl_WindowLogin.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_WindowLogin.rowHeights = new int[]{0, 30, 0, 30, 0, 0, 0, 0, 30, 0, 30, 0, 0};
-		gbl_WindowLogin.columnWidths = new int[]{20, 0, 0};
+		gbl_WindowLogin.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_WindowLogin.rowHeights = new int[]{0, 30, 40, 30, 0, 30, 10, 0, 30, 30, 33, 30, 0, 10, 40};
+		gbl_WindowLogin.columnWidths = new int[]{25, 0, 0};
 		gbl_WindowLogin.columnWeights = new double[]{0.0, 0.0, 0.0};
 		WindowLogin.setLayout(gbl_WindowLogin);
 		
@@ -156,6 +164,7 @@ public class Aplicacion {
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
+		gbc_btnNewButton_3.fill = GridBagConstraints.VERTICAL;
 		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewButton_3.gridx = 1;
 		gbc_btnNewButton_3.gridy = 2;
@@ -174,53 +183,54 @@ public class Aplicacion {
 		textUser.setForeground(new Color(255, 255, 255));
 		textUser.setToolTipText("");
 		GridBagConstraints gbc_textUser = new GridBagConstraints();
-		gbc_textUser.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textUser.fill = GridBagConstraints.BOTH;
 		gbc_textUser.insets = new Insets(0, 0, 5, 5);
 		gbc_textUser.gridx = 1;
 		gbc_textUser.gridy = 5;
 		WindowLogin.add(textUser, gbc_textUser);
 		textUser.setColumns(20);
 		
-		lblPassword = new JLabel("Contraseñaaa");
+		lblPassword = new JLabel("Contraseña");
 		lblPassword.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPassword.gridx = 1;
-		gbc_lblPassword.gridy = 6;
+		gbc_lblPassword.gridy = 7;
 		WindowLogin.add(lblPassword, gbc_lblPassword);
 		
 		passwordField = new JPasswordField();
+		passwordField.setToolTipText("");
 		passwordField.setForeground(new Color(255, 255, 255));
 		passwordField.setColumns(20);
 		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_passwordField.fill = GridBagConstraints.BOTH;
 		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 		gbc_passwordField.gridx = 1;
-		gbc_passwordField.gridy = 7;
+		gbc_passwordField.gridy = 8;
 		WindowLogin.add(passwordField, gbc_passwordField);
 		
-		btnLogin = new JButton("Iniciar Sesión");
+		btnLogin = new JButton("     Iniciar Sesión     ");
 		btnLogin.setForeground(new Color(255, 255, 255));
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VentanaMain main = new VentanaMain();
 				main.setVisible(true);
-				frame.setVisible(false);
+				frmAppmusic.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
-		gbc_btnLogin.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnLogin.fill = GridBagConstraints.VERTICAL;
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 5);
 		gbc_btnLogin.gridx = 1;
-		gbc_btnLogin.gridy = 9;
+		gbc_btnLogin.gridy = 10;
 		WindowLogin.add(btnLogin, gbc_btnLogin);
 		
 		lblRecoveryPassword = new JLabel("¿Has olvidado tu contraseña?");
 		lblRecoveryPassword.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				JOptionPane.showMessageDialog(WindowLogin, "Pues acuerdate crack");
+				JOptionPane.showMessageDialog(WindowLogin, "Las constraseñas no deben olvidarse, haz memoria.");
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -235,36 +245,39 @@ public class Aplicacion {
 		GridBagConstraints gbc_lblRecoveryPassword = new GridBagConstraints();
 		gbc_lblRecoveryPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_lblRecoveryPassword.gridx = 1;
-		gbc_lblRecoveryPassword.gridy = 11;
+		gbc_lblRecoveryPassword.gridy = 12;
 		WindowLogin.add(lblRecoveryPassword, gbc_lblRecoveryPassword);
 		
 		jlblRegister = new JPanel();
+		jlblRegister.setBackground(Color.DARK_GRAY);
 		jlblRegister.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_jlblRegister = new GridBagConstraints();
+		gbc_jlblRegister.anchor = GridBagConstraints.NORTH;
 		gbc_jlblRegister.insets = new Insets(0, 0, 0, 5);
-		gbc_jlblRegister.fill = GridBagConstraints.BOTH;
+		gbc_jlblRegister.fill = GridBagConstraints.HORIZONTAL;
 		gbc_jlblRegister.gridx = 1;
-		gbc_jlblRegister.gridy = 12;
+		gbc_jlblRegister.gridy = 14;
 		WindowLogin.add(jlblRegister, gbc_jlblRegister);
-		
-		lblRegister = new JLabel("¿No tienes cuenta?");
-		lblRegister.setForeground(new Color(255, 255, 255));
-		jlblRegister.add(lblRegister);
 		
 		btnRegister = new JButton("Regístrate en AppMusic");
 		btnRegister.setForeground(new Color(255, 255, 255));
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister");
 			}
 		});
+		jlblRegister.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		lblRegister = new JLabel("¿No tienes cuenta?");
+		lblRegister.setForeground(new Color(255, 255, 255));
+		jlblRegister.add(lblRegister);
 		jlblRegister.add(btnRegister);
 		
 		WindowRegister = new JPanel();
 		WindowRegister.setForeground(new Color(255, 255, 255));
 		WindowRegister.setOpaque(false);
-		frame.getContentPane().add(WindowRegister, "WindowRegister");
+		frmAppmusic.getContentPane().add(WindowRegister, "WindowRegister");
 		GridBagLayout gbl_WindowRegister = new GridBagLayout();
 		gbl_WindowRegister.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gbl_WindowRegister.rowHeights = new int[]{0, 30, 0, 0, 30, 0, 30, 0};
@@ -305,8 +318,8 @@ public class Aplicacion {
 		btnLogin_1.setForeground(new Color(255, 255, 255));
 		btnLogin_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister_1");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister_1");
 			}
 		});
 		GridBagConstraints gbc_btnLogin_1 = new GridBagConstraints();
@@ -333,8 +346,8 @@ public class Aplicacion {
 		btnRegister_1.setForeground(new Color(255, 255, 255));
 		btnRegister_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowLogin");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowLogin");
 			}
 		});
 		jlblRegister_1.add(btnRegister_1);
@@ -342,7 +355,7 @@ public class Aplicacion {
 		WindowRegister_1 = new JPanel();
 		WindowRegister_1.setForeground(new Color(255, 255, 255));
 		WindowRegister_1.setOpaque(false);
-		frame.getContentPane().add(WindowRegister_1, "WindowRegister_1");
+		frmAppmusic.getContentPane().add(WindowRegister_1, "WindowRegister_1");
 		GridBagLayout gbl_WindowRegister_1 = new GridBagLayout();
 		gbl_WindowRegister_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gbl_WindowRegister_1.rowHeights = new int[]{0, 0, 30, 0, 0, 0, 0, 0, 30, 0, 30, 0};
@@ -408,8 +421,8 @@ public class Aplicacion {
 		btnLogin_2 = new JButton("Siguiente");
 		btnLogin_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister_2");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister_2");
 			}
 		});
 		GridBagConstraints gbc_btnLogin_2 = new GridBagConstraints();
@@ -422,8 +435,8 @@ public class Aplicacion {
 		btnNewButton = new JButton("Volver");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister");
 			}
 		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
@@ -435,7 +448,7 @@ public class Aplicacion {
 		WindowRegister_2 = new JPanel();
 		WindowRegister_2.setForeground(new Color(255, 255, 255));
 		WindowRegister_2.setOpaque(false);
-		frame.getContentPane().add(WindowRegister_2, "WindowRegister_2");
+		frmAppmusic.getContentPane().add(WindowRegister_2, "WindowRegister_2");
 		GridBagLayout gbl_WindowRegister_2 = new GridBagLayout();
 		gbl_WindowRegister_2.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gbl_WindowRegister_2.rowHeights = new int[]{0, 0, 30, 0, 0, 0, 30, 0, 0, 30, 0, 0, 0, 0, 30, 0, 30, 0};
@@ -503,8 +516,8 @@ public class Aplicacion {
 		btnLogin_3 = new JButton("Siguiente");
 		btnLogin_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister_3");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister_3");
 
 			}
 		});
@@ -518,8 +531,8 @@ public class Aplicacion {
 		btnNewButton_1 = new JButton("Volver");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister_1");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister_1");
 
 			}
 		});
@@ -533,7 +546,7 @@ public class Aplicacion {
 		WindowRegister_3 = new JPanel();
 		WindowRegister_3.setForeground(new Color(255, 255, 255));
 		WindowRegister_3.setOpaque(false);
-		frame.getContentPane().add(WindowRegister_3, "WindowRegister_3");
+		frmAppmusic.getContentPane().add(WindowRegister_3, "WindowRegister_3");
 		GridBagLayout gbl_WindowRegister_3 = new GridBagLayout();
 		gbl_WindowRegister_3.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gbl_WindowRegister_3.rowHeights = new int[]{0, 0, 30, 0, 0, 30, 0, 0, 0, 0, 0, 30, 0};
@@ -615,8 +628,8 @@ public class Aplicacion {
 		btnNewButton_2 = new JButton("Volver");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CardLayout card = (CardLayout) frame.getContentPane().getLayout();
-				card.show(frame.getContentPane(), "WindowRegister_2");
+				CardLayout card = (CardLayout) frmAppmusic.getContentPane().getLayout();
+				card.show(frmAppmusic.getContentPane(), "WindowRegister_2");
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
