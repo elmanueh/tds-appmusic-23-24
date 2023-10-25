@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Usuario {
-	private static final int MAX = 10;
+	private static final int MAX = 5;
 	//ATRIBUTOS
 	private String nombre;
 	private String email;
