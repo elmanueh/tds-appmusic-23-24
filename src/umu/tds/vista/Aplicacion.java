@@ -114,7 +114,7 @@ public class Aplicacion {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(30, 30, 30));
+		frame.getContentPane().setBackground(new Color(255, 255, 255));
 		frame.setBackground(new Color(30, 30, 30));
 		frame.setAlwaysOnTop(true);
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 19));
@@ -181,7 +181,7 @@ public class Aplicacion {
 		WindowLogin.add(textUser, gbc_textUser);
 		textUser.setColumns(20);
 		
-		lblPassword = new JLabel("Contraseñaaa");
+		lblPassword = new JLabel("Contraseña");
 		lblPassword.setForeground(new Color(255, 255, 255));
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
