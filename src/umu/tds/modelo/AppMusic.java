@@ -1,14 +1,11 @@
-package umu.tds.vista;
-
-import umu.tds.vista.clases.RepositorioCanciones;
-import umu.tds.vista.clases.RepositorioUsuarios;
-import umu.tds.vista.clases.Reproductor;
+package umu.tds.modelo;
 
 public class AppMusic {
 
     private Reproductor reproductor;
     private RepositorioCanciones repositorioCanciones;
     private RepositorioUsuarios reproductorUsuarios;
+    private static String CODIGO_PROMOCIONAL = "JULISCO";
 
     public AppMusic(){
         reproductor = new Reproductor();

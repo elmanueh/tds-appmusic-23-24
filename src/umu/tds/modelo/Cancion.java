@@ -1,4 +1,4 @@
-package umu.tds.vista.clases;
+package umu.tds.modelo;
 
 public class Cancion {
 	
@@ -15,4 +15,5 @@ public class Cancion {
 		interprete = interprete_;
 		estiloMusical = estilo_;
 	}
+	
 }

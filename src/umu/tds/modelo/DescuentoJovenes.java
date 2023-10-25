@@ -1,12 +1,12 @@
-package umu.tds.vista.clases;
+package umu.tds.modelo;
 
 public class DescuentoJovenes extends Descuento{
     
-    public void DescuentoJovenes(){
+    public DescuentoJovenes(){
 
     }
     @Override
-    public int calcDescuento(){
+    public int calcDescuento(int Coste){
         return 1;
     }
 }

@@ -1,4 +1,4 @@
-package umu.tds.vista.clases;
+package umu.tds.modelo;
 
 import java.util.Collection;
 
