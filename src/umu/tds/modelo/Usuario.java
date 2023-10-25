@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 
 public class Usuario {
 	private static final int MAX = 10;
@@ -94,4 +95,27 @@ public class Usuario {
 		listaCancionesRecientes.addAll(listaRecienteActualizado);
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(contraseña, descuento, email, fecha, listaCancionesRecientes, listaPlayList, nombre,
+				premium);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(contraseña, other.contraseña) && Objects.equals(descuento, other.descuento)
+				&& Objects.equals(email, other.email) && Objects.equals(fecha, other.fecha)
+				&& Objects.equals(listaCancionesRecientes, other.listaCancionesRecientes)
+				&& Objects.equals(listaPlayList, other.listaPlayList) && Objects.equals(nombre, other.nombre)
+				&& premium == other.premium;
+	}
+
+	
 }
