@@ -1,5 +1,9 @@
 package umu.tds.vista;
 
+import umu.tds.vista.clases.RepositorioCanciones;
+import umu.tds.vista.clases.RepositorioUsuarios;
+import umu.tds.vista.clases.Reproductor;
+
 public class AppMusic {
 
     private Reproductor reproductor;
