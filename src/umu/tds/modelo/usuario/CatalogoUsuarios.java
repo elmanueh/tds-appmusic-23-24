@@ -1,4 +1,4 @@
-package umu.tds.modelo;
+package umu.tds.modelo.usuario;
 
 import java.util.HashMap;
 import java.util.Map;

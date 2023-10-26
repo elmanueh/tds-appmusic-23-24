@@ -1,4 +1,4 @@
-package umu.tds.modelo;
+package umu.tds.modelo.musica;
 
 public class Interprete {
 

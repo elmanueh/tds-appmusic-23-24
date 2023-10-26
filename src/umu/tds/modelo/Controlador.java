@@ -1,15 +1,12 @@
 package umu.tds.modelo;
 
-public class AppMusic {
+public class Controlador {
 
     private Reproductor reproductor;
-    private RepositorioCanciones repositorioCanciones;
-    private RepositorioUsuarios reproductorUsuarios;
     private static String CODIGO_PROMOCIONAL = "JULISCO";
 
-    public AppMusic(){
+    public Controlador(){
         reproductor = new Reproductor();
-        repositorioCanciones = new RepositorioCanciones();
     }
 
     public void play(){

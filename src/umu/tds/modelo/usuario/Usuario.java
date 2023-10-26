@@ -1,18 +1,24 @@
-package umu.tds.modelo;
+package umu.tds.modelo.usuario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
 
+import umu.tds.modelo.descuento.Descuento;
+import umu.tds.modelo.musica.Cancion;
+import umu.tds.modelo.musica.PlayList;
+
 public class Usuario {
+	public static final double TARIFA_PREMIUM = 10;
 	private static final int MAX = 5;
 	//ATRIBUTOS
 	private String nombre;
 	private String email;
-	private String fecha;
+	private Date fecha;
 	private String contraseña;
 	private Collection<PlayList> listaPlayList;
 	private Collection<Cancion> listaCancionesRecientes;
@@ -29,7 +35,7 @@ public class Usuario {
 		return email;
 	}
 
-	public String getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
@@ -62,7 +68,7 @@ public class Usuario {
 	}
 
 	//CONSTRUCTOR
-	public Usuario(String nombre, String email, String fecha, String contraseña) {
+	public Usuario(String nombre, String email, Date fecha, String contraseña) {
 		this.nombre = nombre;
 		this.email = email;
 		this.fecha = fecha;
@@ -116,6 +122,4 @@ public class Usuario {
 				&& Objects.equals(listaPlayList, other.listaPlayList) && Objects.equals(nombre, other.nombre)
 				&& premium == other.premium;
 	}
-
-	
 }
