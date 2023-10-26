@@ -8,6 +8,7 @@ public class DescuentoJovenes extends Descuento{
 		return Usuario.TARIFA_PREMIUM*0.8;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isAplicable(Usuario u) {
         return u.getFecha().getYear() < 1999;
