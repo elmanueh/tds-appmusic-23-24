@@ -1,10 +1,10 @@
 package umu.tds;
 
-import umu.tds.vista.Aplicacion;
+import umu.tds.vista.ControladorInicio;
 
 public class AppMusic {
 	
 	public static void main(String[] args) {
-		Aplicacion.main(args);
+		ControladorInicio.main(args);
 	}
 }
