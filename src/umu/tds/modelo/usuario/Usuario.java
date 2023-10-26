@@ -16,15 +16,17 @@ public class Usuario {
 	public static final double TARIFA_PREMIUM = 10;
 	private static final int MAX = 5;
 	//ATRIBUTOS
-	private String nombre;
-	private String email;
-	private LocalDate fecha;
-	private String contraseña;
-	private Collection<PlayList> listaPlayList;
-	private Collection<Cancion> listaCancionesRecientes;
+	private final String nombre;
+	private final String email;
+	private final LocalDate fecha;
+	private final String contraseña;
+	private final Collection<PlayList> listaPlayList;
+	private final Collection<Cancion> listaCancionesRecientes;
+	private int code;
 	
 	private boolean premium;
 	private Descuento descuento; //ns como se hace
+	//quizas no sea atributo, solo una clase que luego se llama
 	
 	//GETTERS AND SETTERS
 	public String getNombre() {
@@ -44,11 +46,11 @@ public class Usuario {
 	}
 
 	public Collection<PlayList> getListaPlayList() {
-		return listaPlayList;
+		return new HashSet<PlayList>(listaPlayList);
 	}
 
 	public Collection<Cancion> getListaCancionesRecientes() {
-		return listaCancionesRecientes;
+		return new LinkedHashSet<Cancion>(listaCancionesRecientes);
 	}
 
 	public boolean isPremium() {
@@ -67,6 +69,14 @@ public class Usuario {
 		this.descuento = descuento;
 	}
 
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
 	//CONSTRUCTOR
 	public Usuario(String nombre, String email, LocalDate fecha, String contraseña) {
 		this.nombre = nombre;
@@ -74,6 +84,7 @@ public class Usuario {
 		this.fecha = fecha;
 		this.contraseña = contraseña;
 		this.descuento = new Descuento();
+		this.code = 0;
 		
 		this.listaPlayList = new HashSet<PlayList>();
 		this.listaCancionesRecientes = new LinkedHashSet<Cancion>();
@@ -84,6 +95,14 @@ public class Usuario {
 	//METODOS
 	public void addPlayList(PlayList p) {
 		listaPlayList.add(p);
+	}
+	
+	public PlayList getPlayList(String nombre) {
+		for (PlayList p : listaPlayList) {
+			if (p.getNombre().equals(nombre))
+				return p;
+		}
+		return null;
 	}
 	
 	public void removePlayList(PlayList p) {
@@ -100,6 +119,21 @@ public class Usuario {
 		listaCancionesRecientes.clear();
 		listaCancionesRecientes.addAll(listaRecienteActualizado);
 	}
+	
+	public PlayList crearPlayList(String nombre, List<Cancion> canciones) {
+		PlayList pl = new PlayList(nombre);
+		for (Cancion c : canciones) {
+			pl.addCancion(c);
+		}
+		
+		listaPlayList.add(pl);
+		return pl;
+	}
+	//FALTA TERMINARLO
+	/*public Descuento hacerDescuento() {
+		return Descuento.descuentos().stream()
+				.filter(d -> d.isAplicable(this))
+	}*/
 
 	@Override
 	public int hashCode() {
