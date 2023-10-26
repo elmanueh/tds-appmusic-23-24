@@ -1,4 +1,6 @@
-package umu.tds.vista;
+package umu.tds.modelo;
+
+import umu.tds.modelo.musica.Cancion;
 
 public class Reproductor {
 

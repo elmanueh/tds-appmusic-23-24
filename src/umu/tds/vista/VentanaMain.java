@@ -21,10 +21,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.TitledBorder;
+import java.awt.Toolkit;
 
 public class VentanaMain extends JFrame {
 
@@ -52,9 +55,13 @@ public class VentanaMain extends JFrame {
 	 * Create the frame.
 	 */
 	public VentanaMain() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaMain.class.getResource("/umu/tds/vista/imagenes/icono.png")));
 		setTitle("AppMusic");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 519, 368);
+		setBounds(100, 100, 1032, 568);
+		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension ventanaSize = getSize();
+		setLocation((pantalla.width - ventanaSize.width) / 2, (pantalla.height - ventanaSize.height) / 2);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
