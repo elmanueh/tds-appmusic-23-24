@@ -5,7 +5,7 @@ import umu.tds.modelo.usuario.Usuario;
 public class DescuentoFijo extends Descuento{
 
 	@Override
-	double Precio() {
+	public double Precio() {
 		return Usuario.TARIFA_PREMIUM*0.5;
 	}
 	

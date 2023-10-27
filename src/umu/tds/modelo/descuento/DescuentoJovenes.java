@@ -4,13 +4,12 @@ import umu.tds.modelo.usuario.Usuario;
 
 public class DescuentoJovenes extends Descuento{
 	@Override
-	double Precio() {
+	public double Precio() {
 		return Usuario.TARIFA_PREMIUM*0.8;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isAplicable(Usuario u) {
-        return u.getFecha().getYear() < 1999;
+	    return u.getFecha().getYear() < 1999;
     }
 }

@@ -11,6 +11,7 @@ public class Cancion {
 	private int numReproducciones;
 	private List<String> interprete;
 	private String estiloMusical;
+	private int id;
 	
 	//GETTERS AND SETTERS
 	public String getTitulo() {
@@ -52,6 +53,14 @@ public class Cancion {
 	public void setEstiloMusical(String estiloMusical) {
 		this.estiloMusical = estiloMusical;
 	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	//CONSTRUCTOR
 	public Cancion(String titulo, String rutaFichero, String estiloMusical, String ...interpretes) {
@@ -60,6 +69,7 @@ public class Cancion {
 		this.numReproducciones = 0;
 		Collections.addAll(interprete,interpretes);
 		this.estiloMusical = estiloMusical;
+		this.id=0;
 	}
 	
 	//METODOS

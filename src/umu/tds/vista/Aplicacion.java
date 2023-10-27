@@ -42,7 +42,7 @@ import javax.swing.JTextArea;
 
 public class Aplicacion {
 
-	private JFrame frmAppmusic;
+	JFrame frmAppmusic;
 	private JTextField textUser;
 	private JLabel lblAppMusic;
 	private JLabel lblUser;

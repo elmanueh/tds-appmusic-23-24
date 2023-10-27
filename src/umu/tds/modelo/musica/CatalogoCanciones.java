@@ -10,29 +10,34 @@ public class CatalogoCanciones {
 	private static final int MAX = 10;
 
 	//ATRIBUTOS
-	private static Map<String,Cancion> canciones;
+	private static Map<Integer,Cancion> canciones;
 	
 	//GETTERS AND SETTERS
-	public Map<String, Cancion> getCanciones() {
+	public Map<Integer, Cancion> getCanciones() {
 		return canciones;
 	}
 
 	//CONSTRUCTOR
 	public CatalogoCanciones() {
-		this.canciones = new HashMap<String, Cancion>();
+		this.canciones = new HashMap<Integer, Cancion>();
 	}
 
 	//METODOS
-	public Cancion getCancion(String titulo) {
-		return canciones.get(titulo); 
+	public Cancion getCancion(int id) {
+		return canciones.get(id); 
 	}
 	
-	public static void addCancion(Cancion c) {
-		canciones.put(c.getTitulo(), c);
+	public void setCancion(Cancion c) {
+		if (canciones.containsKey(c.getId()))
+			addCancion(c);
+	}
+	
+	public void addCancion(Cancion c) {
+		canciones.put(c.getId(), c);
 	}
 	
 	public void removeCancion(Cancion c) {
-		canciones.remove(c.getTitulo());
+		canciones.remove(c.getId());
 	}
 
 	public static List<Cancion> getCancionesMasReproducidas(){
