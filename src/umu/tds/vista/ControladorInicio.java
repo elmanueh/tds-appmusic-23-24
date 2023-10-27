@@ -1,10 +1,10 @@
 package umu.tds.vista;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -16,53 +16,40 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.ImageIcon;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.JTextArea;
 
 public class ControladorInicio extends JFrame {
 
 	private static CardLayout cl_panelCardLayout;
 	private static JPanel panelCardLayout;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
-					ControladorInicio window = new ControladorInicio();
-					window.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	
 	public static void sendLogin(String usuario, String contraseña) {
-		// aqui se comprueba que los datos coincidan
-		
-		// cardLayout.show(cardPanel, "ventanaRegistro");
-				VentanaMain app = new VentanaMain();
-				app.setVisible(true);
-				// setVisible(false);
-	}
-	
-	public static void sendRegister(String email, String contraseña, String nombre, Date fechaNacimiento) {
-		// aqui se registrara y ara cosas
-		
+		// aqui se comprueba que los datos coincidan en la base de datos
+
 		VentanaMain app = new VentanaMain();
 		app.setVisible(true);
-		
+	}
+
+	public static void sendRegister(String email, String contraseña, String nombre, Date fechaNacimiento) {
+		// aqui se registrara y ara cosas
+
+		VentanaMain app = new VentanaMain();
+		app.setVisible(true);
+
 	}
 
 	public static void startRegister() {
 		cl_panelCardLayout.show(panelCardLayout, "ventanaRegistro");
 	}
-	
+
 	public static void exitRegister() {
 		cl_panelCardLayout.show(panelCardLayout, "ventanaLogin");
+	}
+
+	public static void loginGitHub(String usuario, String contraseña) {
+		// LO QUE PONE EN LA GUIA ES OBSOLETO
 	}
 
 	/**
@@ -72,6 +59,13 @@ public class ControladorInicio extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(ControladorInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
 		getContentPane().setLayout(new BorderLayout(0, 0));
+
+		setTitle("Spotifoo");
+		setSize(550, 600);
+		setMinimumSize(getSize());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+
 		VentanaLogin ventanaLogin = new VentanaLogin();
 		VentanaRegistro ventanaRegistro = new VentanaRegistro();
 
@@ -85,26 +79,46 @@ public class ControladorInicio extends JFrame {
 		cl_panelCardLayout.show(panelCardLayout, "ventanaLogin");
 
 		JPanel cabezera = new JPanel();
-		cabezera.setBackground(Color.BLACK);
+		cabezera.setBackground(new Color(40, 40, 40));
 		getContentPane().add(cabezera, BorderLayout.NORTH);
-		cabezera.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		cabezera.setLayout(new BorderLayout(0, 0));
+
+		JPanel pIzquierda = new JPanel();
+		pIzquierda.setOpaque(false);
+		cabezera.add(pIzquierda, BorderLayout.WEST);
+
+		Component horizontalStrut = Box.createHorizontalStrut(10);
+		pIzquierda.add(horizontalStrut);
 
 		JLabel icono = new JLabel("");
 		icono.setIcon(new ImageIcon(ControladorInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
 		icono.setHorizontalAlignment(SwingConstants.LEFT);
 		icono.setForeground(Color.WHITE);
-		cabezera.add(icono);
+		pIzquierda.add(icono);
+
+		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
+		pIzquierda.add(horizontalStrut_1);
 
 		JLabel titulo = new JLabel("Spotifoo");
 		titulo.setHorizontalAlignment(SwingConstants.LEFT);
 		titulo.setForeground(Color.WHITE);
 		titulo.setFont(new Font("Tahoma", Font.BOLD, 20));
-		cabezera.add(titulo);
+		pIzquierda.add(titulo);
 
-		setTitle("Spotifoo");
-		setSize(1000, 700);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
+		Component verticalStrut = Box.createVerticalStrut(90);
+		pIzquierda.add(verticalStrut);
+
+		JPanel pDerecha = new JPanel();
+		pDerecha.setOpaque(false);
+		cabezera.add(pDerecha, BorderLayout.EAST);
+
+		JTextArea txtrTrabajoRealizadoPor = new JTextArea(
+				"\nTrabajo realizado por:\r\n     - Julian Francisco Gomez Diaz\r\n     - Manuel Bernabe Rodriguez");
+		txtrTrabajoRealizadoPor.setOpaque(false);
+		txtrTrabajoRealizadoPor.setFont(new Font("Tahoma", Font.BOLD, 15));
+		txtrTrabajoRealizadoPor.setEditable(false);
+		pDerecha.add(txtrTrabajoRealizadoPor);
+
 	}
 
 }
