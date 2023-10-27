@@ -23,10 +23,7 @@ public class Usuario {
 	private final Collection<PlayList> listaPlayList;
 	private final Collection<Cancion> listaCancionesRecientes;
 	private int code;
-	
 	private boolean premium;
-	private Descuento descuento; //ns como se hace
-	//quizas no sea atributo, solo una clase que luego se llama
 	
 	//GETTERS AND SETTERS
 	public String getNombre() {
@@ -57,16 +54,8 @@ public class Usuario {
 		return premium;
 	}
 	
-	public void setPremium() {
-		this.premium = true;
-	}
-
-	public Descuento getDescuento() {
-		return descuento;
-	}
-
-	public void setDescuento(Descuento descuento) {
-		this.descuento = descuento;
+	public void setPremium(boolean b) {
+		this.premium = b;
 	}
 
 	public int getCode() {
@@ -76,6 +65,8 @@ public class Usuario {
 	public void setCode(int code) {
 		this.code = code;
 	}
+	
+	
 
 	//CONSTRUCTOR
 	public Usuario(String nombre, String email, LocalDate fecha, String contraseña) {
@@ -83,7 +74,6 @@ public class Usuario {
 		this.email = email;
 		this.fecha = fecha;
 		this.contraseña = contraseña;
-		this.descuento = new Descuento();
 		this.code = 0;
 		
 		this.listaPlayList = new HashSet<PlayList>();
@@ -137,7 +127,7 @@ public class Usuario {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contraseña, descuento, email, fecha, listaCancionesRecientes, listaPlayList, nombre,
+		return Objects.hash(contraseña, email, fecha, listaCancionesRecientes, listaPlayList, nombre,
 				premium);
 	}
 
@@ -150,7 +140,7 @@ public class Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(contraseña, other.contraseña) && Objects.equals(descuento, other.descuento)
+		return Objects.equals(contraseña, other.contraseña)
 				&& Objects.equals(email, other.email) && Objects.equals(fecha, other.fecha)
 				&& Objects.equals(listaCancionesRecientes, other.listaCancionesRecientes)
 				&& Objects.equals(listaPlayList, other.listaPlayList) && Objects.equals(nombre, other.nombre)
