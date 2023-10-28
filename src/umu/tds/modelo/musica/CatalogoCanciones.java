@@ -18,7 +18,7 @@ public class CatalogoCanciones {
 
 	//ATRIBUTOS
 	private Map<String,Cancion> canciones;
-	private static CatalogoCanciones unicaInstancia = new CatalogoCanciones();
+	private static CatalogoCanciones INSTANCIA = new CatalogoCanciones();
 	
 	private FactoriaDAO dao;
 	private IAdaptadorCancionDAO adaptadorCancion;
@@ -36,7 +36,7 @@ public class CatalogoCanciones {
 	}
 	
 	public static CatalogoCanciones getUnicaInstancia(){
-		return unicaInstancia;
+		return INSTANCIA;
 	}
 	
 	//METODOS

@@ -9,7 +9,7 @@ public class PlayList {
 	//ATRIBUTOS
     private final String nombre;
     private final Collection<Cancion> listaCanciones;
-    private int id;
+    private int codigo;
 
     //GETTERS AND SETTERS
     public String getNombre() {
@@ -20,19 +20,19 @@ public class PlayList {
 		return new HashSet<Cancion>(listaCanciones);
 	}
 
-	public int getId() {
-		return id;
+	public int getCodigo() {
+		return codigo;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCodigo(int id) {
+		this.codigo = id;
 	}
     
     //CONSTRUCTOR
     public PlayList(String nombre) {
 		this.nombre = nombre;
 		this.listaCanciones = new HashSet<Cancion>();
-		id = 0;
+		this.codigo = 0;
 	}
 
 	//METODOS
@@ -47,7 +47,7 @@ public class PlayList {
     
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, listaCanciones, nombre);
+		return Objects.hash(codigo, listaCanciones, nombre);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class PlayList {
 		if (getClass() != obj.getClass())
 			return false;
 		PlayList other = (PlayList) obj;
-		return id == other.id && Objects.equals(listaCanciones, other.listaCanciones)
+		return codigo == other.codigo && Objects.equals(listaCanciones, other.listaCanciones)
 				&& Objects.equals(nombre, other.nombre);
 	}
     

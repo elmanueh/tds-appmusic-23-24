@@ -5,7 +5,7 @@ package umu.tds.dao;
 public abstract class FactoriaDAO {
 	private static FactoriaDAO unicaInstancia;
 	
-	public static final String DAO_TDS = "persistencia.TDSFactoriaDAO";
+	public static final String DAO_TDS = "umu.tds.dao.TDSFactoriaDAO";
 		
 	/** 
 	 * Crea un tipo de factoria DAO.
@@ -15,7 +15,8 @@ public abstract class FactoriaDAO {
 		if (unicaInstancia == null)
 			try { unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
 			} catch (Exception e) {	
-				throw new DAOException(e.getMessage());
+				e.printStackTrace();
+				throw new DAOException("ERROR AL CREAR");
 			} 
 		return unicaInstancia;
 	}

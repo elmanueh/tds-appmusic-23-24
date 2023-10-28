@@ -1,6 +1,7 @@
 package umu.tds.modelo;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import umu.tds.dao.DAOException;
@@ -39,7 +40,7 @@ public class Controlador {
 		return INSTANCIA;
 	}
 	
-	public void registrarUsuario(String nombre, String email, LocalDate fecha, String contraseña) {
+	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		adaptadorUsuario.registrarUsuario(usuario);
 		catalogoUsuarios.addUsuario(usuario);
@@ -78,7 +79,7 @@ public class Controlador {
 
 	private void inicializarCatalogos() {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
-		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
+		//catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
 	}
 	
 	public boolean existeUsuario(String email) {

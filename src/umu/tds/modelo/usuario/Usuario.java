@@ -3,6 +3,7 @@ package umu.tds.modelo.usuario;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Usuario {
 	//ATRIBUTOS
 	private final String nombre;
 	private final String email;
-	private final LocalDate fecha;
+	private final Date fecha;
 	private final String contraseña;
 	private final Collection<PlayList> listaPlayList;
 	private final Collection<Cancion> listaCancionesRecientes;
@@ -34,7 +35,7 @@ public class Usuario {
 		return email;
 	}
 
-	public LocalDate getFecha() {
+	public Date getFecha() {
 		return fecha;
 	}
 
@@ -69,7 +70,7 @@ public class Usuario {
 	
 
 	//CONSTRUCTOR
-	public Usuario(String nombre, String email, LocalDate fecha, String contraseña) {
+	public Usuario(String nombre, String email, Date fecha, String contraseña) {
 		this.nombre = nombre;
 		this.email = email;
 		this.fecha = fecha;

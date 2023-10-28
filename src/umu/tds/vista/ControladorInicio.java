@@ -6,6 +6,9 @@ import javax.swing.JPanel;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
+import umu.tds.modelo.Controlador;
+import umu.tds.modelo.usuario.Usuario;
+
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Toolkit;
@@ -13,6 +16,7 @@ import java.util.Date;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.ImageIcon;
@@ -27,16 +31,56 @@ public class ControladorInicio extends JFrame {
 
 	public static void sendLogin(String usuario, String contraseña) {
 		// aqui se comprueba que los datos coincidan en la base de datos
-
-		VentanaMain app = new VentanaMain();
-		app.setVisible(true);
+		boolean login = false;
+		boolean contraseñaInvalida = false;
+		if (Controlador.getUnicaInstancia().existeUsuario(usuario)) {
+			for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
+				if (u.getEmail().equals(usuario) || u.getNombre().equals(contraseña)) {
+					if (u.getContraseña().equals(contraseña)) {
+						System.out.println("SI ES LOGIN"); 
+						login =true;
+					}
+					else {
+						System.out.println("CONTRAEÑA NO VALIDA");
+						contraseñaInvalida = true;
+					}
+				}
+			}
+		}
+		if (contraseñaInvalida) {
+			
+		}
+		else if (!login)
+			System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
+		else {
+			VentanaMain app = new VentanaMain();
+			app.setVisible(true);
+		}
 	}
 
 	public static void sendRegister(String email, String contraseña, String nombre, Date fechaNacimiento) {
 		// aqui se registrara y ara cosas
-
-		VentanaMain app = new VentanaMain();
-		app.setVisible(true);
+		
+		if (email.isEmpty() || contraseña.isEmpty() || nombre.isEmpty() || fechaNacimiento.equals(null))
+			System.out.println("NO SE HA PODIDO REGISTRA");
+		else {
+			Controlador.getUnicaInstancia().registrarUsuario(nombre, email, null, contraseña);
+			System.out.println("SI HA PODIDO");
+			
+			//AQUI SE TIENE QUE LLAMAR A ALGUNA FUNCION QUE ESCONDA LA VENTANA LOGIN Y PONGA ALGO JOptionPane que algun texto
+			
+			System.out.println("nombre \t email \t contraseña"+ "\n");
+			for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
+				String n = String.format("%1$-30s", u.getNombre());
+				String e = String.format("%1$-30s", u.getEmail());
+				String c = String.format("%1$-30s", u.getContraseña());
+				System.out.println(n + " " + e + " " + c + " " + "\n");
+			}
+			VentanaMain app = new VentanaMain();
+			app.setVisible(true);
+			
+		}
+		
 
 	}
 
