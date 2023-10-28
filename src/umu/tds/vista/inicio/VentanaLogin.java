@@ -12,10 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class VentanaLogin extends JPanel {
+public class VentanaLogin extends JPanel implements ActionListener {
 
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField textoUsuario;
+	private JPasswordField textoContraseña;
+	private JButton botonLogin;
+	private JButton botonRegistro;
 
 	public VentanaLogin() {
 
@@ -26,15 +28,15 @@ public class VentanaLogin extends JPanel {
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0 };
 		setLayout(gridBagLayout);
 
-		JLabel lblIniciaSesinEn = new JLabel("Inicia sesión en Spotifoo");
-		lblIniciaSesinEn.setForeground(Color.WHITE);
-		lblIniciaSesinEn.setFont(new Font("Tahoma", Font.BOLD, 30));
-		GridBagConstraints gbc_lblIniciaSesinEn = new GridBagConstraints();
-		gbc_lblIniciaSesinEn.gridwidth = 3;
-		gbc_lblIniciaSesinEn.insets = new Insets(0, 0, 5, 0);
-		gbc_lblIniciaSesinEn.gridx = 0;
-		gbc_lblIniciaSesinEn.gridy = 0;
-		add(lblIniciaSesinEn, gbc_lblIniciaSesinEn);
+		JLabel labelTitulo = new JLabel("Inicia sesión en Spotifoo");
+		labelTitulo.setForeground(Color.WHITE);
+		labelTitulo.setFont(new Font("Tahoma", Font.BOLD, 30));
+		GridBagConstraints gbc_labelTitulo = new GridBagConstraints();
+		gbc_labelTitulo.gridwidth = 3;
+		gbc_labelTitulo.insets = new Insets(0, 0, 5, 0);
+		gbc_labelTitulo.gridx = 0;
+		gbc_labelTitulo.gridy = 0;
+		add(labelTitulo, gbc_labelTitulo);
 
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
@@ -50,23 +52,22 @@ public class VentanaLogin extends JPanel {
 		gbc_horizontalStrut.gridy = 2;
 		add(horizontalStrut, gbc_horizontalStrut);
 
-		JButton btnNewButton_3 = new JButton("  Continuar con GitHub");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JButton botonGitHub = new JButton("  Continuar con GitHub");
+		botonGitHub.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null, "hay que implementar esta funcionalidad", "ALERTA",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnNewButton_3
-				.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/vista/imagenes/github-icon.png")));
-		btnNewButton_3.setForeground(Color.WHITE);
-		btnNewButton_3.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.fill = GridBagConstraints.VERTICAL;
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 2;
-		add(btnNewButton_3, gbc_btnNewButton_3);
+		botonGitHub.setIcon(new ImageIcon(VentanaLogin.class.getResource("/umu/tds/vista/imagenes/github-icon.png")));
+		botonGitHub.setForeground(Color.WHITE);
+		botonGitHub.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_botonGitHub = new GridBagConstraints();
+		gbc_botonGitHub.fill = GridBagConstraints.VERTICAL;
+		gbc_botonGitHub.insets = new Insets(0, 0, 5, 5);
+		gbc_botonGitHub.gridx = 1;
+		gbc_botonGitHub.gridy = 2;
+		add(botonGitHub, gbc_botonGitHub);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
@@ -82,28 +83,28 @@ public class VentanaLogin extends JPanel {
 		gbc_verticalStrut_1.gridy = 4;
 		add(verticalStrut_1, gbc_verticalStrut_1);
 
-		JLabel lblUser = new JLabel("Correo electrónico o nombre de usuario");
-		lblUser.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUser.setForeground(Color.WHITE);
-		lblUser.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_lblUser = new GridBagConstraints();
-		gbc_lblUser.anchor = GridBagConstraints.WEST;
-		gbc_lblUser.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUser.gridx = 1;
-		gbc_lblUser.gridy = 5;
-		add(lblUser, gbc_lblUser);
+		JLabel labelUsuario = new JLabel("Correo electrónico o nombre de usuario");
+		labelUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		labelUsuario.setForeground(Color.WHITE);
+		labelUsuario.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_labelUsuario = new GridBagConstraints();
+		gbc_labelUsuario.anchor = GridBagConstraints.WEST;
+		gbc_labelUsuario.insets = new Insets(0, 0, 5, 5);
+		gbc_labelUsuario.gridx = 1;
+		gbc_labelUsuario.gridy = 5;
+		add(labelUsuario, gbc_labelUsuario);
 
-		textField = new JTextField();
-		textField.setToolTipText("");
-		textField.setForeground(Color.WHITE);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		textField.setColumns(20);
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.BOTH;
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 6;
-		add(textField, gbc_textField);
+		textoUsuario = new JTextField();
+		textoUsuario.setToolTipText("");
+		textoUsuario.setForeground(Color.WHITE);
+		textoUsuario.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textoUsuario.setColumns(20);
+		GridBagConstraints gbc_textoUsuario = new GridBagConstraints();
+		gbc_textoUsuario.insets = new Insets(0, 0, 5, 5);
+		gbc_textoUsuario.fill = GridBagConstraints.BOTH;
+		gbc_textoUsuario.gridx = 1;
+		gbc_textoUsuario.gridy = 6;
+		add(textoUsuario, gbc_textoUsuario);
 
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_2 = new GridBagConstraints();
@@ -112,27 +113,27 @@ public class VentanaLogin extends JPanel {
 		gbc_verticalStrut_2.gridy = 7;
 		add(verticalStrut_2, gbc_verticalStrut_2);
 
-		JLabel lblPassword = new JLabel("Contraseña");
-		lblPassword.setForeground(Color.WHITE);
-		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
-		gbc_lblPassword.anchor = GridBagConstraints.WEST;
-		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPassword.gridx = 1;
-		gbc_lblPassword.gridy = 8;
-		add(lblPassword, gbc_lblPassword);
+		JLabel labelContraseña = new JLabel("Contraseña");
+		labelContraseña.setForeground(Color.WHITE);
+		labelContraseña.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_labelContraseña = new GridBagConstraints();
+		gbc_labelContraseña.anchor = GridBagConstraints.WEST;
+		gbc_labelContraseña.insets = new Insets(0, 0, 5, 5);
+		gbc_labelContraseña.gridx = 1;
+		gbc_labelContraseña.gridy = 8;
+		add(labelContraseña, gbc_labelContraseña);
 
-		passwordField = new JPasswordField();
-		passwordField.setToolTipText("");
-		passwordField.setForeground(Color.WHITE);
-		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		passwordField.setColumns(20);
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.insets = new Insets(0, 0, 5, 5);
-		gbc_passwordField.fill = GridBagConstraints.BOTH;
-		gbc_passwordField.gridx = 1;
-		gbc_passwordField.gridy = 9;
-		add(passwordField, gbc_passwordField);
+		textoContraseña = new JPasswordField();
+		textoContraseña.setToolTipText("");
+		textoContraseña.setForeground(Color.WHITE);
+		textoContraseña.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textoContraseña.setColumns(20);
+		GridBagConstraints gbc_textoContraseña = new GridBagConstraints();
+		gbc_textoContraseña.insets = new Insets(0, 0, 5, 5);
+		gbc_textoContraseña.fill = GridBagConstraints.BOTH;
+		gbc_textoContraseña.gridx = 1;
+		gbc_textoContraseña.gridy = 9;
+		add(textoContraseña, gbc_textoContraseña);
 
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_3 = new GridBagConstraints();
@@ -141,43 +142,15 @@ public class VentanaLogin extends JPanel {
 		gbc_verticalStrut_3.gridy = 10;
 		add(verticalStrut_3, gbc_verticalStrut_3);
 
-		JButton btnLogin = new JButton("     Iniciar Sesión     ");
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean login = false;
-				boolean contraseñaInvalida = false;
-				if (Controlador.getUnicaInstancia().existeUsuario(textField.getText())) {
-					for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
-						if (u.getEmail().equals(textField.getText()) || u.getNombre().equals(textField.getText())) {
-							if (u.getContraseña().equals(new String(passwordField.getPassword()))) {
-								System.out.println("SI ES LOGIN");
-								login = true;
-							} else {
-								System.out.println("CONTRAEÑA NO VALIDA");
-								contraseñaInvalida = true;
-							}
-						}
-					}
-				}
-
-				if (contraseñaInvalida) {
-
-				} else if (!login)
-					System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
-				else {
-					PlantillaMain.main(null);
-					AppMusic.ocultarPlantillaLogin();
-				}
-			}
-		});
-		btnLogin.setForeground(Color.WHITE);
-		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
-		gbc_btnLogin.fill = GridBagConstraints.VERTICAL;
-		gbc_btnLogin.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLogin.gridx = 1;
-		gbc_btnLogin.gridy = 11;
-		add(btnLogin, gbc_btnLogin);
+		botonLogin = new JButton("     Iniciar Sesión     ");
+		botonLogin.setForeground(Color.WHITE);
+		botonLogin.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_botonLogin = new GridBagConstraints();
+		gbc_botonLogin.fill = GridBagConstraints.VERTICAL;
+		gbc_botonLogin.insets = new Insets(0, 0, 5, 5);
+		gbc_botonLogin.gridx = 1;
+		gbc_botonLogin.gridy = 11;
+		add(botonLogin, gbc_botonLogin);
 
 		Component verticalStrut_4 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_4 = new GridBagConstraints();
@@ -186,13 +159,13 @@ public class VentanaLogin extends JPanel {
 		gbc_verticalStrut_4.gridy = 12;
 		add(verticalStrut_4, gbc_verticalStrut_4);
 
-		JLabel lblRecoveryPassword = new JLabel("¿Has olvidado tu contraseña?");
-		lblRecoveryPassword.setForeground(Color.WHITE);
-		GridBagConstraints gbc_lblRecoveryPassword = new GridBagConstraints();
-		gbc_lblRecoveryPassword.insets = new Insets(0, 0, 5, 5);
-		gbc_lblRecoveryPassword.gridx = 1;
-		gbc_lblRecoveryPassword.gridy = 13;
-		add(lblRecoveryPassword, gbc_lblRecoveryPassword);
+		JLabel labelRecuperarContraseña = new JLabel("¿Has olvidado tu contraseña?");
+		labelRecuperarContraseña.setForeground(Color.WHITE);
+		GridBagConstraints gbc_labelRecuperarContraseña = new GridBagConstraints();
+		gbc_labelRecuperarContraseña.insets = new Insets(0, 0, 5, 5);
+		gbc_labelRecuperarContraseña.gridx = 1;
+		gbc_labelRecuperarContraseña.gridy = 13;
+		add(labelRecuperarContraseña, gbc_labelRecuperarContraseña);
 
 		Component verticalStrut_5 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_5 = new GridBagConstraints();
@@ -201,30 +174,64 @@ public class VentanaLogin extends JPanel {
 		gbc_verticalStrut_5.gridy = 14;
 		add(verticalStrut_5, gbc_verticalStrut_5);
 
-		JPanel jlblRegister = new JPanel();
-		jlblRegister.setForeground(Color.WHITE);
-		jlblRegister.setBackground(Color.DARK_GRAY);
-		GridBagConstraints gbc_jlblRegister = new GridBagConstraints();
-		gbc_jlblRegister.insets = new Insets(0, 0, 0, 5);
-		gbc_jlblRegister.fill = GridBagConstraints.BOTH;
-		gbc_jlblRegister.gridx = 1;
-		gbc_jlblRegister.gridy = 15;
-		add(jlblRegister, gbc_jlblRegister);
-		jlblRegister.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel panelRegistrarse = new JPanel();
+		panelRegistrarse.setForeground(Color.WHITE);
+		panelRegistrarse.setBackground(Color.DARK_GRAY);
+		GridBagConstraints gbc_panelRegistrarse = new GridBagConstraints();
+		gbc_panelRegistrarse.insets = new Insets(0, 0, 0, 5);
+		gbc_panelRegistrarse.fill = GridBagConstraints.BOTH;
+		gbc_panelRegistrarse.gridx = 1;
+		gbc_panelRegistrarse.gridy = 15;
+		add(panelRegistrarse, gbc_panelRegistrarse);
+		panelRegistrarse.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-		JLabel lblRegister = new JLabel("¿No tienes cuenta?");
-		lblRegister.setForeground(new Color(204, 204, 204));
-		jlblRegister.add(lblRegister);
+		JLabel labelRegisto = new JLabel("¿No tienes cuenta?");
+		labelRegisto.setForeground(new Color(204, 204, 204));
+		panelRegistrarse.add(labelRegisto);
 
-		JButton btnRegister = new JButton("Regístrate en Spotifoo");
-		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PlantillaInicio.empezarRegistro();
-			}
-		});
-		btnRegister.setHorizontalAlignment(SwingConstants.LEFT);
-		btnRegister.setForeground(Color.WHITE);
-		btnRegister.setFont(new Font("Tahoma", Font.BOLD, 11));
-		jlblRegister.add(btnRegister);
+		botonRegistro = new JButton("Regístrate en Spotifoo");
+		botonRegistro.setHorizontalAlignment(SwingConstants.LEFT);
+		botonRegistro.setForeground(Color.WHITE);
+		botonRegistro.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panelRegistrarse.add(botonRegistro);
+
+		// Manejadores
+		botonRegistro.addActionListener(this);
+		botonLogin.addActionListener(this);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == botonLogin) {
+			boolean login = false;
+			boolean contraseñaInvalida = false;
+			if (Controlador.getUnicaInstancia().existeUsuario(textoUsuario.getText())) {
+				for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
+					if (u.getEmail().equals(textoUsuario.getText()) || u.getNombre().equals(textoUsuario.getText())) {
+						if (u.getContraseña().equals(new String(textoContraseña.getPassword()))) {
+							System.out.println("SI ES LOGIN");
+							login = true;
+						} else {
+							System.out.println("CONTRAEÑA NO VALIDA");
+							contraseñaInvalida = true;
+						}
+					}
+				}
+			}
+
+			if (contraseñaInvalida) {
+
+			} else if (!login)
+				System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
+			else {
+				PlantillaMain.main(null);
+				AppMusic.ocultarPlantillaLogin();
+			}
+		}
+
+		if (e.getSource() == botonRegistro) {
+			PlantillaInicio.empezarRegistro();
+		}
+	}
+
 }
