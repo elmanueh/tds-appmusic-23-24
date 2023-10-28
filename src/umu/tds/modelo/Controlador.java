@@ -93,6 +93,14 @@ public class Controlador {
 	public List<Usuario> getUsuarios() {
 		return catalogoUsuarios.getUsuarios();
 	}
+	
+	public Usuario getUsuario(String usuario) {
+		for (Usuario u: catalogoUsuarios.getUsuarios()) {
+			if (u.getEmail().equals(usuario) || u.getNombre().equals(usuario))
+				return u;
+		}
+		return null;	
+	}
 
 	
 }

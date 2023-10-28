@@ -7,6 +7,8 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.Cancion;
+import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.CardLayout;
@@ -53,8 +55,7 @@ public class ControladorInicio extends JFrame {
 		else if (!login)
 			System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
 		else {
-			VentanaMain app = new VentanaMain();
-			app.setVisible(true);
+			ControladorMain.main(null);
 		}
 	}
 
@@ -64,8 +65,10 @@ public class ControladorInicio extends JFrame {
 		if (email.isEmpty() || contraseña.isEmpty() || nombre.isEmpty() || fechaNacimiento.equals(null))
 			System.out.println("NO SE HA PODIDO REGISTRA");
 		else {
-			Controlador.getUnicaInstancia().registrarUsuario(nombre, email, null, contraseña);
+			Controlador.getUnicaInstancia().registrarUsuario(nombre, email, fechaNacimiento, contraseña);
 			System.out.println("SI HA PODIDO");
+			
+			
 			
 			//AQUI SE TIENE QUE LLAMAR A ALGUNA FUNCION QUE ESCONDA LA VENTANA LOGIN Y PONGA ALGO JOptionPane que algun texto
 			
@@ -74,10 +77,17 @@ public class ControladorInicio extends JFrame {
 				String n = String.format("%1$-30s", u.getNombre());
 				String e = String.format("%1$-30s", u.getEmail());
 				String c = String.format("%1$-30s", u.getContraseña());
-				System.out.println(n + " " + e + " " + c + " " + "\n");
+				Boolean p = u.isPremium();
+				
+				
+				System.out.println(n + " " + e + " " + c + " " + p + "\n");
+				for(PlayList pl : u.getListaPlayList())
+					System.out.println(pl.getNombre());
+				for(Cancion ca : u.getListaCancionesRecientes())
+					System.out.println(ca.getTitulo());
 			}
-			VentanaMain app = new VentanaMain();
-			app.setVisible(true);
+			
+			ControladorMain.main(null);
 			
 		}
 		

@@ -1,10 +1,13 @@
 package umu.tds.dao;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -66,9 +69,10 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 							  new Propiedad("nombre", usuario.getNombre()),
 							  new Propiedad("contraseña", usuario.getContraseña()),
 							  new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
-							  new Propiedad("esCompleta", String.valueOf(usuario.isPremium()))
-							  //new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
-							  //new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
+							  new Propiedad("esCompleta", String.valueOf(usuario.isPremium())),
+							  new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
+							  new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
+							  new Propiedad("esPremium", String.valueOf(usuario.isPremium()))
 							  )));
 
 		// registrar entidad Usuario
@@ -98,11 +102,18 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("contraseña")) {
 				prop.setValor(usuario.getContraseña());
 			} else if (prop.getNombre().equals("fecha")) {
-				prop.setValor(usuario.getFecha().toString());
+				prop.setValor(dateFormat.format(usuario.getFecha()));
+			} else if (prop.getNombre().equals("playlist")) {
+				String ventas = obtenerCodigosPlayLists(usuario.getListaPlayList());
+				prop.setValor(ventas);
+			} else if (prop.getNombre().equals("canciones")) {
+				String ventas = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
+				prop.setValor(ventas);
+			} else if (prop.getNombre().equals("premium")) {
+				prop.setValor(String.valueOf(usuario.isPremium()));
 			}
 			servPersistencia.modificarPropiedad(prop);
 		}
-
 	}
 
 	public Usuario recuperarUsuario(int codigo) {
@@ -112,24 +123,30 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(codigo);
 
 		// si no, la recupera de la base de datos
-		Entidad eCliente;
+		Entidad eUsuario;
 		HashSet<PlayList> listaPlayList = new HashSet<PlayList>();
-		LinkedHashSet<Cancion> listaCancionesRecientes = new LinkedHashSet<Cancion>();
+		LinkedList<Cancion> cancionesRecientes = new LinkedList<Cancion>();
 		String nombre;
 		String email;
-		LocalDate fecha;
+		Date fecha = null;
 		String contraseña;
+		Boolean premium;
 
 		// recuperar entidad
-		eCliente = servPersistencia.recuperarEntidad(codigo);
+		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
 		// recuperar propiedades que no son objetos
-		nombre = servPersistencia.recuperarPropiedadEntidad(eCliente, "nombre");
-		email = servPersistencia.recuperarPropiedadEntidad(eCliente, "email");
-		//fecha = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eCliente, "fecha"));
-		contraseña = servPersistencia.recuperarPropiedadEntidad(eCliente, "email");		
+		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
+		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		try {
+			fecha = dateFormat.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, "fecha"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");		
+		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));	
 		
-		Usuario usuario = new Usuario(nombre, email, null, contraseña);
+		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
 
 		// IMPORTANTE:a�adir el cliente al pool antes de llamar a otros
@@ -137,10 +154,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eCliente, "ventas"));
-
+		listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlist"));
 		for (PlayList pl : listaPlayList)
 		usuario.addPlayList(pl);
+		
+		cancionesRecientes = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones"));
+		for (Cancion c : cancionesRecientes)
+		usuario.addCancionReciente(c);
 
 		return usuario;
 	}
@@ -156,24 +176,39 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return clientes;
 	}
 	// -------------------Funciones auxiliares-----------------------------
-	private String obtenerCodigosPlayList(List<PlayList> listaPL) {
+	private String obtenerCodigosPlayLists(Collection<PlayList> collection) {
 		String aux = "";
-		for (PlayList pl : listaPL) {
+		for (PlayList pl : collection) {
 			aux += pl.getCodigo() + " ";
 		}
 		return aux.trim();
 	}
 
 	private HashSet<PlayList> obtenerPlayListDesdeCodigos(String playlists) {
-
 		HashSet<PlayList> listaVentas = new HashSet<PlayList>();
-		/*StringTokenizer strTok = new StringTokenizer(playlists, " ");*/
-		/*AdaptadorPlayListTDS adaptadorPL = AdaptadorPlayListTDS.getUnicaInstancia();
+		StringTokenizer strTok = new StringTokenizer(playlists, " ");
+		AdaptadorPlayListTDS adaptadorPL = AdaptadorPlayListTDS.getUnicaInstancia();
 		while (strTok.hasMoreTokens()) {
 			listaVentas.add(adaptadorPL.recuperarPlayList(Integer.valueOf((String) strTok.nextElement())));
-		}*/
+		}
 		return listaVentas;
 	}
 	
-	//HABRIA QUE CREAR LO MISMO PARA CANCIONES
+	private String obtenerCodigosCanciones(Collection<Cancion> collection) {
+		String aux = "";
+		for (Cancion c: collection) {
+			aux += c.getCodigo() + " ";
+		}
+		return aux.trim();
+	}
+	
+	private LinkedList<Cancion> obtenerCancionesDesdeCodigos(String recuperarPropiedadEntidad) {
+		LinkedList<Cancion> cancionesRecientes = new LinkedList<Cancion>();
+		StringTokenizer strTok = new StringTokenizer(recuperarPropiedadEntidad, " ");
+		AdaptadorCancionTDS adaptadorCancion = AdaptadorCancionTDS.getUnicaInstancia();
+		while (strTok.hasMoreTokens()) {
+			cancionesRecientes.add(adaptadorCancion.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
+		}
+		return cancionesRecientes;
+	}
 }
