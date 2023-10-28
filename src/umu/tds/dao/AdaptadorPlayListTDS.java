@@ -13,7 +13,6 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
-import umu.tds.modelo.usuario.Usuario;
 
 public class AdaptadorPlayListTDS {
 	private static ServicioPersistencia servPersistencia;
@@ -92,7 +91,6 @@ public class AdaptadorPlayListTDS {
 		// si no, la recupera de la base de datos
 		Entidad ePL;
 		List<Cancion> canciones = new LinkedList<Cancion>();
-		String dni;
 		String nombre;
 
 		// recuperar entidad
@@ -111,18 +109,14 @@ public class AdaptadorPlayListTDS {
 		// recuperar propiedades que son objetos llamando a adaptadores
 		// canciones
 		canciones = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(ePL, "canciones"));
-
 		for (Cancion c : canciones)
 			canciones.add(c);
-
 		return cliente;
 	}
 	
 	public List<PlayList> recuperarTodosPL() {
-
 		List<Entidad> ePLs = servPersistencia.recuperarEntidades("playlist");
 		List<PlayList> playlist = new LinkedList<PlayList>();
-
 		for (Entidad ePlayList : ePLs) {
 			playlist.add(recuperarPlayList(ePlayList.getId()));
 		}

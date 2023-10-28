@@ -1,14 +1,12 @@
 package umu.tds.modelo.musica;
 
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Objects;
 
 public class PlayList {
 	//ATRIBUTOS
     private final String nombre;
-    private final Collection<Cancion> listaCanciones;
+    private final HashSet<Cancion> listaCanciones;
     private int codigo;
 
     //GETTERS AND SETTERS
@@ -16,7 +14,7 @@ public class PlayList {
 		return nombre;
 	}
 
-	public Collection<Cancion> getListaCanciones() {
+	public HashSet<Cancion> getListaCanciones() {
 		return new HashSet<Cancion>(listaCanciones);
 	}
 

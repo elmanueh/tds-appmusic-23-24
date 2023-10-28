@@ -11,8 +11,6 @@ import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.PlayList;
-import umu.tds.modelo.usuario.Usuario;
 
 //Usa un pool para evitar problemas doble referencia con ventas
 public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
@@ -43,8 +41,8 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 				new Propiedad("titulo", cancion.getTitulo()),
 				new Propiedad("rutaFichero", cancion.getRutaFichero()),
 				new Propiedad("numeroRep", String.valueOf(cancion.getNumReproducciones())),
-				new Propiedad("estiloMusical", cancion.getEstiloMusical())
-				//new Propiedad("interprete", cancion.getInterprete().toString()))		
+				new Propiedad("estiloMusical", cancion.getEstiloMusical()),
+				new Propiedad("interpretes", obtenerCodigosInterpretes(cancion.getInterprete()))	
 				)));
 		
 		// registrar entidad producto
@@ -55,13 +53,16 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	}
 
 	public Cancion recuperarCancion(int codigo) {	
+		// Si la entidad estï¿½ en el pool la devuelve directamente
+				if (PoolDAO.getUnicaInstancia().contiene(codigo))
+					return (Cancion) PoolDAO.getUnicaInstancia().getObjeto(codigo);
+				
 		//FALTA TRATAR LA LISTA DE INTERPRETES
 		Entidad eCancion;
 		int numRep;
 		String titulo;
 		String rutaFichero;
 		String estiloMusical;
-		//List<String> interpretes = new LinkedList<String>();
 		
 		// si no, la recupera de la base de datos
 		// recuperar entidad
@@ -77,6 +78,10 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		cancion.setCodigo(codigo);
 		cancion.setNumReproducciones(numRep);
 
+		List<String> interpretes = obtenerLineasInterpretesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eCancion, "interpretes"));
+
+		cancion.setInterprete(interpretes);
+		
 		return cancion;
 	}
 
@@ -88,5 +93,23 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 			canciones.add(recuperarCancion(eCancion.getId()));
 		}
 		return canciones;
+	}
+	
+	// -------------------Funciones auxiliares-----------------------------
+	private String obtenerCodigosInterpretes(List<String> interpretes) {
+		String lineas = "";
+		for (String i : interpretes) {
+			lineas += i + " ";
+		}
+		return lineas.trim();
+	}
+	
+	private List<String> obtenerLineasInterpretesDesdeCodigos(String lineas) {
+		List<String> interpretes = new LinkedList<String>();
+		StringTokenizer strTok = new StringTokenizer(lineas, " ");
+		 while (strTok.hasMoreTokens()) {
+		        interpretes.add(strTok.nextToken());
+		    }
+		return interpretes;
 	}
 }
