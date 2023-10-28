@@ -1,0 +1,318 @@
+package umu.tds.vista;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.FlowLayout;
+import javax.swing.ImageIcon;
+import java.awt.Component;
+import javax.swing.Box;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JButton;
+import java.awt.CardLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
+
+public class ControladorMain {
+
+	private JFrame controladorMain;
+	private CardLayout cardLayout;
+
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
+					ControladorMain window = new ControladorMain();
+					window.controladorMain.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public ControladorMain() {
+		
+		VentanaBuscar ventanaBuscar = new VentanaBuscar();
+		VentanaGestionPlaylist ventanaGestionPlaylist = new VentanaGestionPlaylist();
+		VentanaRecientes ventanaRecientes = new VentanaRecientes();
+		VentanaMasReproducidas ventanaMasReproducidas = new VentanaMasReproducidas();
+		VentanaGenerarPDF ventanaGenerarPDF = new VentanaGenerarPDF();
+		VentanaMisPlaylist ventanaMisPlaylist = new VentanaMisPlaylist();
+		
+		controladorMain = new JFrame();
+		controladorMain.setBounds(100, 100, 947, 574);
+		controladorMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		controladorMain.getContentPane().setLayout(gridBagLayout);
+
+		JPanel p_iconoTitulo = new JPanel();
+		GridBagConstraints gbc_p_iconoTitulo = new GridBagConstraints();
+		gbc_p_iconoTitulo.insets = new Insets(0, 0, 5, 5);
+		gbc_p_iconoTitulo.fill = GridBagConstraints.BOTH;
+		gbc_p_iconoTitulo.gridx = 0;
+		gbc_p_iconoTitulo.gridy = 0;
+		controladorMain.getContentPane().add(p_iconoTitulo, gbc_p_iconoTitulo);
+
+		Component horizontalStrut = Box.createHorizontalStrut(10);
+		p_iconoTitulo.add(horizontalStrut);
+
+		JLabel icono = new JLabel("");
+		icono.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/icono.png")));
+		icono.setHorizontalAlignment(SwingConstants.LEFT);
+		icono.setForeground(Color.WHITE);
+		p_iconoTitulo.add(icono);
+
+		Component horizontalStrut_1 = Box.createHorizontalStrut(5);
+		p_iconoTitulo.add(horizontalStrut_1);
+
+		JLabel titulo = new JLabel("Spotifoo");
+		titulo.setHorizontalAlignment(SwingConstants.LEFT);
+		titulo.setForeground(Color.WHITE);
+		titulo.setFont(new Font("Tahoma", Font.BOLD, 20));
+		p_iconoTitulo.add(titulo);
+		
+				Component verticalStrut = Box.createVerticalStrut(90);
+				p_iconoTitulo.add(verticalStrut);
+
+		JPanel p_cabezera = new JPanel();
+		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
+		gbc_p_cabezera.insets = new Insets(0, 0, 5, 0);
+		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
+		gbc_p_cabezera.gridx = 1;
+		gbc_p_cabezera.gridy = 0;
+		controladorMain.getContentPane().add(p_cabezera, gbc_p_cabezera);
+		p_cabezera.setLayout(new BorderLayout(0, 0));
+
+		JPanel p_cabezera_izq = new JPanel();
+		FlowLayout fl_p_cabezera_izq = (FlowLayout) p_cabezera_izq.getLayout();
+		fl_p_cabezera_izq.setAlignment(FlowLayout.LEFT);
+		p_cabezera.add(p_cabezera_izq, BorderLayout.CENTER);
+
+		JLabel mensajeBienvenida = new JLabel("Bienvenido, usuario");
+		p_cabezera_izq.add(mensajeBienvenida);
+
+		JPanel p_cabezera_der = new JPanel();
+		p_cabezera.add(p_cabezera_der, BorderLayout.EAST);
+
+		JPanel p_menuBotonesPremium = new JPanel();
+		JButton botonPremium = new JButton("Premium");
+		botonPremium.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_menuBotonesPremium.setVisible(true);
+			}
+		});
+		p_cabezera_der.add(botonPremium);
+
+		JButton botonSalir = new JButton("Cerrar Sesión");
+		botonSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controladorMain.setVisible(false);
+				System.exit(0);
+			}
+		});
+		p_cabezera_der.add(botonSalir);
+
+		JPanel p_menuBotones = new JPanel();
+		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
+		gbc_p_menuBotones.insets = new Insets(0, 0, 0, 5);
+		gbc_p_menuBotones.fill = GridBagConstraints.BOTH;
+		gbc_p_menuBotones.gridx = 0;
+		gbc_p_menuBotones.gridy = 1;
+		controladorMain.getContentPane().add(p_menuBotones, gbc_p_menuBotones);
+		GridBagLayout gbl_p_menuBotones = new GridBagLayout();
+		gbl_p_menuBotones.columnWidths = new int[] { 20, 0, 0 };
+		gbl_p_menuBotones.rowHeights = new int[] { 40, 40, 40, 0, 40, 0, 0 };
+		gbl_p_menuBotones.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_p_menuBotones.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		p_menuBotones.setLayout(gbl_p_menuBotones);
+
+		JPanel p_cardLayout = new JPanel();
+		JPanel p_listas = new JPanel();
+		JButton botonBuscar = new JButton("Buscar");
+		botonBuscar.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonBuscar.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
+		botonBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(false);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaBuscar");
+			}
+		});
+		botonBuscar.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonBuscar = new GridBagConstraints();
+		gbc_botonBuscar.fill = GridBagConstraints.BOTH;
+		gbc_botonBuscar.insets = new Insets(0, 0, 5, 0);
+		gbc_botonBuscar.gridx = 1;
+		gbc_botonBuscar.gridy = 0;
+		p_menuBotones.add(botonBuscar, gbc_botonBuscar);
+
+		JButton botonGestionPlaylist = new JButton("Gestión Playlist");
+		botonGestionPlaylist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(false);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaGestionPlaylist");
+			}
+		});
+		botonGestionPlaylist.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonGestionPlaylist.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/mas.png")));
+		botonGestionPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonGestionPlaylist = new GridBagConstraints();
+		gbc_botonGestionPlaylist.insets = new Insets(0, 0, 5, 0);
+		gbc_botonGestionPlaylist.fill = GridBagConstraints.BOTH;
+		gbc_botonGestionPlaylist.gridx = 1;
+		gbc_botonGestionPlaylist.gridy = 1;
+		p_menuBotones.add(botonGestionPlaylist, gbc_botonGestionPlaylist);
+
+		JButton botonRecientes = new JButton("Recientes");
+		botonRecientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(false);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaRecientes");
+			}
+		});
+		botonRecientes.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonRecientes.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/reloj.png")));
+		botonRecientes.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonRecientes = new GridBagConstraints();
+		gbc_botonRecientes.insets = new Insets(0, 0, 5, 0);
+		gbc_botonRecientes.fill = GridBagConstraints.BOTH;
+		gbc_botonRecientes.gridx = 1;
+		gbc_botonRecientes.gridy = 2;
+		p_menuBotones.add(botonRecientes, gbc_botonRecientes);
+
+		p_menuBotonesPremium.setVisible(false);
+		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
+		gbc_p_menuBotonesPremium.gridwidth = 2;
+		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 0);
+		gbc_p_menuBotonesPremium.fill = GridBagConstraints.BOTH;
+		gbc_p_menuBotonesPremium.gridx = 0;
+		gbc_p_menuBotonesPremium.gridy = 3;
+		p_menuBotones.add(p_menuBotonesPremium, gbc_p_menuBotonesPremium);
+		GridBagLayout gbl_p_menuBotonesPremium = new GridBagLayout();
+		gbl_p_menuBotonesPremium.columnWidths = new int[] { 20, 193, 0 };
+		gbl_p_menuBotonesPremium.rowHeights = new int[] { 40, 40, 0 };
+		gbl_p_menuBotonesPremium.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_p_menuBotonesPremium.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		p_menuBotonesPremium.setLayout(gbl_p_menuBotonesPremium);
+
+		JButton botonMasReproducidas = new JButton("Más Reproducidas");
+		botonMasReproducidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(false);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaMasReproducidas");
+			}
+		});
+		botonMasReproducidas.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonMasReproducidas.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonMasReproducidas = new GridBagConstraints();
+		gbc_botonMasReproducidas.fill = GridBagConstraints.BOTH;
+		gbc_botonMasReproducidas.insets = new Insets(0, 0, 5, 0);
+		gbc_botonMasReproducidas.gridx = 1;
+		gbc_botonMasReproducidas.gridy = 0;
+		p_menuBotonesPremium.add(botonMasReproducidas, gbc_botonMasReproducidas);
+
+		JButton botonGenerarPDF = new JButton("Generar PDF");
+		botonGenerarPDF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(false);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaGenerarPDF");
+			}
+		});
+		botonGenerarPDF.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonGenerarPDF.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonGenerarPDF = new GridBagConstraints();
+		gbc_botonGenerarPDF.fill = GridBagConstraints.BOTH;
+		gbc_botonGenerarPDF.gridx = 1;
+		gbc_botonGenerarPDF.gridy = 1;
+		p_menuBotonesPremium.add(botonGenerarPDF, gbc_botonGenerarPDF);
+
+		p_cardLayout.setVisible(false);
+		JButton botonMisPlaylist = new JButton("Mis Playlist");
+		botonMisPlaylist.setFont(new Font("Tahoma", Font.BOLD, 12));
+		botonMisPlaylist.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/altavoz.png")));
+		botonMisPlaylist.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				p_listas.setVisible(true);
+				p_cardLayout.setVisible(true);
+				CardLayout card = (CardLayout) p_cardLayout.getLayout();
+				card.show(p_cardLayout, "ventanaMisPlaylist");
+			}
+		});
+		botonMisPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_botonMisPlaylist = new GridBagConstraints();
+		gbc_botonMisPlaylist.insets = new Insets(0, 0, 5, 0);
+		gbc_botonMisPlaylist.fill = GridBagConstraints.BOTH;
+		gbc_botonMisPlaylist.gridx = 1;
+		gbc_botonMisPlaylist.gridy = 4;
+		p_menuBotones.add(botonMisPlaylist, gbc_botonMisPlaylist);
+
+		p_listas.setVisible(false);
+		GridBagConstraints gbc_p_listas = new GridBagConstraints();
+		gbc_p_listas.gridwidth = 2;
+		gbc_p_listas.fill = GridBagConstraints.BOTH;
+		gbc_p_listas.gridx = 0;
+		gbc_p_listas.gridy = 5;
+		p_menuBotones.add(p_listas, gbc_p_listas);
+		p_listas.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		p_listas.add(panel);
+		
+		JLabel lblNewLabel = new JLabel("linkear las playlist ");
+		panel.add(lblNewLabel);
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		p_listas.add(horizontalStrut_2, BorderLayout.WEST);
+		
+		Component verticalStrut_1 = Box.createVerticalStrut(20);
+		p_listas.add(verticalStrut_1, BorderLayout.NORTH);
+		
+		Component verticalStrut_2 = Box.createVerticalStrut(20);
+		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
+
+		GridBagConstraints gbc_p_cardLayout = new GridBagConstraints();
+		gbc_p_cardLayout.fill = GridBagConstraints.BOTH;
+		gbc_p_cardLayout.gridx = 1;
+		gbc_p_cardLayout.gridy = 1;
+		controladorMain.getContentPane().add(p_cardLayout, gbc_p_cardLayout);
+		p_cardLayout.setLayout(new CardLayout(0, 0));
+		
+		p_cardLayout.add(ventanaBuscar, "ventanaBuscar");
+		p_cardLayout.add(ventanaGestionPlaylist, "ventanaGestionPlaylist");
+		p_cardLayout.add(ventanaRecientes, "ventanaRecientes");
+		p_cardLayout.add(ventanaMasReproducidas, "ventanaMasReproducidas");
+		p_cardLayout.add(ventanaGenerarPDF, "ventanaGenerarPDF");
+		p_cardLayout.add(ventanaMisPlaylist, "ventanaMisPlaylist");
+		
+	}
+	
+
+}
