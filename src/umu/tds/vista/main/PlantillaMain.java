@@ -1,4 +1,4 @@
-package umu.tds.vista;
+package umu.tds.vista.main;
 
 import java.awt.EventQueue;
 
@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 
-public class ControladorMain {
+public class PlantillaMain {
 
 	private JFrame controladorMain;
 	private CardLayout cardLayout;
@@ -35,7 +35,7 @@ public class ControladorMain {
 			public void run() {
 				try {
 					UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
-					ControladorMain window = new ControladorMain();
+					PlantillaMain window = new PlantillaMain();
 					window.controladorMain.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,7 +44,7 @@ public class ControladorMain {
 		});
 	}
 
-	public ControladorMain() {
+	public PlantillaMain() {
 		
 		VentanaBuscar ventanaBuscar = new VentanaBuscar();
 		VentanaGestionPlaylist ventanaGestionPlaylist = new VentanaGestionPlaylist();
@@ -75,7 +75,7 @@ public class ControladorMain {
 		p_iconoTitulo.add(horizontalStrut);
 
 		JLabel icono = new JLabel("");
-		icono.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/icono.png")));
+		icono.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/icono.png")));
 		icono.setHorizontalAlignment(SwingConstants.LEFT);
 		icono.setForeground(Color.WHITE);
 		p_iconoTitulo.add(icono);
@@ -148,7 +148,7 @@ public class ControladorMain {
 		JPanel p_listas = new JPanel();
 		JButton botonBuscar = new JButton("Buscar");
 		botonBuscar.setFont(new Font("Tahoma", Font.BOLD, 12));
-		botonBuscar.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
+		botonBuscar.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
 		botonBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_listas.setVisible(false);
@@ -175,7 +175,7 @@ public class ControladorMain {
 			}
 		});
 		botonGestionPlaylist.setFont(new Font("Tahoma", Font.BOLD, 12));
-		botonGestionPlaylist.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/mas.png")));
+		botonGestionPlaylist.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/mas.png")));
 		botonGestionPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonGestionPlaylist = new GridBagConstraints();
 		gbc_botonGestionPlaylist.insets = new Insets(0, 0, 5, 0);
@@ -194,7 +194,7 @@ public class ControladorMain {
 			}
 		});
 		botonRecientes.setFont(new Font("Tahoma", Font.BOLD, 12));
-		botonRecientes.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/reloj.png")));
+		botonRecientes.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/reloj.png")));
 		botonRecientes.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonRecientes = new GridBagConstraints();
 		gbc_botonRecientes.insets = new Insets(0, 0, 5, 0);
@@ -256,7 +256,7 @@ public class ControladorMain {
 		p_cardLayout.setVisible(false);
 		JButton botonMisPlaylist = new JButton("Mis Playlist");
 		botonMisPlaylist.setFont(new Font("Tahoma", Font.BOLD, 12));
-		botonMisPlaylist.setIcon(new ImageIcon(ControladorMain.class.getResource("/umu/tds/vista/imagenes/altavoz.png")));
+		botonMisPlaylist.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/altavoz.png")));
 		botonMisPlaylist.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_listas.setVisible(true);

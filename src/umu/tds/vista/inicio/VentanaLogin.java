@@ -1,17 +1,26 @@
-package umu.tds.vista;
+package umu.tds.vista.inicio;
 
 import javax.swing.*;
+
+import umu.tds.AppMusic;
+import umu.tds.modelo.Controlador;
+import umu.tds.modelo.usuario.Usuario;
+import umu.tds.vista.main.PlantillaMain;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class VentanaLogin extends JPanel {
+
 	private JTextField textField;
 	private JPasswordField passwordField;
 
 	public VentanaLogin() {
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 30, 0, 0, 30, 0, 35, 0, 0, 0, 0 };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 0.0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0 };
@@ -44,7 +53,8 @@ public class VentanaLogin extends JPanel {
 		JButton btnNewButton_3 = new JButton("  Continuar con GitHub");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorInicio.loginGitHub(textField.getText(), new String(passwordField.getPassword()));
+				JOptionPane.showMessageDialog(null, "hay que implementar esta funcionalidad", "ALERTA",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnNewButton_3
@@ -134,7 +144,30 @@ public class VentanaLogin extends JPanel {
 		JButton btnLogin = new JButton("     Iniciar Sesión     ");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorInicio.sendLogin(textField.getText(), new String(passwordField.getPassword()));
+				boolean login = false;
+				boolean contraseñaInvalida = false;
+				if (Controlador.getUnicaInstancia().existeUsuario(textField.getText())) {
+					for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
+						if (u.getEmail().equals(textField.getText()) || u.getNombre().equals(textField.getText())) {
+							if (u.getContraseña().equals(new String(passwordField.getPassword()))) {
+								System.out.println("SI ES LOGIN");
+								login = true;
+							} else {
+								System.out.println("CONTRAEÑA NO VALIDA");
+								contraseñaInvalida = true;
+							}
+						}
+					}
+				}
+
+				if (contraseñaInvalida) {
+
+				} else if (!login)
+					System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
+				else {
+					PlantillaMain.main(null);
+					AppMusic.ocultarPlantillaLogin();
+				}
 			}
 		});
 		btnLogin.setForeground(Color.WHITE);
@@ -186,7 +219,7 @@ public class VentanaLogin extends JPanel {
 		JButton btnRegister = new JButton("Regístrate en Spotifoo");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ControladorInicio.startRegister();
+				PlantillaInicio.empezarRegistro();
 			}
 		});
 		btnRegister.setHorizontalAlignment(SwingConstants.LEFT);
