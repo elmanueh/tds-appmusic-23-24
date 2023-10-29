@@ -1,6 +1,7 @@
 package umu.tds.modelo;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import umu.tds.dao.DAOException;
@@ -119,6 +120,16 @@ public class Controlador {
 
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
+	}
+	
+	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo){
+		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
+		catalogoCanciones.getCanciones().stream()
+			.filter(c -> c.getTitulo().contains(titulo))
+			.filter(c -> c.getInterprete().contains(interprete))
+			.filter(c -> c.getEstiloMusical().equals(estilo))
+			.forEach(canciones::add);
+		return canciones;
 	}
 
 }
