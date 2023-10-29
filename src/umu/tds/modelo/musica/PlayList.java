@@ -1,6 +1,7 @@
 package umu.tds.modelo.musica;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 public class PlayList {
@@ -36,6 +37,10 @@ public class PlayList {
 	//METODOS
     public void addCancion(Cancion c){
     	listaCanciones.add(c);
+    }
+    
+    public void addAllCanciones(List<Cancion> canciones) {
+    	listaCanciones.addAll(canciones);
     }
 
     public void removeCancion(Cancion c){

@@ -673,8 +673,8 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 				String correo = textoEmail.getText();
 				Date fecha = fechaNacimiento.getDate();
 
-				registrado = Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
-				if (registrado) {
+				if (!Controlador.getUnicaInstancia().existeUsuario(correo)) {
+					Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
 					JOptionPane.showMessageDialog(null, "USUARIO REGISTRADO", "EXITO AL REGISTRAR",
 							JOptionPane.YES_OPTION);
 					AppMusic.logInSatisfactorio();
@@ -689,9 +689,9 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 	private boolean checkCeldas() {
 		boolean salida = true;
 		boolean usuarioVacio = false;
-		
+
 		String textoError = "";
-		
+
 		if (textoUsuario.getText().trim().isEmpty()) {
 			textoError = textoError + "USUARIO ESTA VACIO\n";
 			salida = false;
@@ -709,12 +709,11 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		if (password.isEmpty()) {
 			textoError = textoError + "CONTRASEÑA ESTA VACIO\n";
 			salida = false;
-		} 
-		
+		}
+
 		if (!salida)
-			JOptionPane.showMessageDialog(null, textoError, "CAMPOS VACIOS",
-					JOptionPane.ERROR_MESSAGE);
-		
+			JOptionPane.showMessageDialog(null, textoError, "CAMPOS VACIOS", JOptionPane.ERROR_MESSAGE);
+
 		return salida;
 	}
 

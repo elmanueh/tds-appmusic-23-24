@@ -1,43 +1,55 @@
 package umu.tds.dao;
 
-//Define una factoria abstracta que devuelve todos los DAO de la aplicacion
-
+/**
+ * Define una factoria abstracta que devuelve todos los DAO de la aplicacion
+ */
 public abstract class FactoriaDAO {
-	private static FactoriaDAO unicaInstancia;
-	
-	public static final String DAO_TDS = "umu.tds.dao.TDSFactoriaDAO";
-		
-	/** 
-	 * Crea un tipo de factoria DAO.
-	 * Solo existe el tipo TDSFactoriaDAO
+	/*
+	 * ATRIBUTOS
 	 */
-	public static FactoriaDAO getInstancia(String tipo) throws DAOException{
+	private static FactoriaDAO unicaInstancia;
+	public static final String DAO_TDS = "umu.tds.dao.TDSFactoriaDAO";
+
+	/*
+	 * Constructor
+	 */
+	protected FactoriaDAO() {
+	}
+
+	/**
+	 * Crea un tipo de factoria DAO. Solo existe el tipo TDSFactoriaDAO
+	 */
+	@SuppressWarnings("deprecation")
+	public static FactoriaDAO getInstancia(String tipo) throws DAOException {
 		if (unicaInstancia == null)
-			try { unicaInstancia=(FactoriaDAO) Class.forName(tipo).newInstance();
-			} catch (Exception e) {	
+			try {
+				unicaInstancia = (FactoriaDAO) Class.forName(tipo).newInstance();
+			} catch (Exception e) {
 				e.printStackTrace();
 				throw new DAOException("ERROR AL CREAR");
-			} 
+			}
 		return unicaInstancia;
 	}
 
+	/**
+	 * Devuelve la instancia de la FactoriaDAO
+	 */
+	public static FactoriaDAO getInstancia() throws DAOException {
+		if (unicaInstancia == null)
+			return getInstancia(FactoriaDAO.DAO_TDS);
+		else
+			return unicaInstancia;
+	}
 
-	public static FactoriaDAO getInstancia() throws DAOException{
-			if (unicaInstancia == null) return getInstancia (FactoriaDAO.DAO_TDS);
-					else return unicaInstancia;
-		}
-
-	/* Constructor */
-	protected FactoriaDAO (){}
-
-
-		
-		
-	// Metodos factoria que devuelven adaptadores que implementen estos interfaces
-	//public abstract IAdaptadorVentaDAO getVentaDAO();
-	//public abstract IAdaptadorLineaVentaDAO getLineaVentaDAO();
-	//public abstract IAdaptadorProductoDAO getProductoDAO();
+	/*
+	 * Metodos factoria que devuelven adaptadores que implementen estos interfaces
+	 */
+	// public abstract IAdaptadorVentaDAO getVentaDAO();
+	// public abstract IAdaptadorLineaVentaDAO getLineaVentaDAO();
+	// public abstract IAdaptadorProductoDAO getProductoDAO();
 	public abstract IAdaptadorCancionDAO getCancionDAO();
+
 	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
 
+	// public abstract IAdaptadorPlayListDAO getPlaylistDAO();
 }
