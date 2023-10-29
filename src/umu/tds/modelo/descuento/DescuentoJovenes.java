@@ -1,8 +1,12 @@
 package umu.tds.modelo.descuento;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import umu.tds.modelo.usuario.Usuario;
 
-public class DescuentoJovenes extends Descuento{
+public class DescuentoJovenes implements Descuento{
 	@Override
 	public double Precio() {
 		return Usuario.TARIFA_PREMIUM*0.8;
@@ -10,6 +14,10 @@ public class DescuentoJovenes extends Descuento{
 	
 	@Override
 	public boolean isAplicable(Usuario u) {
-	    return u.getFecha().getYear() < 1999;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+
+        String anio = sdf.format(u.getFecha());
+
+	    return Integer.parseInt(anio) > 1999;
     }
 }

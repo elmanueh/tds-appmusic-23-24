@@ -1,25 +1,21 @@
 package umu.tds.modelo.descuento;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import umu.tds.modelo.usuario.Usuario;
 
-public class Descuento {
+public interface Descuento {
 
-	public double Precio() {
-		return 0;
-	}
+	double Precio();
 	
-	public boolean isAplicable(Usuario u) {
-        return true;
-    }
+	boolean isAplicable(Usuario u);
 	
-	public static Set<Descuento> descuentos(){
+	static Set<Descuento> descuentos(){
 		Set<Descuento> descuentos = new HashSet<Descuento>();
-		descuentos.add(new Descuento());
-		descuentos.add(new DescuentoFijo());
-		descuentos.add(new DescuentoJovenes());
+		Collections.addAll(descuentos, new DescuentoNulo(), new DescuentoFijo(), new DescuentoJovenes());
+
 		return descuentos;
 	}
 
