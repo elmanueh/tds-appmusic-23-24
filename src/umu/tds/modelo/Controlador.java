@@ -1,12 +1,11 @@
 package umu.tds.modelo;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
-import umu.tds.dao.IAdaptadoPlayListDAO;
+import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
@@ -16,68 +15,33 @@ import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
 
 public class Controlador {
-	
+
+	/*
+	 * ATRIBUTOS
+	 */
 	private static Controlador INSTANCIA;
 
 	private IAdaptadorCancionDAO adaptadorCancion;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
-	private IAdaptadoPlayListDAO adaptadorPlayList;
-	
+	private IAdaptadorPlayListDAO adaptadorPlayList;
 	private CatalogoUsuarios catalogoUsuarios;
 	private CatalogoCanciones catalogoCanciones;
-	
+
 	private Usuario usuarioActual;
 	private PlayList plActual;
-	
+
+	/*
+	 * CONSTRUCTOR
+	 */
 	private Controlador() {
 		inicializarAdaptadores();
-		
 		inicializarCatalogos();
 	}
-	
-	public static Controlador getUnicaInstancia() {
-		if (INSTANCIA == null)
-			INSTANCIA = new Controlador();
-		return INSTANCIA;
-	}
-	
-	public boolean esUsuarioRegistrado(String login) {
-		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login) != null;
-	}
-	
-	public boolean registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
-		if (esUsuarioRegistrado(email))
-			return false;
-		
-		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
-		
-		adaptadorUsuario.registrarUsuario(usuario);
-		catalogoUsuarios.addUsuario(usuario);
-		
-		return true;
-	}
-	
-	public void registrarCancion(String titulo, String rutaFichero, String estiloMusical, String ...interpretes) {
-		// No se controla que el valor del string precio sea un double
-		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interpretes);
-		adaptadorCancion.registrarCancion(cancion);
 
-		catalogoCanciones.addCancion(cancion);
-	}
-	
-	//ESTO NS MUCHO SI ESTAN BIEN
-	public void crearPlayList(String s) {
-		plActual = new PlayList(s);
-	}
-	
-	public void anadirCancionAPlayList(Cancion c) {
-		plActual.addCancion(c);
-	}
-	
-	public void registrarPlayList(String s) {
-	}
-	
-    private void inicializarAdaptadores() {
+	/*
+	 * METODOS DE CONSULTA Y ESTABLECIMIENTO
+	 */
+	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
 			factoria = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -86,31 +50,58 @@ public class Controlador {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorCancion = factoria.getCancionDAO();
+		// adaptadorPlayList = factoria.getPlaylistDAO();
 	}
 
 	private void inicializarCatalogos() {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
-		//catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
+		// catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
 	}
-	
-	public boolean existeUsuario(String email) {
-		return CatalogoUsuarios.getUnicaInstancia().getUsuario(email) != null;
+
+	public static Controlador getUnicaInstancia() {
+		if (INSTANCIA == null)
+			INSTANCIA = new Controlador();
+		return INSTANCIA;
 	}
-	
+
+	public boolean esUsuarioRegistrado(String login) {
+		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login) != null;
+	}
+
+	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
+		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
+		adaptadorUsuario.registrarUsuario(usuario);
+		catalogoUsuarios.addUsuario(usuario);
+	}
+
+	public void registrarCancion(String titulo, String rutaFichero, String estiloMusical, String... interpretes) {
+		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interpretes);
+		adaptadorCancion.registrarCancion(cancion);
+		catalogoCanciones.addCancion(cancion);
+	}
+
+	public void crearPlayList(String s) {
+		// plActual = new PlayList(s);
+	}
+
+	public void anadirCancionAPlayList(Cancion c) {
+		// plActual.addCancion(c);
+	}
+
+	public void registrarPlayList(String s) {
+
+	}
+
+	public boolean existeUsuario(String nombre_email) {
+		return catalogoUsuarios.getUsuario(nombre_email) != null;
+	}
+
 	public List<Cancion> getCanciones() {
 		return catalogoCanciones.getCanciones();
 	}
-	
+
 	public List<Usuario> getUsuarios() {
 		return catalogoUsuarios.getUsuarios();
-	}
-	
-	public Usuario getUsuario(String usuario) {
-		for (Usuario u: catalogoUsuarios.getUsuarios()) {
-			if (u.getEmail().equals(usuario) || u.getNombre().equals(usuario))
-				return u;
-		}
-		return null;	
 	}
 
 	public Boolean login(String usuarioAux, String contraseñaAux) {
@@ -122,5 +113,8 @@ public class Controlador {
 		return false;
 	}
 
-	
+	public Usuario getUsuario(String usuario) {
+		return catalogoUsuarios.getUsuario(usuario);
+	}
+
 }

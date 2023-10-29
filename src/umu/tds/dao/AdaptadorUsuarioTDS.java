@@ -19,29 +19,41 @@ import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.*;
 
-//Usa un pool para evitar problemas doble referencia con ventas
+/**
+ * Usa un pool para evitar problemas doble referencia con ventas
+ */
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
+	/*
+	 * ATRIBUTOS
+	 */
 	private static ServicioPersistencia servPersistencia;
-
-	private SimpleDateFormat dateFormat;
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
 
-	public static AdaptadorUsuarioTDS getUnicaInstancia() { // patron singleton
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorUsuarioTDS();
-		return unicaInstancia;
-	}
+	private SimpleDateFormat dateFormat;
 
+	/*
+	 * CONSTRUCTOR
+	 */
 	private AdaptadorUsuarioTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
-	/* cuando se registra un cliente se le asigna un identificador �nico */
+	/*
+	 * METODOS DE CONSULTA Y ESTABLECIMIENTO
+	 */
+	public static AdaptadorUsuarioTDS getUnicaInstancia() {
+		if (unicaInstancia == null)
+			unicaInstancia = new AdaptadorUsuarioTDS();
+		return unicaInstancia;
+	}
+
+	/**
+	 * Cuando se registra un cliente se le asigna un identificador único
+	 */
 	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario = null;
 
-		// Si la entidad esta registrada no la registra de nuevo
 		try {
 			eUsuario = servPersistencia.recuperarEntidad(usuario.getCode());
 		} catch (NullPointerException e) {
@@ -49,7 +61,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		if (eUsuario != null)
 			return;
 
-		// registrar primero los atributos que son objetos
 		AdaptadorPlayListTDS adaptadorPL = AdaptadorPlayListTDS.getUnicaInstancia();
 		for (PlayList pl : usuario.getListaPlayList())
 			adaptadorPL.registrarPlayList(pl);
@@ -58,30 +69,21 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		for (Cancion ca : usuario.getListaCancionesRecientes())
 			adaptadorCanciones.registrarCancion(ca);
 
-		// crear entidad Usuario
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
 		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("email", usuario.getEmail()),
 				new Propiedad("nombre", usuario.getNombre()), new Propiedad("contraseña", usuario.getContraseña()),
 				new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
-				new Propiedad("esCompleta", String.valueOf(usuario.isPremium())),
 				new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
 				new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
-				new Propiedad("esPremium", String.valueOf(usuario.isPremium()))
+				new Propiedad("esPremium", String.valueOf(usuario.isPremium())))));
 
-		)));
-
-		// registrar entidad Usuario
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		usuario.setCode(eUsuario.getId());
 	}
 
 	public void borrarUsuario(Usuario usuario) {
-		// No se comprueban restricciones de integridad con Venta
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCode());
-
 		servPersistencia.borrarEntidad(eUsuario);
 	}
 
@@ -113,12 +115,9 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	public Usuario recuperarUsuario(int codigo) {
-
-		// Si la entidad est� en el pool la devuelve directamente
 		if (PoolDAO.getUnicaInstancia().contiene(codigo))
 			return (Usuario) PoolDAO.getUnicaInstancia().getObjeto(codigo);
 
-		// si no, la recupera de la base de datos
 		Entidad eUsuario;
 		HashSet<PlayList> listaPlayList = new HashSet<PlayList>();
 		LinkedList<Cancion> cancionesRecientes = new LinkedList<Cancion>();
@@ -128,10 +127,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		String contraseña;
 		Boolean premium;
 
-		// recuperar entidad
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
-		// recuperar propiedades que no son objetos
 		nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, "nombre");
 		email = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
 		try {
@@ -145,19 +142,19 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
 
-		// IMPORTANTE:a�adir el cliente al pool antes de llamar a otros
-		// adaptadores
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		/*listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlist"));
-		for (PlayList pl : listaPlayList)
-			usuario.addPlayList(pl);
-
-		cancionesRecientes = obtenerCancionesDesdeCodigos(
-				servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones"));
-		for (Cancion c : cancionesRecientes)
-			usuario.addCancionReciente(c);*/
+		/*
+		 * listaPlayList =
+		 * obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(
+		 * eUsuario, "playlist")); for (PlayList pl : listaPlayList)
+		 * usuario.addPlayList(pl);
+		 * 
+		 * cancionesRecientes = obtenerCancionesDesdeCodigos(
+		 * servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones")); for
+		 * (Cancion c : cancionesRecientes) usuario.addCancionReciente(c);
+		 */
 
 		return usuario;
 	}
