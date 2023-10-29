@@ -202,34 +202,29 @@ public class VentanaLogin extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonLogin) { // esto lo tiene que hacer en otro lado
-			boolean login = false;
-			boolean contraseñaInvalida = false;
-			if (Controlador.getUnicaInstancia().existeUsuario(textoUsuario.getText())) {
-				for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
-					if (u.getEmail().equals(textoUsuario.getText()) || u.getNombre().equals(textoUsuario.getText())) {
-						if (u.getContraseña().equals(new String(textoContraseña.getPassword()))) {
-							System.out.println("SI ES LOGIN");
-							login = true;
-						} else {
-							System.out.println("CONTRAEÑA NO VALIDA");
-							contraseñaInvalida = true;
-						}
-					}
-				}
-			}
 
-			if (contraseñaInvalida) {
-
-			} else if (!login)
-				System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
-			else {
-				AppMusic.logInSatisfactorio();
+			String usuario = textoUsuario.getText();
+			String contraseña = new String(textoContraseña.getPassword());
+			if (usuario.isEmpty() && contraseña.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "LOS 2 CAMPOS VACIOS", "ERROR AL INCIAR", JOptionPane.ERROR_MESSAGE);
+			} else if (usuario.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "USUARIO VACIO", "ERROR AL INCIAR", JOptionPane.ERROR_MESSAGE);
+			} else if (contraseña.isEmpty()){
+				JOptionPane.showMessageDialog(null, "CONTRASEÑA VACIA", "ERROR AL INCIAR", JOptionPane.ERROR_MESSAGE);
+			} else {
+				Boolean login = Controlador.getUnicaInstancia().login(usuario, contraseña);
+				
+				if (login) {
+					AppMusic.logInSatisfactorio();
+				} else
+					JOptionPane.showMessageDialog(null, "CONTRASEÑA, USUARIO O CORREO NO COINCIDE", "ERROR AL INCIAR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
+		
 		if (e.getSource() == botonRegistro) {
 			PlantillaInicio.empezarRegistro();
 		}
+
 	}
 
 }

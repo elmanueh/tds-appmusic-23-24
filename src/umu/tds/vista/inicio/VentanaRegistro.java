@@ -11,6 +11,7 @@ import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
@@ -664,34 +665,57 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonRegistrar) { // esto lo tiene que hacer en otro lado
-			if (textoEmail.getText().isEmpty() || new String(textoContraseña.getPassword()).isEmpty()
-					|| textoUsuario.getText().isEmpty() || fechaNacimiento.getDate().equals(null))
-				System.out.println("NO SE HA PODIDO REGISTRA");
-			else {
-				Controlador.getUnicaInstancia().registrarUsuario(textoUsuario.getText(), textoEmail.getText(),
-						fechaNacimiento.getDate(), new String(textoContraseña.getPassword()));
-				System.out.println("SI HA PODIDO");
+			boolean OK = checkCeldas();
+			if (OK) {
+				boolean registrado = false;
+				String usuario = textoUsuario.getText();
+				String contraseña = new String(textoContraseña.getPassword());
+				String correo = textoEmail.getText();
+				Date fecha = fechaNacimiento.getDate();
 
-				// AQUI SE TIENE QUE LLAMAR A ALGUNA FUNCION QUE ESCONDA LA VENTANA LOGIN Y
-				// PONGA ALGO JOptionPane que algun texto
-
-				System.out.println("nombre \t email \t contraseña" + "\n");
-				for (Usuario u : Controlador.getUnicaInstancia().getUsuarios()) {
-					String n = String.format("%1$-30s", u.getNombre());
-					String e1 = String.format("%1$-30s", u.getEmail());
-					String c = String.format("%1$-30s", u.getContraseña());
-					Boolean p = u.isPremium();
-
-					System.out.println(n + " " + e1 + " " + c + " " + p + "\n");
-					for (PlayList pl : u.getListaPlayList())
-						System.out.println(pl.getNombre());
-					for (Cancion ca : u.getListaCancionesRecientes())
-						System.out.println(ca.getTitulo());
+				registrado = Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
+				if (registrado) {
+					JOptionPane.showMessageDialog(null, "USUARIO REGISTRADO", "EXITO AL REGISTRAR",
+							JOptionPane.YES_OPTION);
+					AppMusic.logInSatisfactorio();
+				} else {
+					JOptionPane.showMessageDialog(null, "NO HAS PODIDO REGISTRARTE", "ERROR AL REGISTRAR",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				AppMusic.logInSatisfactorio();
 			}
 		}
+	}
 
+	private boolean checkCeldas() {
+		boolean salida = true;
+		boolean usuarioVacio = false;
+		
+		String textoError = "";
+		
+		if (textoUsuario.getText().trim().isEmpty()) {
+			textoError = textoError + "USUARIO ESTA VACIO\n";
+			salida = false;
+			usuarioVacio = true;
+		}
+		if (textoEmail.getText().trim().isEmpty()) {
+			textoError = textoError + "EMAIL ESTA VACIO\n";
+			salida = false;
+		}
+		if (fechaNacimiento.getDate() == null) {
+			textoError = textoError + "FECHA ESTA VACIO\n";
+			salida = false;
+		}
+		String password = new String(textoContraseña.getPassword());
+		if (password.isEmpty()) {
+			textoError = textoError + "CONTRASEÑA ESTA VACIO\n";
+			salida = false;
+		} 
+		
+		if (!salida)
+			JOptionPane.showMessageDialog(null, textoError, "CAMPOS VACIOS",
+					JOptionPane.ERROR_MESSAGE);
+		
+		return salida;
 	}
 
 }

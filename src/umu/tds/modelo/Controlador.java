@@ -26,6 +26,7 @@ public class Controlador {
 	private CatalogoUsuarios catalogoUsuarios;
 	private CatalogoCanciones catalogoCanciones;
 	
+	private Usuario usuarioActual;
 	private PlayList plActual;
 	
 	private Controlador() {
@@ -40,10 +41,20 @@ public class Controlador {
 		return INSTANCIA;
 	}
 	
-	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
+	public boolean esUsuarioRegistrado(String login) {
+		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login) != null;
+	}
+	
+	public boolean registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
+		if (esUsuarioRegistrado(email))
+			return false;
+		
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
+		
 		adaptadorUsuario.registrarUsuario(usuario);
 		catalogoUsuarios.addUsuario(usuario);
+		
+		return true;
 	}
 	
 	public void registrarCancion(String titulo, String rutaFichero, String estiloMusical, String ...interpretes) {
@@ -100,6 +111,15 @@ public class Controlador {
 				return u;
 		}
 		return null;	
+	}
+
+	public Boolean login(String usuarioAux, String contraseñaAux) {
+		Usuario usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(usuarioAux);
+		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
+			this.usuarioActual = usuario;
+			return true;
+		}
+		return false;
 	}
 
 	
