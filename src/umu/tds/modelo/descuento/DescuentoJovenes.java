@@ -1,8 +1,6 @@
 package umu.tds.modelo.descuento;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import umu.tds.modelo.usuario.Usuario;
 
