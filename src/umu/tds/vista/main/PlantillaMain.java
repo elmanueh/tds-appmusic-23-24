@@ -1,7 +1,5 @@
 package umu.tds.vista.main;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -12,64 +10,69 @@ import javax.swing.ImageIcon;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
+
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+
+import umu.tds.AppMusic;
+import umu.tds.vista.inicio.PlantillaInicio;
+
 import javax.swing.border.EtchedBorder;
 
-public class PlantillaMain {
+@SuppressWarnings("serial")
+public class PlantillaMain extends JFrame implements ActionListener {
 
-	private JFrame controladorMain;
 	private CardLayout cardLayout;
+	GridBagLayout gridBagLayout;
 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
-					PlantillaMain window = new PlantillaMain();
-					window.controladorMain.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private void inicializar() {
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
+
+		gridBagLayout = new GridBagLayout();
+		getContentPane().setLayout(gridBagLayout);
+
+		setTitle("Spotifoo");
+		setSize(1100, 650);
+		setMinimumSize(getSize());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 	}
 
 	public PlantillaMain() {
-		
+
+		inicializar();
+
 		VentanaBuscar ventanaBuscar = new VentanaBuscar();
 		VentanaGestionPlaylist ventanaGestionPlaylist = new VentanaGestionPlaylist();
 		VentanaRecientes ventanaRecientes = new VentanaRecientes();
 		VentanaMasReproducidas ventanaMasReproducidas = new VentanaMasReproducidas();
 		VentanaGenerarPDF ventanaGenerarPDF = new VentanaGenerarPDF();
 		VentanaMisPlaylist ventanaMisPlaylist = new VentanaMisPlaylist();
-		
-		controladorMain = new JFrame();
-		controladorMain.setBounds(100, 100, 947, 574);
-		controladorMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GridBagLayout gridBagLayout = new GridBagLayout();
+
 		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		controladorMain.getContentPane().setLayout(gridBagLayout);
 
 		JPanel p_iconoTitulo = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) p_iconoTitulo.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_p_iconoTitulo = new GridBagConstraints();
 		gbc_p_iconoTitulo.insets = new Insets(0, 0, 5, 5);
 		gbc_p_iconoTitulo.fill = GridBagConstraints.BOTH;
 		gbc_p_iconoTitulo.gridx = 0;
 		gbc_p_iconoTitulo.gridy = 0;
-		controladorMain.getContentPane().add(p_iconoTitulo, gbc_p_iconoTitulo);
+		getContentPane().add(p_iconoTitulo, gbc_p_iconoTitulo);
 
 		Component horizontalStrut = Box.createHorizontalStrut(10);
 		p_iconoTitulo.add(horizontalStrut);
@@ -88,9 +91,9 @@ public class PlantillaMain {
 		titulo.setForeground(Color.WHITE);
 		titulo.setFont(new Font("Tahoma", Font.BOLD, 20));
 		p_iconoTitulo.add(titulo);
-		
-				Component verticalStrut = Box.createVerticalStrut(90);
-				p_iconoTitulo.add(verticalStrut);
+
+		Component verticalStrut = Box.createVerticalStrut(90);
+		p_iconoTitulo.add(verticalStrut);
 
 		JPanel p_cabezera = new JPanel();
 		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
@@ -98,7 +101,7 @@ public class PlantillaMain {
 		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
 		gbc_p_cabezera.gridx = 1;
 		gbc_p_cabezera.gridy = 0;
-		controladorMain.getContentPane().add(p_cabezera, gbc_p_cabezera);
+		getContentPane().add(p_cabezera, gbc_p_cabezera);
 		p_cabezera.setLayout(new BorderLayout(0, 0));
 
 		JPanel p_cabezera_izq = new JPanel();
@@ -114,6 +117,7 @@ public class PlantillaMain {
 
 		JPanel p_menuBotonesPremium = new JPanel();
 		JButton botonPremium = new JButton("Premium");
+		botonPremium.setAlignmentX(Component.CENTER_ALIGNMENT);
 		botonPremium.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_menuBotonesPremium.setVisible(true);
@@ -121,14 +125,13 @@ public class PlantillaMain {
 		});
 		p_cabezera_der.add(botonPremium);
 
-		JButton botonSalir = new JButton("Cerrar Sesión");
-		botonSalir.addActionListener(new ActionListener() {
+		JButton botonLogOut = new JButton("Cerrar Sesión");
+		botonLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controladorMain.setVisible(false);
-				System.exit(0);
+				AppMusic.logOutSatisfactorio();
 			}
 		});
-		p_cabezera_der.add(botonSalir);
+		p_cabezera_der.add(botonLogOut);
 
 		JPanel p_menuBotones = new JPanel();
 		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
@@ -136,11 +139,11 @@ public class PlantillaMain {
 		gbc_p_menuBotones.fill = GridBagConstraints.BOTH;
 		gbc_p_menuBotones.gridx = 0;
 		gbc_p_menuBotones.gridy = 1;
-		controladorMain.getContentPane().add(p_menuBotones, gbc_p_menuBotones);
+		getContentPane().add(p_menuBotones, gbc_p_menuBotones);
 		GridBagLayout gbl_p_menuBotones = new GridBagLayout();
-		gbl_p_menuBotones.columnWidths = new int[] { 20, 0, 0 };
+		gbl_p_menuBotones.columnWidths = new int[] { 20, 0, 0, 0 };
 		gbl_p_menuBotones.rowHeights = new int[] { 40, 40, 40, 0, 40, 0, 0 };
-		gbl_p_menuBotones.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_p_menuBotones.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_p_menuBotones.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		p_menuBotones.setLayout(gbl_p_menuBotones);
 
@@ -160,7 +163,7 @@ public class PlantillaMain {
 		botonBuscar.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonBuscar = new GridBagConstraints();
 		gbc_botonBuscar.fill = GridBagConstraints.BOTH;
-		gbc_botonBuscar.insets = new Insets(0, 0, 5, 0);
+		gbc_botonBuscar.insets = new Insets(0, 0, 5, 5);
 		gbc_botonBuscar.gridx = 1;
 		gbc_botonBuscar.gridy = 0;
 		p_menuBotones.add(botonBuscar, gbc_botonBuscar);
@@ -178,7 +181,7 @@ public class PlantillaMain {
 		botonGestionPlaylist.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/mas.png")));
 		botonGestionPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonGestionPlaylist = new GridBagConstraints();
-		gbc_botonGestionPlaylist.insets = new Insets(0, 0, 5, 0);
+		gbc_botonGestionPlaylist.insets = new Insets(0, 0, 5, 5);
 		gbc_botonGestionPlaylist.fill = GridBagConstraints.BOTH;
 		gbc_botonGestionPlaylist.gridx = 1;
 		gbc_botonGestionPlaylist.gridy = 1;
@@ -197,7 +200,7 @@ public class PlantillaMain {
 		botonRecientes.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/reloj.png")));
 		botonRecientes.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonRecientes = new GridBagConstraints();
-		gbc_botonRecientes.insets = new Insets(0, 0, 5, 0);
+		gbc_botonRecientes.insets = new Insets(0, 0, 5, 5);
 		gbc_botonRecientes.fill = GridBagConstraints.BOTH;
 		gbc_botonRecientes.gridx = 1;
 		gbc_botonRecientes.gridy = 2;
@@ -205,14 +208,14 @@ public class PlantillaMain {
 
 		p_menuBotonesPremium.setVisible(false);
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
-		gbc_p_menuBotonesPremium.gridwidth = 2;
-		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 0);
+		gbc_p_menuBotonesPremium.gridwidth = 3;
+		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
 		gbc_p_menuBotonesPremium.fill = GridBagConstraints.BOTH;
 		gbc_p_menuBotonesPremium.gridx = 0;
 		gbc_p_menuBotonesPremium.gridy = 3;
 		p_menuBotones.add(p_menuBotonesPremium, gbc_p_menuBotonesPremium);
 		GridBagLayout gbl_p_menuBotonesPremium = new GridBagLayout();
-		gbl_p_menuBotonesPremium.columnWidths = new int[] { 20, 193, 0 };
+		gbl_p_menuBotonesPremium.columnWidths = new int[] { 20, 0, 0 };
 		gbl_p_menuBotonesPremium.rowHeights = new int[] { 40, 40, 0 };
 		gbl_p_menuBotonesPremium.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		gbl_p_menuBotonesPremium.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
@@ -267,7 +270,7 @@ public class PlantillaMain {
 		});
 		botonMisPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_botonMisPlaylist = new GridBagConstraints();
-		gbc_botonMisPlaylist.insets = new Insets(0, 0, 5, 0);
+		gbc_botonMisPlaylist.insets = new Insets(0, 0, 5, 5);
 		gbc_botonMisPlaylist.fill = GridBagConstraints.BOTH;
 		gbc_botonMisPlaylist.gridx = 1;
 		gbc_botonMisPlaylist.gridy = 4;
@@ -275,26 +278,29 @@ public class PlantillaMain {
 
 		p_listas.setVisible(false);
 		GridBagConstraints gbc_p_listas = new GridBagConstraints();
+		gbc_p_listas.insets = new Insets(0, 0, 0, 5);
 		gbc_p_listas.gridwidth = 2;
 		gbc_p_listas.fill = GridBagConstraints.BOTH;
 		gbc_p_listas.gridx = 0;
 		gbc_p_listas.gridy = 5;
 		p_menuBotones.add(p_listas, gbc_p_listas);
 		p_listas.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		p_listas.add(panel);
-		
+
 		JLabel lblNewLabel = new JLabel("linkear las playlist ");
 		panel.add(lblNewLabel);
-		
+
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		p_listas.add(horizontalStrut_2, BorderLayout.WEST);
-		
+
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		p_listas.add(verticalStrut_1, BorderLayout.NORTH);
-		
+
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
 
@@ -302,17 +308,22 @@ public class PlantillaMain {
 		gbc_p_cardLayout.fill = GridBagConstraints.BOTH;
 		gbc_p_cardLayout.gridx = 1;
 		gbc_p_cardLayout.gridy = 1;
-		controladorMain.getContentPane().add(p_cardLayout, gbc_p_cardLayout);
+		getContentPane().add(p_cardLayout, gbc_p_cardLayout);
 		p_cardLayout.setLayout(new CardLayout(0, 0));
-		
+
 		p_cardLayout.add(ventanaBuscar, "ventanaBuscar");
 		p_cardLayout.add(ventanaGestionPlaylist, "ventanaGestionPlaylist");
 		p_cardLayout.add(ventanaRecientes, "ventanaRecientes");
 		p_cardLayout.add(ventanaMasReproducidas, "ventanaMasReproducidas");
 		p_cardLayout.add(ventanaGenerarPDF, "ventanaGenerarPDF");
 		p_cardLayout.add(ventanaMisPlaylist, "ventanaMisPlaylist");
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
-	
 
 }
