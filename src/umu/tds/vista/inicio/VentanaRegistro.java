@@ -9,7 +9,6 @@ import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.vista.main.PlantillaMain;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -664,7 +663,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 			cardLayout.previous(VentanaRegistro.this);
 		}
 
-		if (e.getSource() == botonRegistrar) {
+		if (e.getSource() == botonRegistrar) { // esto lo tiene que hacer en otro lado
 			if (textoEmail.getText().isEmpty() || new String(textoContraseña.getPassword()).isEmpty()
 					|| textoUsuario.getText().isEmpty() || fechaNacimiento.getDate().equals(null))
 				System.out.println("NO SE HA PODIDO REGISTRA");
@@ -689,9 +688,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 					for (Cancion ca : u.getListaCancionesRecientes())
 						System.out.println(ca.getTitulo());
 				}
-
-				PlantillaMain.main(null);
-				AppMusic.ocultarPlantillaLogin();
+				AppMusic.logInSatisfactorio();
 			}
 		}
 

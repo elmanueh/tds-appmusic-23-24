@@ -5,7 +5,6 @@ import javax.swing.*;
 import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.vista.main.PlantillaMain;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -202,7 +201,7 @@ public class VentanaLogin extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == botonLogin) {
+		if (e.getSource() == botonLogin) { // esto lo tiene que hacer en otro lado
 			boolean login = false;
 			boolean contraseñaInvalida = false;
 			if (Controlador.getUnicaInstancia().existeUsuario(textoUsuario.getText())) {
@@ -224,8 +223,7 @@ public class VentanaLogin extends JPanel implements ActionListener {
 			} else if (!login)
 				System.out.println("NO EXISTE NOMBRE DE USUARIO O EMAIL");
 			else {
-				PlantillaMain.main(null);
-				AppMusic.ocultarPlantillaLogin();
+				AppMusic.logInSatisfactorio();
 			}
 		}
 
