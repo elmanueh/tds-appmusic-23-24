@@ -1,18 +1,14 @@
 package umu.tds.dao;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
@@ -26,15 +22,14 @@ import umu.tds.modelo.usuario.*;
 //Usa un pool para evitar problemas doble referencia con ventas
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	private static ServicioPersistencia servPersistencia;
-	
+
 	private SimpleDateFormat dateFormat;
 	private static AdaptadorUsuarioTDS unicaInstancia = null;
 
 	public static AdaptadorUsuarioTDS getUnicaInstancia() { // patron singleton
 		if (unicaInstancia == null)
-			return new AdaptadorUsuarioTDS();
-		else
-			return unicaInstancia;
+			unicaInstancia = new AdaptadorUsuarioTDS();
+		return unicaInstancia;
 	}
 
 	private AdaptadorUsuarioTDS() {
@@ -49,14 +44,16 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		// Si la entidad esta registrada no la registra de nuevo
 		try {
 			eUsuario = servPersistencia.recuperarEntidad(usuario.getCode());
-		} catch (NullPointerException e) {}
-		if (eUsuario != null) return;
-		
+		} catch (NullPointerException e) {
+		}
+		if (eUsuario != null)
+			return;
+
 		// registrar primero los atributos que son objetos
 		AdaptadorPlayListTDS adaptadorPL = AdaptadorPlayListTDS.getUnicaInstancia();
 		for (PlayList pl : usuario.getListaPlayList())
 			adaptadorPL.registrarPlayList(pl);
-		
+
 		AdaptadorCancionTDS adaptadorCanciones = AdaptadorCancionTDS.getUnicaInstancia();
 		for (Cancion ca : usuario.getListaCancionesRecientes())
 			adaptadorCanciones.registrarCancion(ca);
@@ -64,16 +61,15 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		// crear entidad Usuario
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
-		eUsuario.setPropiedades(new ArrayList<Propiedad>(
-				Arrays.asList(new Propiedad("email", usuario.getEmail()), 
-							  new Propiedad("nombre", usuario.getNombre()),
-							  new Propiedad("contraseña", usuario.getContraseña()),
-							  new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
-							  new Propiedad("esCompleta", String.valueOf(usuario.isPremium())),
-							  new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
-							  new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
-							  new Propiedad("esPremium", String.valueOf(usuario.isPremium()))
-							  )));
+		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("email", usuario.getEmail()),
+				new Propiedad("nombre", usuario.getNombre()), new Propiedad("contraseña", usuario.getContraseña()),
+				new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
+				new Propiedad("esCompleta", String.valueOf(usuario.isPremium())),
+				new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
+				new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
+				new Propiedad("esPremium", String.valueOf(usuario.isPremium()))
+
+		)));
 
 		// registrar entidad Usuario
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
@@ -143,9 +139,9 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");		
-		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));	
-		
+		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
+
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
 
@@ -154,13 +150,14 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlist"));
+		/*listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlist"));
 		for (PlayList pl : listaPlayList)
-		usuario.addPlayList(pl);
-		
-		cancionesRecientes = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones"));
+			usuario.addPlayList(pl);
+
+		cancionesRecientes = obtenerCancionesDesdeCodigos(
+				servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones"));
 		for (Cancion c : cancionesRecientes)
-		usuario.addCancionReciente(c);
+			usuario.addCancionReciente(c);*/
 
 		return usuario;
 	}
@@ -175,6 +172,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		}
 		return clientes;
 	}
+
 	// -------------------Funciones auxiliares-----------------------------
 	private String obtenerCodigosPlayLists(Collection<PlayList> collection) {
 		String aux = "";
@@ -193,15 +191,15 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		}
 		return listaVentas;
 	}
-	
+
 	private String obtenerCodigosCanciones(Collection<Cancion> collection) {
 		String aux = "";
-		for (Cancion c: collection) {
+		for (Cancion c : collection) {
 			aux += c.getCodigo() + " ";
 		}
 		return aux.trim();
 	}
-	
+
 	private LinkedList<Cancion> obtenerCancionesDesdeCodigos(String recuperarPropiedadEntidad) {
 		LinkedList<Cancion> cancionesRecientes = new LinkedList<Cancion>();
 		StringTokenizer strTok = new StringTokenizer(recuperarPropiedadEntidad, " ");
