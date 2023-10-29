@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
 import umu.tds.AppMusic;
+import umu.tds.modelo.Controlador;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import javax.swing.border.EtchedBorder;
@@ -109,7 +110,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		fl_p_cabezera_izq.setAlignment(FlowLayout.LEFT);
 		p_cabezera.add(p_cabezera_izq, BorderLayout.CENTER);
 
-		JLabel mensajeBienvenida = new JLabel("Bienvenido, usuario");
+		String usuario = Controlador.getUnicaInstancia().getUsuarioActual().getNombre();
+		JLabel mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
 		p_cabezera_izq.add(mensajeBienvenida);
 
 		JPanel p_cabezera_der = new JPanel();

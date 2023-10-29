@@ -117,4 +117,8 @@ public class Controlador {
 		return catalogoUsuarios.getUsuario(usuario);
 	}
 
+	public Usuario getUsuarioActual() {
+		return usuarioActual;
+	}
+
 }
