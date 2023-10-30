@@ -1,6 +1,7 @@
 package umu.tds.modelo.musica;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,6 +68,7 @@ public class Cancion {
 		this.titulo = titulo;
 		this.rutaFichero = rutaFichero;
 		this.numReproducciones = 0;
+		interprete = new LinkedList<String>();
 		Collections.addAll(interprete,interpretes);
 		this.estiloMusical = estiloMusical;
 		this.codigo=0;

@@ -158,7 +158,6 @@ public class VentanaMisPlaylist extends JPanel {
         
         table.getColumnModel().getColumn(3).setCellEditor(new CenteredCheckBoxEditor());
 
-        JCheckBox j = new JCheckBox("");
         for (Usuario u: Controlador.getUnicaInstancia().getUsuarios()) {
         	Object[] usuario = {u.getEmail(), u.getNombre(), u.getContraseña(), false};
         	modeloTabla.addRow(usuario);
