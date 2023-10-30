@@ -71,6 +71,7 @@ public class Controlador {
 
 	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
+		this.usuarioActual = usuario;
 		adaptadorUsuario.registrarUsuario(usuario);
 		catalogoUsuarios.addUsuario(usuario);
 	}

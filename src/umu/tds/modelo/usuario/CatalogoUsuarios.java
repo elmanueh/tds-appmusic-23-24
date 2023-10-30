@@ -1,5 +1,6 @@
 package umu.tds.modelo.usuario;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,9 +49,9 @@ public class CatalogoUsuarios {
 	}
 
 	public Usuario getUsuario(String usuario) {
-		List<LinkedList<String>> lista = usuarios.keySet().stream().filter(l -> l.contains(usuario)).toList();
-		if (lista.size() != 0)
-			return usuarios.get(lista.get(0));
+		Object[] lista = usuarios.keySet().stream().filter(l -> l.contains(usuario)).toArray();
+		if (lista.length != 0)
+			return usuarios.get(lista[0]);
 		return null;
 	}
 
