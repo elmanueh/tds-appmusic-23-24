@@ -125,28 +125,10 @@ public class Controlador {
 	
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo){
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
-		if (titulo.equals("titulo")) {
-			catalogoCanciones.getCanciones().stream()
-				.filter(c -> c.getInterprete().contains(interprete))
-				.filter(c -> c.getEstiloMusical().equals(estilo))
-				.forEach(canciones::add);
-		}
-		if (interprete.equals("interprete"))
-			catalogoCanciones.getCanciones().stream()
-				.filter(c -> c.getTitulo().contains(titulo))
-				.filter(c -> c.getEstiloMusical().equals(estilo))
-				.forEach(canciones::add);
-		if (estilo.equals("estilo"))
-		{
-			catalogoCanciones.getCanciones().stream()
-			.filter(c -> c.getTitulo().contains(titulo))
-			.filter(c -> c.getInterprete().contains(interprete))
-			.forEach(canciones::add);
-		}
 		catalogoCanciones.getCanciones().stream()
 			.filter(c -> c.getTitulo().contains(titulo))
 			.filter(c -> c.getInterprete().contains(interprete))
-			.filter(c -> c.getEstiloMusical().equals(estilo))
+			.filter(c -> c.getEstiloMusical().contains(estilo))
 			.forEach(canciones::add);
 		return canciones;
 	}
