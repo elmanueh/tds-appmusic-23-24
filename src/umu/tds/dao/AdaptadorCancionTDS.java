@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
@@ -12,78 +11,78 @@ import beans.Entidad;
 import beans.Propiedad;
 import umu.tds.modelo.musica.Cancion;
 
-//Usa un pool para evitar problemas doble referencia con ventas
 public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
+
+	/*
+	 * ATRIBUTOS
+	 */
 	private static ServicioPersistencia servPersistencia;
-	private static AdaptadorCancionTDS unicaInstancia = null;
+	private static AdaptadorCancionTDS unicaInstancia;
 
-	public static AdaptadorCancionTDS getUnicaInstancia() { // patron singleton
-		if (unicaInstancia == null)
-			return new AdaptadorCancionTDS();
-		else
-			return unicaInstancia;
-	}
-
+	/*
+	 * CONSTRUCTOR
+	 */
 	private AdaptadorCancionTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
-	
+
+	/*
+	 * GETTERS AND SETTERS
+	 */
+	public static AdaptadorCancionTDS getUnicaInstancia() {
+		if (unicaInstancia == null)
+			unicaInstancia = new AdaptadorCancionTDS();
+		return unicaInstancia;
+	}
+
+	/*
+	 * METODOS
+	 */
 	public void registrarCancion(Cancion cancion) {
 		Entidad eCancion = null;
 		eCancion = servPersistencia.recuperarEntidad(cancion.getCodigo());
-		if (eCancion != null) return;
-		
-		//crear entidad cancion
+		if (eCancion != null)
+			return;
+
 		eCancion = new Entidad();
 		eCancion.setNombre("cancion");
-		eCancion.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
-				new Propiedad("titulo", cancion.getTitulo()),
+		eCancion.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("titulo", cancion.getTitulo()),
 				new Propiedad("rutaFichero", cancion.getRutaFichero()),
 				new Propiedad("numeroRep", String.valueOf(cancion.getNumReproducciones())),
 				new Propiedad("estiloMusical", cancion.getEstiloMusical()),
-				new Propiedad("interpretes", obtenerCodigosInterpretes(cancion.getInterprete()))	
-				)));
-		
-		// registrar entidad producto
+				new Propiedad("interprete", cancion.getInterprete()))));
+
 		eCancion = servPersistencia.registrarEntidad(eCancion);
-		// asignar identificador unico
-		// Se aprovecha el que genera el servicio de persistencia
 		cancion.setCodigo(eCancion.getId());
 	}
 
-	public Cancion recuperarCancion(int codigo) {	
-		// Si la entidad estï¿½ en el pool la devuelve directamente
-				if (PoolDAO.getUnicaInstancia().contiene(codigo))
-					return (Cancion) PoolDAO.getUnicaInstancia().getObjeto(codigo);
-				
+	public Cancion recuperarCancion(int codigo) {
+		if (PoolDAO.getUnicaInstancia().contiene(codigo))
+			return (Cancion) PoolDAO.getUnicaInstancia().getObjeto(codigo);
+
 		Entidad eCancion;
 		int numRep;
 		String titulo;
 		String rutaFichero;
 		String estiloMusical;
-		
-		// si no, la recupera de la base de datos
-		// recuperar entidad
+		String interprete;
+
 		eCancion = servPersistencia.recuperarEntidad(codigo);
-		
-		// recuperar propiedades que no son objetos
+
 		titulo = servPersistencia.recuperarPropiedadEntidad(eCancion, "titulo");
 		rutaFichero = servPersistencia.recuperarPropiedadEntidad(eCancion, "rutaFichero");
 		estiloMusical = servPersistencia.recuperarPropiedadEntidad(eCancion, "estiloMusical");
+		interprete = servPersistencia.recuperarPropiedadEntidad(eCancion, "interprete");
 		numRep = Integer.valueOf(servPersistencia.recuperarPropiedadEntidad(eCancion, "numeroRep"));
-		
-		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical);
+
+		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interprete);
 		cancion.setCodigo(codigo);
 		cancion.setNumReproducciones(numRep);
 
-		List<String> interpretes = obtenerLineasInterpretesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eCancion, "interpretes"));
-
-		cancion.setInterprete(interpretes);
-		
 		return cancion;
 	}
 
-	public List<Cancion> recuperarTodosCanciones() {
+	public List<Cancion> recuperarTodasCanciones() {
 		List<Entidad> eCanciones = servPersistencia.recuperarEntidades("cancion");
 		List<Cancion> canciones = new LinkedList<Cancion>();
 
@@ -92,22 +91,5 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		}
 		return canciones;
 	}
-	
-	// -------------------Funciones auxiliares-----------------------------
-	private String obtenerCodigosInterpretes(List<String> interpretes) {
-		String lineas = "";
-		for (String i : interpretes) {
-			lineas += i + " ";
-		}
-		return lineas.trim();
-	}
-	
-	private List<String> obtenerLineasInterpretesDesdeCodigos(String lineas) {
-		List<String> interpretes = new LinkedList<String>();
-		StringTokenizer strTok = new StringTokenizer(lineas, " ");
-		 while (strTok.hasMoreTokens()) {
-		        interpretes.add(strTok.nextToken());
-		    }
-		return interpretes;
-	}
+
 }

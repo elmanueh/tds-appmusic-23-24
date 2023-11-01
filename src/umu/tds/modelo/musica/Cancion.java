@@ -1,34 +1,39 @@
 package umu.tds.modelo.musica;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 
 public class Cancion {
-	//ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private String titulo;
 	private String rutaFichero;
-	private int numReproducciones;
-	private List<String> interprete;
 	private String estiloMusical;
+	private String interprete;
+	private int numReproducciones;
 	private int codigo;
-	
-	//GETTERS AND SETTERS
+
+	/*
+	 * CONSTRUCTOR
+	 */
+	public Cancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
+		this.titulo = titulo;
+		this.rutaFichero = rutaFichero;
+		this.interprete = interprete;
+		this.estiloMusical = estiloMusical;
+		this.numReproducciones = 0;
+		this.codigo = 0;
+	}
+
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getTitulo() {
 		return titulo;
 	}
 
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
 	public String getRutaFichero() {
 		return rutaFichero;
-	}
-
-	public void setRutaFichero(String rutaFichero) {
-		this.rutaFichero = rutaFichero;
 	}
 
 	public int getNumReproducciones() {
@@ -39,22 +44,14 @@ public class Cancion {
 		this.numReproducciones = numReproducciones;
 	}
 
-	public List<String> getInterprete() {
+	public String getInterprete() {
 		return interprete;
-	}
-
-	public void setInterprete(List<String> interprete) {
-		this.interprete = interprete;
 	}
 
 	public String getEstiloMusical() {
 		return estiloMusical;
 	}
 
-	public void setEstiloMusical(String estiloMusical) {
-		this.estiloMusical = estiloMusical;
-	}
-	
 	public int getCodigo() {
 		return codigo;
 	}
@@ -63,26 +60,9 @@ public class Cancion {
 		this.codigo = id;
 	}
 
-	//CONSTRUCTOR
-	public Cancion(String titulo, String rutaFichero, String estiloMusical, String ...interpretes) {
-		this.titulo = titulo;
-		this.rutaFichero = rutaFichero;
-		this.numReproducciones = 0;
-		interprete = new LinkedList<String>();
-		Collections.addAll(interprete,interpretes);
-		this.estiloMusical = estiloMusical;
-		this.codigo=0;
-	}
-	
-	//METODOS
-	public boolean contieneEstilo(String e) {
-		return this.estiloMusical.equals(e);
-	}
-	
-	public boolean contieneInterprete(String i) {
-		return this.interprete.contains(i);
-	}
-	
+	/*
+	 * METODOS
+	 */
 	public void addReproducciones() {
 		numReproducciones++;
 	}
@@ -105,8 +85,5 @@ public class Cancion {
 				&& numReproducciones == other.numReproducciones && Objects.equals(rutaFichero, other.rutaFichero)
 				&& Objects.equals(titulo, other.titulo);
 	}
-	
-	
-	
-	
+
 }
