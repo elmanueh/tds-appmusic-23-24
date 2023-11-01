@@ -101,13 +101,13 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 				prop.setValor(usuario.getContraseña());
 			} else if (prop.getNombre().equals("fecha")) {
 				prop.setValor(dateFormat.format(usuario.getFecha()));
-			} else if (prop.getNombre().equals("playlist")) {
+			} else if (prop.getNombre().equals("listaPlayList")) {
 				String ventas = obtenerCodigosPlayLists(usuario.getListaPlayList());
 				prop.setValor(ventas);
-			} else if (prop.getNombre().equals("canciones")) {
+			} else if (prop.getNombre().equals("listaCancionesRecientes")) {
 				String ventas = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
 				prop.setValor(ventas);
-			} else if (prop.getNombre().equals("premium")) {
+			} else if (prop.getNombre().equals("esPremium")) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			}
 			servPersistencia.modificarPropiedad(prop);
@@ -137,24 +137,25 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			e.printStackTrace();
 		}
 		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
-		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "premium"));
+		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "esPremium"));
 
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
-
+		//ESTO SE DEBERIA HACER SOLO CON EL SET Y PASANDO COMO PARAMETRO premium
+		if (premium)
+			usuario.setPremium();
+		
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		/*
-		 * listaPlayList =
-		 * obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(
-		 * eUsuario, "playlist")); for (PlayList pl : listaPlayList)
-		 * usuario.addPlayList(pl);
-		 * 
-		 * cancionesRecientes = obtenerCancionesDesdeCodigos(
-		 * servPersistencia.recuperarPropiedadEntidad(eUsuario, "canciones")); for
-		 * (Cancion c : cancionesRecientes) usuario.addCancionReciente(c);
-		 */
+		
+		listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaPlayList")); 
+		for (PlayList pl : listaPlayList)
+		usuario.addPlayList(pl);
+		
+		cancionesRecientes = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaCancionesRecientes")); 
+		for (Cancion c : cancionesRecientes) 
+			usuario.addCancionReciente(c);
 
 		return usuario;
 	}

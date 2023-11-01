@@ -3,6 +3,7 @@ package umu.tds.modelo.musica;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,9 +42,7 @@ public class CatalogoCanciones {
 	
 	//METODOS
 	public List<Cancion> getCanciones(){
-		ArrayList<Cancion> lista = new ArrayList<Cancion>();
-		for (Cancion c:canciones.values()) 
-			lista.add(c);
+		LinkedList<Cancion> lista = new LinkedList<Cancion>(canciones.values());
 		return lista;
 	}
 	

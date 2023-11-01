@@ -14,7 +14,7 @@ import tds.driver.ServicioPersistencia;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-public class AdaptadorPlayListTDS {
+public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 	private static ServicioPersistencia servPersistencia;
 	private static AdaptadorPlayListTDS unicaInstancia = null;
 
@@ -140,6 +140,12 @@ public class AdaptadorPlayListTDS {
 			listaVentas.add(adaptadorV.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
 		}
 		return listaVentas;
+	}
+
+	@Override
+	public List<PlayList> recuperarTodosPlayLists() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

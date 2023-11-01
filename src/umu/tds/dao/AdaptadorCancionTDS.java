@@ -29,7 +29,6 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	}
 	
 	public void registrarCancion(Cancion cancion) {
-		//FALTA TRATAR LA LISTA DE INTERPRETES
 		Entidad eCancion = null;
 		eCancion = servPersistencia.recuperarEntidad(cancion.getCodigo());
 		if (eCancion != null) return;
@@ -57,7 +56,6 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 				if (PoolDAO.getUnicaInstancia().contiene(codigo))
 					return (Cancion) PoolDAO.getUnicaInstancia().getObjeto(codigo);
 				
-		//FALTA TRATAR LA LISTA DE INTERPRETES
 		Entidad eCancion;
 		int numRep;
 		String titulo;
@@ -72,7 +70,7 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		titulo = servPersistencia.recuperarPropiedadEntidad(eCancion, "titulo");
 		rutaFichero = servPersistencia.recuperarPropiedadEntidad(eCancion, "rutaFichero");
 		estiloMusical = servPersistencia.recuperarPropiedadEntidad(eCancion, "estiloMusical");
-		numRep = Integer.valueOf(servPersistencia.recuperarPropiedadEntidad(eCancion, "numRep"));
+		numRep = Integer.valueOf(servPersistencia.recuperarPropiedadEntidad(eCancion, "numeroRep"));
 		
 		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical);
 		cancion.setCodigo(codigo);

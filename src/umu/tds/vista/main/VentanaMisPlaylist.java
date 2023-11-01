@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.usuario.Usuario;
 
 import javax.swing.border.MatteBorder;
@@ -158,8 +159,8 @@ public class VentanaMisPlaylist extends JPanel {
         
         table.getColumnModel().getColumn(3).setCellEditor(new CenteredCheckBoxEditor());
 
-        for (Usuario u: Controlador.getUnicaInstancia().getUsuarios()) {
-        	Object[] usuario = {u.getEmail(), u.getNombre(), u.getContraseña(), false};
+        for (Cancion u: Controlador.getUnicaInstancia().getCanciones()) {
+        	Object[] usuario = {u.getTitulo(), u.getEstiloMusical(), u.getInterprete(), false};
         	modeloTabla.addRow(usuario);
         }
         

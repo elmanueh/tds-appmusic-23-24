@@ -51,12 +51,12 @@ public class Controlador {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorCancion = factoria.getCancionDAO();
-		// adaptadorPlayList = factoria.getPlaylistDAO();
+		adaptadorPlayList = factoria.getPlaylistDAO();
 	}
 
 	private void inicializarCatalogos() {
 		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
-		// catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
+		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
 	}
 
 	public static Controlador getUnicaInstancia() {
