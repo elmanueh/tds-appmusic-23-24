@@ -19,10 +19,8 @@ import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.*;
 
-/**
- * Usa un pool para evitar problemas doble referencia con ventas
- */
 public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
+
 	/*
 	 * ATRIBUTOS
 	 */
@@ -40,7 +38,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	/*
-	 * METODOS DE CONSULTA Y ESTABLECIMIENTO
+	 * GETTERS AND SETTERS
 	 */
 	public static AdaptadorUsuarioTDS getUnicaInstancia() {
 		if (unicaInstancia == null)
@@ -48,9 +46,6 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return unicaInstancia;
 	}
 
-	/**
-	 * Cuando se registra un cliente se le asigna un identificador único
-	 */
 	public void registrarUsuario(Usuario usuario) {
 		Entidad eUsuario = null;
 
@@ -141,20 +136,22 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
-		//ESTO SE DEBERIA HACER SOLO CON EL SET Y PASANDO COMO PARAMETRO premium
+		// ESTO SE DEBERIA HACER SOLO CON EL SET Y PASANDO COMO PARAMETRO premium
 		if (premium)
 			usuario.setPremium();
-		
+
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
-		
-		listaPlayList = obtenerPlayListDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaPlayList")); 
+
+		listaPlayList = obtenerPlayListDesdeCodigos(
+				servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaPlayList"));
 		for (PlayList pl : listaPlayList)
-		usuario.addPlayList(pl);
-		
-		cancionesRecientes = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaCancionesRecientes")); 
-		for (Cancion c : cancionesRecientes) 
+			usuario.addPlayList(pl);
+
+		cancionesRecientes = obtenerCancionesDesdeCodigos(
+				servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaCancionesRecientes"));
+		for (Cancion c : cancionesRecientes)
 			usuario.addCancionReciente(c);
 
 		return usuario;

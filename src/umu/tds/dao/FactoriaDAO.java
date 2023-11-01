@@ -19,7 +19,6 @@ public abstract class FactoriaDAO {
 	/**
 	 * Crea un tipo de factoria DAO. Solo existe el tipo TDSFactoriaDAO
 	 */
-	@SuppressWarnings("deprecation")
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException {
 		if (unicaInstancia == null)
 			try {
@@ -44,9 +43,6 @@ public abstract class FactoriaDAO {
 	/*
 	 * Metodos factoria que devuelven adaptadores que implementen estos interfaces
 	 */
-	// public abstract IAdaptadorVentaDAO getVentaDAO();
-	// public abstract IAdaptadorLineaVentaDAO getLineaVentaDAO();
-	// public abstract IAdaptadorProductoDAO getProductoDAO();
 	public abstract IAdaptadorCancionDAO getCancionDAO();
 
 	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
