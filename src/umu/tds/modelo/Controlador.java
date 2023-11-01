@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
@@ -11,6 +13,7 @@ import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CargadorCanciones;
 import umu.tds.modelo.musica.CatalogoCanciones;
+import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
 
@@ -71,6 +74,9 @@ public class Controlador {
 		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
 	}
 
+	/*
+	 * USUARIO
+	 */
 	public Boolean login(String usuarioAux, String contraseñaAux) {
 		Usuario usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
@@ -80,9 +86,6 @@ public class Controlador {
 		return false;
 	}
 
-	/*
-	 * USUARIO
-	 */
 	public boolean esUsuarioRegistrado(String login) {
 		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login) != null;
 	}
@@ -125,25 +128,56 @@ public class Controlador {
 
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo) {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
-		catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
+		if (estilo.equals(""))
+			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
+			.filter(c -> c.getInterprete().contains(interprete))
+			.forEach(canciones::add);
+		else
+			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
 				.filter(c -> c.getInterprete().contains(interprete)).filter(c -> c.getEstiloMusical().equals(estilo))
 				.forEach(canciones::add);
 		return canciones;
+	}
+	
+	public String[] getEstilos() {
+		LinkedList<String> estilos = new LinkedList<String>();
+		estilos.add("");
+		for (Cancion c: catalogoCanciones.getCanciones()) {
+			if (!estilos.contains(c.getEstiloMusical())) {
+				estilos.add(c.getEstiloMusical());
+			}
+		}
+		String[] estilos2 = new String[estilos.size()];
+		for (int i = 0; i < estilos2.length; i++) {
+			estilos2[i] = estilos.get(i);
+		}
+		return estilos2;
 	}
 
 	/*
 	 * PLAYLIST
 	 */
-	public void crearPlayList(String s) {
-		// plActual = new PlayList(s);
+	public void crearPlayList(String s, DefaultTableModel modelo) {
+		PlayList playListNueva = new PlayList(s);
+		anadirCancionesAPlayList(playListNueva, modelo);
 	}
 
-	public void anadirCancionAPlayList(Cancion c) {
-		// plActual.addCancion(c);
+	public void anadirCancionesAPlayList(PlayList p, DefaultTableModel modelo) {
+		int filasTotal = modelo.getRowCount();
+
+		for (int fila = 0; fila < filasTotal; fila++) {
+			if ((Boolean) modelo.getValueAt(fila, 3)) {
+				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
+				p.addCancion(cancion);
+				usuarioActual.addPlayList(p);
+			}
+		}
 	}
 
 	public void registrarPlayList(String s) {
 
 	}
+
+
 
 }

@@ -61,7 +61,7 @@ public enum CargadorCanciones {
 					String rutaFichero = categoria + "/" + nombreFichero;
 					String[] partesNombre = nombreFichero.split("-");
 					String interprete = partesNombre[0];
-					String titulo = partesNombre[1];
+					String titulo = partesNombre[1].substring(0, partesNombre[1].length() - 4);
 
 					Controlador.getUnicaInstancia().registrarCancion(titulo, rutaFichero, categoria, interprete);
 				}
