@@ -1,14 +1,17 @@
 package umu.tds.modelo;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
+import umu.tds.dao.AdaptadorPlayListTDS;
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
+import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CargadorCanciones;
@@ -26,6 +29,7 @@ public class Controlador {
 
 	private IAdaptadorCancionDAO adaptadorCancion;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
+	//private IAdaptadorPlayListDAO adaptadorPL;
 	private CatalogoUsuarios catalogoUsuarios;
 	private CatalogoCanciones catalogoCanciones;
 
@@ -67,6 +71,7 @@ public class Controlador {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorCancion = factoria.getCancionDAO();
+		//adaptadorPL = factoria.getPlaylistDAO();
 	}
 
 	private void inicializarCatalogos() {
@@ -158,24 +163,46 @@ public class Controlador {
 	 * PLAYLIST
 	 */
 	public void crearPlayList(String s, DefaultTableModel modelo) {
-		PlayList playListNueva = new PlayList(s);
-		anadirCancionesAPlayList(playListNueva, modelo);
-	}
-
-	public void anadirCancionesAPlayList(PlayList p, DefaultTableModel modelo) {
+		PlayList p = new PlayList(s);
 		int filasTotal = modelo.getRowCount();
 
 		for (int fila = 0; fila < filasTotal; fila++) {
 			if ((Boolean) modelo.getValueAt(fila, 3)) {
 				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
 				p.addCancion(cancion);
-				usuarioActual.addPlayList(p);
 			}
 		}
+		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		//adaptadorPL.modificarPlayList(p);
+		//catalogoUsuarios(usuario);
 	}
 
-	public void registrarPlayList(String s) {
+	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
+		
+		PlayList p = usuarioActual.getPlayList(s);
+		int filasTotal = modelo.getRowCount();
 
+		for (int fila = 0; fila < filasTotal; fila++) {
+			if ((Boolean) modelo.getValueAt(fila, 3)) {
+				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
+				p.addCancion(cancion);
+			}
+		}
+		usuarioActual.addPlayList(p);
+	}
+
+	public String[] getPlayLists() {
+		LinkedList<String> playlist = new LinkedList<String>();
+		playlist.add("");
+		for (PlayList p: usuarioActual.getListaPlayList()) {
+				playlist.add(p.getNombre());
+		}
+		String[] playlist2 = new String[playlist.size()];
+		for (int i = 0; i < playlist2.length; i++) {
+			playlist2[i] = playlist.get(i);
+		}
+		return playlist2;
 	}
 
 

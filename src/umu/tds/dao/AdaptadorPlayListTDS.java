@@ -99,22 +99,22 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		// recuperar propiedades que no son objetos
 		nombre = servPersistencia.recuperarPropiedadEntidad(ePL, "nombre");
 
-		PlayList cliente = new PlayList(nombre);
-		cliente.setCodigo(codigo);
+		PlayList playlist = new PlayList(nombre);
+		playlist.setCodigo(codigo);
 
 		// IMPORTANTE:aï¿½adir la playlist al pool antes de llamar a otros
 		// adaptadores
-		PoolDAO.getUnicaInstancia().addObjeto(codigo, cliente);
+		PoolDAO.getUnicaInstancia().addObjeto(codigo, playlist);
 
 		// recuperar propiedades que son objetos llamando a adaptadores
 		// canciones
 		canciones = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(ePL, "canciones"));
 		for (Cancion c : canciones)
-			canciones.add(c);
-		return cliente;
+			playlist.addCancion(c);
+		return playlist;
 	}
 	
-	public List<PlayList> recuperarTodosPL() {
+	public List<PlayList> recuperarTodosPlayLists() {
 		List<Entidad> ePLs = servPersistencia.recuperarEntidades("playlist");
 		List<PlayList> playlist = new LinkedList<PlayList>();
 		for (Entidad ePlayList : ePLs) {
@@ -133,19 +133,13 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 	}
 	
 	private List<Cancion> obtenerCancionesDesdeCodigos(String canciones) {
-		List<Cancion> listaVentas = new LinkedList<Cancion>();
+		List<Cancion> listaCanciones = new LinkedList<Cancion>();
 		StringTokenizer strTok = new StringTokenizer(canciones, " ");
-		AdaptadorCancionTDS adaptadorV = AdaptadorCancionTDS.getUnicaInstancia();
+		AdaptadorCancionTDS adaptadorCancion = AdaptadorCancionTDS.getUnicaInstancia();
 		while (strTok.hasMoreTokens()) {
-			listaVentas.add(adaptadorV.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
+			listaCanciones.add(adaptadorCancion.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
 		}
-		return listaVentas;
-	}
-
-	@Override
-	public List<PlayList> recuperarTodosPlayLists() {
-		// TODO Auto-generated method stub
-		return null;
+		return listaCanciones;
 	}
 
 

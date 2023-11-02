@@ -6,19 +6,15 @@ import javax.swing.table.TableColumnModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.vista.main.VentanaMisPlaylist.CenteredCheckBoxEditor;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -282,8 +278,24 @@ public class VentanaBuscar extends JPanel {
 		});
 
 		btnNewButton_2.addActionListener(new ActionListener() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void actionPerformed(ActionEvent e) {
-				Controlador.getUnicaInstancia().crearPlayList("Defecto", (DefaultTableModel) table.getModel());
+				Object[] opciones = {"Sí", "No"};
+				int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?"
+						, "Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE
+						, null, opciones, opciones[0]);
+				
+				if (respuesta == JOptionPane.YES_OPTION) {
+					String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
+					Controlador.getUnicaInstancia().crearPlayList(playlist, (DefaultTableModel) table.getModel());
+				} else {
+					JComboBox playlistComboBox = new JComboBox();
+					playlistComboBox.setModel(new DefaultComboBoxModel(Controlador.getUnicaInstancia().getPlayLists()));
+					JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles", JOptionPane.INFORMATION_MESSAGE);
+					if (!playlistComboBox.getSelectedItem().equals(""))
+						Controlador.getUnicaInstancia().anadirCancionesAPlayList((String) playlistComboBox.getSelectedItem(), (DefaultTableModel) table.getModel());
+				}
+				
 			}
 		});
 
