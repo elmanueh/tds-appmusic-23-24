@@ -99,7 +99,11 @@ public class Usuario {
 	}
 
 	public PlayList getPlayList(String nombre) {
-		return (PlayList) listaPlayList.stream().filter(p -> p.getNombre() == nombre);
+		//return (PlayList) listaPlayList.stream().filter(p -> p.getNombre() == nombre);
+		for (PlayList p: listaPlayList)
+			if (p.getNombre().equals(nombre))
+				return p;
+		return null;
 	}
 
 	public void removePlayList(PlayList p) {
