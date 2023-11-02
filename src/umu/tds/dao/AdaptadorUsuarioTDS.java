@@ -97,11 +97,11 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("fecha")) {
 				prop.setValor(dateFormat.format(usuario.getFecha()));
 			} else if (prop.getNombre().equals("listaPlayList")) {
-				String ventas = obtenerCodigosPlayLists(usuario.getListaPlayList());
-				prop.setValor(ventas);
+				String playlists = obtenerCodigosPlayLists(usuario.getListaPlayList());
+				prop.setValor(playlists);
 			} else if (prop.getNombre().equals("listaCancionesRecientes")) {
-				String ventas = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
-				prop.setValor(ventas);
+				String canciones = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
+				prop.setValor(canciones);
 			} else if (prop.getNombre().equals("esPremium")) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			}
