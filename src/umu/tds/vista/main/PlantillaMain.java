@@ -20,20 +20,27 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import javax.swing.border.EtchedBorder;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class PlantillaMain extends JFrame implements ActionListener {
 
 	private CardLayout cardLayout;
 	GridBagLayout gridBagLayout;
+	private JTable table;
 
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -290,15 +297,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_menuBotones.add(p_listas, gbc_p_listas);
 		p_listas.setLayout(new BorderLayout(0, 0));
 
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(
-				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		p_listas.add(panel);
-
-		JLabel lblNewLabel = new JLabel("linkear las playlist ");
-		panel.add(lblNewLabel);
-
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		p_listas.add(horizontalStrut_2, BorderLayout.WEST);
 
@@ -307,6 +305,60 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
+		
+		//TABLA PLAYLIST
+		//habria que hacer algo para que se actualice el valor, aunque sea cada 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBorder(new TitledBorder(
+				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		p_listas.add(scrollPane, BorderLayout.CENTER);
+		
+		table = new JTable();
+		scrollPane.setViewportView(table);
+		
+		DefaultTableModel model = new DefaultTableModel() {
+			@Override //ESTO ES PARA QUE NO SE PUEDA EDITAR EL CONTENIDO DE LA TABLA
+			public boolean isCellEditable(int row, int column) {
+						return false;
+			}	
+		};
+		
+		
+		table.setModel(model);
+		
+		model.addColumn("");
+		table.setTableHeader(null);
+		
+        for (PlayList p: Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
+        	Object[] playlist = {p.getNombre()};
+        	model.addRow(playlist);
+        }
+        
+        table.setBackground(Color.MAGENTA);
+		//AQUI VOY A TRATAR LO DE HACER CLICK EN UNA CELDA Y QUE MUESTRE LA PLAYLIST
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = table.getSelectedRow();
+                    int column = table.getSelectedColumn();
+
+                    // Verifica si se ha hecho doble clic en una celda válida
+                    if (row >= 0 && column >= 0) {
+                        String playlist = table.getValueAt(row, column).toString();
+
+                        //Me gustaria que depende de  tipo de cardlayout, llame al metodo de una ventana
+                        //En el caso de que queramos que la lista de playlist este en todos los sitios
+                        ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+
+                    }
+                }
+            }
+        });
+        
+        
+        //HASTA AQUI TABLA PLAYLIST
 
 		GridBagConstraints gbc_p_cardLayout = new GridBagConstraints();
 		gbc_p_cardLayout.insets = new Insets(0, 0, 0, 5);

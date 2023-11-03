@@ -29,7 +29,7 @@ public class Controlador {
 
 	private IAdaptadorCancionDAO adaptadorCancion;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
-	//private IAdaptadorPlayListDAO adaptadorPL;
+	private IAdaptadorPlayListDAO adaptadorPL;
 	private CatalogoUsuarios catalogoUsuarios;
 	private CatalogoCanciones catalogoCanciones;
 
@@ -71,7 +71,7 @@ public class Controlador {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorCancion = factoria.getCancionDAO();
-		//adaptadorPL = factoria.getPlaylistDAO();
+		adaptadorPL = factoria.getPlaylistDAO();
 	}
 
 	private void inicializarCatalogos() {
@@ -172,10 +172,10 @@ public class Controlador {
 				p.addCancion(cancion);
 			}
 		}
+		
+		adaptadorPL.registrarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		//adaptadorPL.modificarPlayList(p);
-		//catalogoUsuarios(usuario);
 	}
 
 	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
@@ -189,7 +189,9 @@ public class Controlador {
 				p.addCancion(cancion);
 			}
 		}
+		adaptadorPL.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	public String[] getPlayLists() {
@@ -203,6 +205,10 @@ public class Controlador {
 			playlist2[i] = playlist.get(i);
 		}
 		return playlist2;
+	}
+	
+	public PlayList getPlayList(String s) {
+		return usuarioActual.getPlayList(s);
 	}
 
 
