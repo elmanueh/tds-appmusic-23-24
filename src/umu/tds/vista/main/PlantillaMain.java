@@ -43,7 +43,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		getContentPane().setLayout(gridBagLayout);
 
 		setTitle("Spotifoo");
-		setSize(1100, 650);
+		setSize(937, 586);
 		setMinimumSize(getSize());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -60,9 +60,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		VentanaGenerarPDF ventanaGenerarPDF = new VentanaGenerarPDF();
 		VentanaMisPlaylist ventanaMisPlaylist = new VentanaMisPlaylist();
 
-		gridBagLayout.columnWidths = new int[] { 0, 0, 0 };
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0, 0 };
-		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 
 		JPanel p_iconoTitulo = new JPanel();
@@ -98,7 +98,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		JPanel p_cabezera = new JPanel();
 		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
-		gbc_p_cabezera.insets = new Insets(0, 0, 5, 0);
+		gbc_p_cabezera.insets = new Insets(0, 0, 5, 5);
 		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
 		gbc_p_cabezera.gridx = 1;
 		gbc_p_cabezera.gridy = 0;
@@ -111,7 +111,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cabezera.add(p_cabezera_izq, BorderLayout.CENTER);
 
 		String usuario = Controlador.getUnicaInstancia().getUsuarioActual().getNombre();
-		JLabel mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
+		JLabel mensajeBienvenida = new JLabel("Bienvenido, " + "usuario");
 		p_cabezera_izq.add(mensajeBienvenida);
 
 		JPanel p_cabezera_der = new JPanel();
@@ -224,6 +224,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_menuBotonesPremium.setLayout(gbl_p_menuBotonesPremium);
 
 		JButton botonMasReproducidas = new JButton("Más Reproducidas");
+		botonMasReproducidas.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
 		botonMasReproducidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_listas.setVisible(false);
@@ -242,6 +243,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_menuBotonesPremium.add(botonMasReproducidas, gbc_botonMasReproducidas);
 
 		JButton botonGenerarPDF = new JButton("Generar PDF");
+		botonGenerarPDF.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
 		botonGenerarPDF.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_listas.setVisible(false);
@@ -307,6 +309,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
 
 		GridBagConstraints gbc_p_cardLayout = new GridBagConstraints();
+		gbc_p_cardLayout.insets = new Insets(0, 0, 0, 5);
 		gbc_p_cardLayout.fill = GridBagConstraints.BOTH;
 		gbc_p_cardLayout.gridx = 1;
 		gbc_p_cardLayout.gridy = 1;
@@ -319,6 +322,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cardLayout.add(ventanaMasReproducidas, "ventanaMasReproducidas");
 		p_cardLayout.add(ventanaGenerarPDF, "ventanaGenerarPDF");
 		p_cardLayout.add(ventanaMisPlaylist, "ventanaMisPlaylist");
+		
+		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_3 = new GridBagConstraints();
+		gbc_horizontalStrut_3.gridx = 2;
+		gbc_horizontalStrut_3.gridy = 1;
+		getContentPane().add(horizontalStrut_3, gbc_horizontalStrut_3);
 
 	}
 

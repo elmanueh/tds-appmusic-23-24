@@ -59,14 +59,43 @@ public class VentanaMisPlaylist extends JPanel {
 		gbc_btnNewButton_6.gridy = 1;
 		panelTitulo.add(btnNewButton_6, gbc_btnNewButton_6);
 		
+		JPanel panelTabla = new JPanel();
+		add(panelTabla, BorderLayout.CENTER);
+		
+		DefaultTableModel modeloTabla = new DefaultTableModel(){
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 3) {
+                    return Boolean.class; // Establece la columna "SELECCIONAR" como Boolean
+                }
+                return super.getColumnClass(columnIndex);
+            }
+        };
+		table = new JTable();
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setPreferredSize(new Dimension(650, 300));
+		panelTabla.add(scrollPane);
+		
+		table.setModel(modeloTabla);
+		
 		JPanel panelBotones = new JPanel();
-		add(panelBotones, BorderLayout.SOUTH);
+		panelTabla.add(panelBotones);
 		GridBagLayout gbl_panelBotones = new GridBagLayout();
 		gbl_panelBotones.columnWidths = new int[]{0, 0, 0, 0, 0, 80, 135, 0, 0, 0};
 		gbl_panelBotones.rowHeights = new int[]{0, 0, 0, 0};
 		gbl_panelBotones.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelBotones.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelBotones.setLayout(gbl_panelBotones);
+		
+		JButton btnNewButton_7 = new JButton("New button");
+		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
+		gbc_btnNewButton_7.fill = GridBagConstraints.BOTH;
+		gbc_btnNewButton_7.gridheight = 3;
+		gbc_btnNewButton_7.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton_7.gridx = 6;
+		gbc_btnNewButton_7.gridy = 0;
+		panelBotones.add(btnNewButton_7, gbc_btnNewButton_7);
 		
 		JButton btnNewButton_3 = new JButton("New button");
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
@@ -123,35 +152,6 @@ public class VentanaMisPlaylist extends JPanel {
 		gbc_btnNewButton_4.gridx = 4;
 		gbc_btnNewButton_4.gridy = 2;
 		panelBotones.add(btnNewButton_4, gbc_btnNewButton_4);
-		
-		JButton btnNewButton_7 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
-		gbc_btnNewButton_7.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_7.fill = GridBagConstraints.BOTH;
-		gbc_btnNewButton_7.gridheight = 3;
-		gbc_btnNewButton_7.gridx = 6;
-		gbc_btnNewButton_7.gridy = 0;
-		panelBotones.add(btnNewButton_7, gbc_btnNewButton_7);
-		
-		JPanel panelTabla = new JPanel();
-		add(panelTabla, BorderLayout.CENTER);
-		
-		DefaultTableModel modeloTabla = new DefaultTableModel(){
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 3) {
-                    return Boolean.class; // Establece la columna "SELECCIONAR" como Boolean
-                }
-                return super.getColumnClass(columnIndex);
-            }
-        };
-		table = new JTable();
-		
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(650, 300));
-		panelTabla.add(scrollPane);
-		
-		table.setModel(modeloTabla);
 		
 		modeloTabla.addColumn("TITULO");
         modeloTabla.addColumn("INTERPRETE");

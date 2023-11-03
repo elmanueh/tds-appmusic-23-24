@@ -4,7 +4,6 @@ import javax.swing.*;
 
 import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
