@@ -85,7 +85,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		add(WindowRegister, "WindowRegister");
 		GridBagLayout gbl_WindowRegister = new GridBagLayout();
 		gbl_WindowRegister.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_WindowRegister.rowHeights = new int[] { 92, 0, 0, 30, 0, 35, 0, 0 };
+		gbl_WindowRegister.rowHeights = new int[] { 92, 0, 0, 30, 0, 30, 0, 30 };
 		WindowRegister.setLayout(gbl_WindowRegister);
 
 		labelTitulo = new JTextPane();
@@ -156,27 +156,45 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		panelLogin = new JPanel();
 		panelLogin.setForeground(Color.WHITE);
 		GridBagConstraints gbc_panelLogin = new GridBagConstraints();
-		gbc_panelLogin.fill = GridBagConstraints.BOTH;
+		gbc_panelLogin.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panelLogin.gridx = 0;
 		gbc_panelLogin.gridy = 7;
 		WindowRegister.add(panelLogin, gbc_panelLogin);
+		GridBagLayout gbl_panelLogin = new GridBagLayout();
+		gbl_panelLogin.columnWidths = new int[] { 111, 129, 0 };
+		gbl_panelLogin.rowHeights = new int[] { 30, 0 };
+		gbl_panelLogin.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelLogin.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		panelLogin.setLayout(gbl_panelLogin);
 
 		labelLogin = new JLabel("¿Ya tienes una cuenta?");
 		labelLogin.setForeground(new Color(204, 204, 204));
-		panelLogin.add(labelLogin);
+		GridBagConstraints gbc_labelLogin = new GridBagConstraints();
+		gbc_labelLogin.anchor = GridBagConstraints.WEST;
+		gbc_labelLogin.insets = new Insets(0, 0, 0, 5);
+		gbc_labelLogin.gridx = 0;
+		gbc_labelLogin.gridy = 0;
+		panelLogin.add(labelLogin, gbc_labelLogin);
 
 		botonLogin = new JButton("Inicia sesión aquí");
 		botonLogin.setForeground(Color.WHITE);
 		botonLogin.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panelLogin.add(botonLogin);
+		GridBagConstraints gbc_botonLogin = new GridBagConstraints();
+		gbc_botonLogin.fill = GridBagConstraints.BOTH;
+		gbc_botonLogin.gridx = 1;
+		gbc_botonLogin.gridy = 0;
+		panelLogin.add(botonLogin, gbc_botonLogin);
+		botonLogin.addActionListener(this);
 
 		WindowRegister_1 = new JPanel();
 		WindowRegister_1.setOpaque(false);
 		WindowRegister_1.setForeground(Color.WHITE);
 		add(WindowRegister_1, "WindowRegister_1");
 		GridBagLayout gbl_WindowRegister_1 = new GridBagLayout();
+		gbl_WindowRegister_1.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_1.columnWidths = new int[] { 0, 250, 0 };
 		gbl_WindowRegister_1.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_WindowRegister_1.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 30, 0, 0, 35 };
+		gbl_WindowRegister_1.rowHeights = new int[] { 0, 0, 0, 0, 20, 0, 30, 0, 0, 30 };
 		WindowRegister_1.setLayout(gbl_WindowRegister_1);
 
 		barraProgreso = new JProgressBar();
@@ -217,7 +235,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelPaso.gridy = 2;
 		WindowRegister_1.add(labelPaso, gbc_labelPaso);
 
-		horizontalStrut = Box.createHorizontalStrut(20);
+		horizontalStrut = Box.createHorizontalStrut(50);
 		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
 		gbc_horizontalStrut.insets = new Insets(0, 0, 5, 0);
 		gbc_horizontalStrut.gridx = 2;
@@ -234,7 +252,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelTitulo1.gridy = 3;
 		WindowRegister_1.add(labelTitulo1, gbc_labelTitulo1);
 
-		horizontalStrut_1 = Box.createHorizontalStrut(20);
+		horizontalStrut_1 = Box.createHorizontalStrut(50);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
 		gbc_horizontalStrut_1.insets = new Insets(0, 0, 5, 5);
 		gbc_horizontalStrut_1.gridx = 0;
@@ -260,7 +278,9 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		WindowRegister_1.add(textoContraseña, gbc_textoContraseña);
 
 		labelContraseñaInfo = new JTextArea(
-				"La contraseña debe tener al menos 8 caracteres. Te\nrecomendamos que incluyas como mínimo\n1 número y 1 carácter especial.");
+				"La contraseña debe tener al menos 8 caracteres. \r\nTe recomendamos que incluyas como mínimo \r\n1 número y 1 carácter especial.");
+		labelContraseñaInfo.setDisabledTextColor(Color.LIGHT_GRAY);
+		labelContraseñaInfo.setEnabled(false);
 		labelContraseñaInfo.setOpaque(false);
 		labelContraseñaInfo.setForeground(new Color(204, 204, 204));
 		labelContraseñaInfo.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -294,9 +314,11 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		WindowRegister_2.setForeground(Color.WHITE);
 		add(WindowRegister_2, "name_99315507830600");
 		GridBagLayout gbl_WindowRegister_2 = new GridBagLayout();
+		gbl_WindowRegister_2.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_2.columnWidths = new int[] { 50, 250, 50 };
 		gbl_WindowRegister_2.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0 };
-		gbl_WindowRegister_2.rowHeights = new int[] { 0, -66, 0, 0, 0, 0, 0, 30, 0, 0, 30, 0, 35 };
+		gbl_WindowRegister_2.rowHeights = new int[] { 0, -66, 0, 0, 0, 0, 0, 30, 0, 0, 30, 0, 30 };
 		WindowRegister_2.setLayout(gbl_WindowRegister_2);
 
 		barraProgreso1 = new JProgressBar();
@@ -354,7 +376,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_verticalStrut_8.gridy = 4;
 		WindowRegister_2.add(verticalStrut_8, gbc_verticalStrut_8);
 
-		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		horizontalStrut_2 = Box.createHorizontalStrut(50);
 		GridBagConstraints gbc_horizontalStrut_2 = new GridBagConstraints();
 		gbc_horizontalStrut_2.insets = new Insets(0, 0, 5, 5);
 		gbc_horizontalStrut_2.gridx = 0;
@@ -371,7 +393,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelUsuario.gridy = 5;
 		WindowRegister_2.add(labelUsuario, gbc_labelUsuario);
 
-		horizontalStrut_3 = Box.createHorizontalStrut(20);
+		horizontalStrut_3 = Box.createHorizontalStrut(50);
 		GridBagConstraints gbc_horizontalStrut_3 = new GridBagConstraints();
 		gbc_horizontalStrut_3.insets = new Insets(0, 0, 5, 0);
 		gbc_horizontalStrut_3.gridx = 2;
@@ -446,8 +468,10 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		WindowRegister_3.setForeground(Color.WHITE);
 		add(WindowRegister_3, "name_99315527483000");
 		GridBagLayout gbl_WindowRegister_3 = new GridBagLayout();
-		gbl_WindowRegister_3.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_WindowRegister_3.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 35 };
+		gbl_WindowRegister_3.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_3.columnWidths = new int[] { 50, 250, 50 };
+		gbl_WindowRegister_3.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_3.rowHeights = new int[] { 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 35 };
 		WindowRegister_3.setLayout(gbl_WindowRegister_3);
 
 		barraProgreso2 = new JProgressBar();
@@ -468,7 +492,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_botonAtras2.gridheight = 2;
 		gbc_botonAtras2.insets = new Insets(0, 0, 5, 5);
 		gbc_botonAtras2.gridx = 0;
-		gbc_botonAtras2.gridy = 1;
+		gbc_botonAtras2.gridy = 2;
 		WindowRegister_3.add(botonAtras2, gbc_botonAtras2);
 
 		labelPaso2 = new JLabel("Paso 3 de 3");
@@ -478,7 +502,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelPaso2.anchor = GridBagConstraints.WEST;
 		gbc_labelPaso2.insets = new Insets(0, 0, 5, 5);
 		gbc_labelPaso2.gridx = 1;
-		gbc_labelPaso2.gridy = 1;
+		gbc_labelPaso2.gridy = 2;
 		WindowRegister_3.add(labelPaso2, gbc_labelPaso2);
 
 		labelTitulo3 = new JLabel("Términos y Condiciones");
@@ -488,14 +512,14 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelTitulo3.anchor = GridBagConstraints.WEST;
 		gbc_labelTitulo3.insets = new Insets(0, 0, 5, 5);
 		gbc_labelTitulo3.gridx = 1;
-		gbc_labelTitulo3.gridy = 2;
+		gbc_labelTitulo3.gridy = 3;
 		WindowRegister_3.add(labelTitulo3, gbc_labelTitulo3);
 
 		verticalStrut_10 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_10 = new GridBagConstraints();
 		gbc_verticalStrut_10.insets = new Insets(0, 0, 5, 5);
 		gbc_verticalStrut_10.gridx = 1;
-		gbc_verticalStrut_10.gridy = 3;
+		gbc_verticalStrut_10.gridy = 4;
 		WindowRegister_3.add(verticalStrut_10, gbc_verticalStrut_10);
 
 		panelNovedades = new JPanel();
@@ -504,7 +528,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_panelNovedades.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panelNovedades.insets = new Insets(0, 0, 5, 5);
 		gbc_panelNovedades.gridx = 1;
-		gbc_panelNovedades.gridy = 4;
+		gbc_panelNovedades.gridy = 5;
 		WindowRegister_3.add(panelNovedades, gbc_panelNovedades);
 		GridBagLayout gbl_panelNovedades = new GridBagLayout();
 		gbl_panelNovedades.columnWidths = new int[] { 21, 205, 0 };
@@ -523,10 +547,12 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_checkBox_1.gridy = 0;
 		panelNovedades.add(checkBox_1, gbc_checkBox_1);
 
-		textoNovedades = new JTextArea("Quiero que me enviéis novedades y ofertas\r\nde Spotify.");
+		textoNovedades = new JTextArea("Quiero que me enviéis novedades y ofertas\r\nde Spotifoo.");
+		textoNovedades.setDisabledTextColor(Color.WHITE);
+		textoNovedades.setEnabled(false);
 		textoNovedades.setOpaque(false);
-		textoNovedades.setForeground(Color.WHITE);
-		textoNovedades.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textoNovedades.setForeground(new Color(255, 255, 255));
+		textoNovedades.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textoNovedades.setEditable(false);
 		GridBagConstraints gbc_textoNovedades = new GridBagConstraints();
 		gbc_textoNovedades.anchor = GridBagConstraints.NORTHWEST;
@@ -540,7 +566,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_panelCompartirDatos.fill = GridBagConstraints.BOTH;
 		gbc_panelCompartirDatos.insets = new Insets(0, 0, 5, 5);
 		gbc_panelCompartirDatos.gridx = 1;
-		gbc_panelCompartirDatos.gridy = 5;
+		gbc_panelCompartirDatos.gridy = 6;
 		WindowRegister_3.add(panelCompartirDatos, gbc_panelCompartirDatos);
 		GridBagLayout gbl_panelCompartirDatos = new GridBagLayout();
 		gbl_panelCompartirDatos.columnWidths = new int[] { 21, 234, 0 };
@@ -560,10 +586,12 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		panelCompartirDatos.add(checkBox_2, gbc_checkBox_2);
 
 		textoCompartirDatos = new JTextArea(
-				"Compartir mis datos de registro con los\nproveedores de contenidos de AppMusic para\nfines de marketing. Ten en cuenta que tus\ndatos pueden ser transferidos a un país de\nfuera del EEE, tal y como se recoge en nuestra\nPolítica de Privacidad.");
+				"Compartir mis datos de registro con los\r\nproveedores de contenidos de Spotifoo\r\npara fines de marketing. Ten en cuenta\r\nque tus datos pueden ser transferidos a\r\nun país de fuera del EEE, tal y como se\r\nrecoge en nuestra Política de Privacidad.");
+		textoCompartirDatos.setDisabledTextColor(Color.WHITE);
+		textoCompartirDatos.setEnabled(false);
 		textoCompartirDatos.setOpaque(false);
-		textoCompartirDatos.setForeground(Color.WHITE);
-		textoCompartirDatos.setFont(new Font("Tahoma", Font.BOLD, 11));
+		textoCompartirDatos.setForeground(new Color(255, 255, 255));
+		textoCompartirDatos.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textoCompartirDatos.setEditable(false);
 		GridBagConstraints gbc_textoCompartirDatos = new GridBagConstraints();
 		gbc_textoCompartirDatos.anchor = GridBagConstraints.NORTHWEST;
@@ -571,15 +599,17 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_textoCompartirDatos.gridy = 0;
 		panelCompartirDatos.add(textoCompartirDatos, gbc_textoCompartirDatos);
 
-		verticalStrut_11 = Box.createVerticalStrut(20);
+		verticalStrut_11 = Box.createVerticalStrut(10);
 		GridBagConstraints gbc_verticalStrut_11 = new GridBagConstraints();
 		gbc_verticalStrut_11.insets = new Insets(0, 0, 5, 5);
 		gbc_verticalStrut_11.gridx = 1;
-		gbc_verticalStrut_11.gridy = 6;
+		gbc_verticalStrut_11.gridy = 7;
 		WindowRegister_3.add(verticalStrut_11, gbc_verticalStrut_11);
 
 		labelTerminos = new JTextArea(
-				"Al hacer clic en Registrarte, aceptas los Términos y\ncondiciones de uso de AppMusic.");
+				"Al hacer clic en Registrarte, aceptas los\r\nTérminos y condiciones de uso de Spotifoo.");
+		labelTerminos.setDisabledTextColor(Color.WHITE);
+		labelTerminos.setEnabled(false);
 		labelTerminos.setOpaque(false);
 		labelTerminos.setForeground(Color.WHITE);
 		labelTerminos.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -588,41 +618,41 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelTerminos.fill = GridBagConstraints.BOTH;
 		gbc_labelTerminos.insets = new Insets(0, 0, 5, 5);
 		gbc_labelTerminos.gridx = 1;
-		gbc_labelTerminos.gridy = 7;
+		gbc_labelTerminos.gridy = 8;
 		WindowRegister_3.add(labelTerminos, gbc_labelTerminos);
 
 		verticalStrut_3 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_3 = new GridBagConstraints();
 		gbc_verticalStrut_3.insets = new Insets(0, 0, 5, 5);
 		gbc_verticalStrut_3.gridx = 1;
-		gbc_verticalStrut_3.gridy = 8;
+		gbc_verticalStrut_3.gridy = 9;
 		WindowRegister_3.add(verticalStrut_3, gbc_verticalStrut_3);
 
 		horizontalStrut_4 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_4 = new GridBagConstraints();
 		gbc_horizontalStrut_4.insets = new Insets(0, 0, 0, 5);
 		gbc_horizontalStrut_4.gridx = 0;
-		gbc_horizontalStrut_4.gridy = 9;
+		gbc_horizontalStrut_4.gridy = 10;
 		WindowRegister_3.add(horizontalStrut_4, gbc_horizontalStrut_4);
 
 		botonRegistrar = new JButton("     Regístrate     ");
+		botonRegistrar.setForeground(Color.WHITE);
 		botonRegistrar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_botonRegistrar = new GridBagConstraints();
 		gbc_botonRegistrar.fill = GridBagConstraints.VERTICAL;
 		gbc_botonRegistrar.insets = new Insets(0, 0, 0, 5);
 		gbc_botonRegistrar.gridx = 1;
-		gbc_botonRegistrar.gridy = 9;
+		gbc_botonRegistrar.gridy = 10;
 		WindowRegister_3.add(botonRegistrar, gbc_botonRegistrar);
 
 		horizontalStrut_5 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_5 = new GridBagConstraints();
 		gbc_horizontalStrut_5.gridx = 2;
-		gbc_horizontalStrut_5.gridy = 9;
+		gbc_horizontalStrut_5.gridy = 10;
 		WindowRegister_3.add(horizontalStrut_5, gbc_horizontalStrut_5);
 
 		// Manejadores
 		botonSiguiente.addActionListener(this);
-		botonLogin.addActionListener(this);
 		botonAtras.addActionListener(this);
 		botonSiguiente1.addActionListener(this);
 		botonAtras1.addActionListener(this);
@@ -634,10 +664,23 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonSiguiente) {
-			cardLayout.next(VentanaRegistro.this);
+			String email = textoEmail.getText().trim();
+			if (email.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Correo Electrónico es obligatorio.",
+						"Problema en Correo Electrónico", JOptionPane.ERROR_MESSAGE);
+			} else if (Controlador.getUnicaInstancia().existeUsuario(email)) {
+				JOptionPane.showMessageDialog(null, "Esta dirección ya esta vinculada a otra cuenta.",
+						"Dirección en uso", JOptionPane.WARNING_MESSAGE);
+			} else {
+				cardLayout.next(VentanaRegistro.this);
+			}
 		}
 
 		if (e.getSource() == botonLogin) {
+			textoUsuario.setText("");
+			textoContraseña.setText("");
+			textoEmail.setText("");
+			fechaNacimiento.setDate(null);
 			PlantillaInicio.salirRegistro();
 		}
 
@@ -646,7 +689,13 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonSiguiente1) {
-			cardLayout.next(VentanaRegistro.this);
+			String contraseña = new String(textoContraseña.getPassword()).trim();
+			if (contraseña.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Contraseña es obligatorio.", "Problema en Contraseña",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				cardLayout.next(VentanaRegistro.this);
+			}
 		}
 
 		if (e.getSource() == botonAtras1) {
@@ -654,64 +703,40 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonSiguiente2) {
-			cardLayout.next(VentanaRegistro.this);
+			String nombre = textoUsuario.getText().trim();
+			Date fecha = fechaNacimiento.getDate();
+
+			if (nombre.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "El campo Nombre es obligatorio.", "Problema en Nombre",
+						JOptionPane.ERROR_MESSAGE);
+			} else if (Controlador.getUnicaInstancia().existeUsuario(nombre)) {
+				JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe.", "Nombre usuario en uso",
+						JOptionPane.WARNING_MESSAGE);
+			} else {
+				if (fecha == null) {
+					JOptionPane.showMessageDialog(null, "El campo Fecha Nacimiento es obligatorio.",
+							"Problema en Fecha Nacimiento", JOptionPane.ERROR_MESSAGE);
+				} else {
+					cardLayout.next(VentanaRegistro.this);
+				}
+			}
 		}
 
 		if (e.getSource() == botonAtras2) {
 			cardLayout.previous(VentanaRegistro.this);
 		}
 
-		if (e.getSource() == botonRegistrar) { // esto lo tiene que hacer en otro lado
-			boolean OK = checkCeldas();
-			if (OK) {
-				String usuario = textoUsuario.getText();
-				String contraseña = new String(textoContraseña.getPassword());
-				String correo = textoEmail.getText();
-				Date fecha = fechaNacimiento.getDate();
+		if (e.getSource() == botonRegistrar) {
+			String usuario = textoUsuario.getText().trim();
+			String contraseña = new String(textoContraseña.getPassword()).trim();
+			String correo = textoEmail.getText().trim();
+			Date fecha = fechaNacimiento.getDate();
 
-				if (!Controlador.getUnicaInstancia().existeUsuario(correo)) {
-					Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
-					JOptionPane.showMessageDialog(null, "USUARIO REGISTRADO", "EXITO AL REGISTRAR",
-							JOptionPane.YES_OPTION);
-					AppMusic.logInSatisfactorio();
-				} else {
-					JOptionPane.showMessageDialog(null, "NO HAS PODIDO REGISTRARTE", "ERROR AL REGISTRAR",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
+			Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
+			JOptionPane.showMessageDialog(null, "Usuario registrado correctamente.", "Registro satisfactorio",
+					JOptionPane.INFORMATION_MESSAGE);
+			AppMusic.logInSatisfactorio();
 		}
-	}
-
-	private boolean checkCeldas() {
-		boolean salida = true;
-		@SuppressWarnings("unused")
-		boolean usuarioVacio;
-
-		String textoError = "";
-
-		if (textoUsuario.getText().trim().isEmpty()) {
-			textoError = textoError + "USUARIO ESTA VACIO\n";
-			salida = false;
-			usuarioVacio = true;
-		}
-		if (textoEmail.getText().trim().isEmpty()) {
-			textoError = textoError + "EMAIL ESTA VACIO\n";
-			salida = false;
-		}
-		if (fechaNacimiento.getDate() == null) {
-			textoError = textoError + "FECHA ESTA VACIO\n";
-			salida = false;
-		}
-		String password = new String(textoContraseña.getPassword());
-		if (password.isEmpty()) {
-			textoError = textoError + "CONTRASEÑA ESTA VACIO\n";
-			salida = false;
-		}
-
-		if (!salida)
-			JOptionPane.showMessageDialog(null, textoError, "CAMPOS VACIOS", JOptionPane.ERROR_MESSAGE);
-
-		return salida;
 	}
 
 }

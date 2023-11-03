@@ -93,6 +93,8 @@ public class PlantillaInicio extends JFrame {
 
 		JTextArea txtrTrabajoRealizadoPor = new JTextArea(
 				"\nTrabajo realizado por:\r\n     - Julian Francisco Gomez Diaz\r\n     - Manuel Bernabe Rodriguez");
+		txtrTrabajoRealizadoPor.setDisabledTextColor(Color.LIGHT_GRAY);
+		txtrTrabajoRealizadoPor.setEnabled(false);
 		txtrTrabajoRealizadoPor.setOpaque(false);
 		txtrTrabajoRealizadoPor.setFont(new Font("Tahoma", Font.BOLD, 15));
 		txtrTrabajoRealizadoPor.setEditable(false);
