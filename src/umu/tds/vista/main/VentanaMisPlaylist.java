@@ -1,184 +1,212 @@
 package umu.tds.vista.main;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
-import umu.tds.modelo.usuario.Usuario;
 
-import javax.swing.border.MatteBorder;
+import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Component;
 
-public class VentanaMisPlaylist extends JPanel {
-	private JTable table;
-	private JTextField textField;
-
+public class VentanaMisPlaylist extends JPanel implements ActionListener {
+	private JPanel panelTabla;
+	private JTable tablaCanciones;
+	private JScrollPane scrollPane;
+	private JPanel panelBotones;
+	private JButton botonShuffle;
+	private JButton botonPrevious;
+	private JButton botonPlay;
+	private JButton botonPause;
+	private JButton botonNext;
+	private Component verticalStrut;
+	private Component verticalStrut_1;
+	
 	public VentanaMisPlaylist() {
 		setLayout(new BorderLayout(0, 0));
-
-		JPanel panelTitulo = new JPanel();
-		add(panelTitulo, BorderLayout.NORTH);
-		GridBagLayout gbl_panelTitulos = new GridBagLayout();
-		gbl_panelTitulos.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panelTitulos.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panelTitulos.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panelTitulos.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		panelTitulo.setLayout(gbl_panelTitulos);
-
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 0;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		panelTitulo.add(textField, gbc_textField);
-		textField.setColumns(10);
-
-		JButton btnNewButton_5 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_5 = new GridBagConstraints();
-		gbc_btnNewButton_5.gridx = 0;
-		gbc_btnNewButton_5.gridy = 1;
-		gbc_btnNewButton_5.insets = new Insets(0, 0, 0, 5);
-		panelTitulo.add(btnNewButton_5, gbc_btnNewButton_5);
-
-		JButton btnNewButton_6 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
-		gbc_btnNewButton_6.gridx = 1;
-		gbc_btnNewButton_6.gridy = 1;
-		panelTitulo.add(btnNewButton_6, gbc_btnNewButton_6);
-
-		JPanel panelTabla = new JPanel();
+		
+		panelTabla = new JPanel();
+		panelTabla.setVisible(false);
 		add(panelTabla, BorderLayout.CENTER);
+		panelTabla.setLayout(new BorderLayout(0, 0));
+		
+		tablaCanciones = new JTable();
+		tablaCanciones.setAutoscrolls(false);
+		tablaCanciones.setFillsViewportHeight(true);
+		scrollPane = new JScrollPane(tablaCanciones);
+		panelTabla.add(scrollPane, BorderLayout.CENTER);
+		
+		panelBotones = new JPanel();
+		panelBotones.setVisible(false);
+		add(panelBotones, BorderLayout.SOUTH);
+		panelBotones.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panelMultimedia = new JPanel();
+		panelBotones.add(panelMultimedia, BorderLayout.CENTER);
+		GridBagLayout gbl_panelMultimedia = new GridBagLayout();
+		gbl_panelMultimedia.columnWidths = new int[] { 0, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panelMultimedia.rowHeights = new int[] { 0, 0, 0, 0 };
+		gbl_panelMultimedia.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0,
+				Double.MIN_VALUE };
+		gbl_panelMultimedia.rowWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		panelMultimedia.setLayout(gbl_panelMultimedia);
 
-		DefaultTableModel modeloTabla = new DefaultTableModel() {
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if (columnIndex == 3) {
-					return Boolean.class; // Establece la columna "SELECCIONAR" como Boolean
-				}
-				return super.getColumnClass(columnIndex);
-			}
-		};
-		table = new JTable();
+		Component horizontalStrut_8 = Box.createHorizontalStrut(50);
+		GridBagConstraints gbc_horizontalStrut_8 = new GridBagConstraints();
+		gbc_horizontalStrut_8.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut_8.gridx = 0;
+		gbc_horizontalStrut_8.gridy = 1;
+		panelMultimedia.add(horizontalStrut_8, gbc_horizontalStrut_8);
 
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(650, 300));
-		panelTabla.add(scrollPane);
+		botonShuffle = new JButton("");
+		botonShuffle.setIcon(new ImageIcon(VentanaBuscar.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
+		botonShuffle.setBorderPainted(false);
+		GridBagConstraints gbc_botonShuffle = new GridBagConstraints();
+		gbc_botonShuffle.insets = new Insets(0, 0, 5, 5);
+		gbc_botonShuffle.gridx = 2;
+		gbc_botonShuffle.gridy = 1;
+		panelMultimedia.add(botonShuffle, gbc_botonShuffle);
 
-		table.setModel(modeloTabla);
+		Component horizontalStrut_3 = Box.createHorizontalStrut(10);
+		GridBagConstraints gbc_horizontalStrut_3 = new GridBagConstraints();
+		gbc_horizontalStrut_3.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut_3.gridx = 3;
+		gbc_horizontalStrut_3.gridy = 1;
+		panelMultimedia.add(horizontalStrut_3, gbc_horizontalStrut_3);
 
-		JPanel panelBotones = new JPanel();
-		panelTabla.add(panelBotones);
-		GridBagLayout gbl_panelBotones = new GridBagLayout();
-		gbl_panelBotones.columnWidths = new int[] { 0, 0, 0, 0, 0, 80, 135, 0, 0, 0 };
-		gbl_panelBotones.rowHeights = new int[] { 0, 0, 0, 0 };
-		gbl_panelBotones.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panelBotones.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		panelBotones.setLayout(gbl_panelBotones);
+		botonPrevious = new JButton("");
+		botonPrevious.setIcon(new ImageIcon(VentanaBuscar.class.getResource("/umu/tds/vista/imagenes/paso-atras.png")));
+		botonPrevious.setBorderPainted(false);
+		GridBagConstraints gbc_botonPrevious = new GridBagConstraints();
+		gbc_botonPrevious.insets = new Insets(0, 0, 5, 5);
+		gbc_botonPrevious.gridx = 4;
+		gbc_botonPrevious.gridy = 1;
+		panelMultimedia.add(botonPrevious, gbc_botonPrevious);
 
-		JButton btnNewButton_7 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_7 = new GridBagConstraints();
-		gbc_btnNewButton_7.fill = GridBagConstraints.BOTH;
-		gbc_btnNewButton_7.gridheight = 3;
-		gbc_btnNewButton_7.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_7.gridx = 6;
-		gbc_btnNewButton_7.gridy = 0;
-		panelBotones.add(btnNewButton_7, gbc_btnNewButton_7);
+		Component horizontalStrut_4 = Box.createHorizontalStrut(10);
+		GridBagConstraints gbc_horizontalStrut_4 = new GridBagConstraints();
+		gbc_horizontalStrut_4.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut_4.gridx = 5;
+		gbc_horizontalStrut_4.gridy = 1;
+		panelMultimedia.add(horizontalStrut_4, gbc_horizontalStrut_4);
 
-		JButton btnNewButton_3 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_3.gridx = 3;
-		gbc_btnNewButton_3.gridy = 1;
-		panelBotones.add(btnNewButton_3, gbc_btnNewButton_3);
+		botonPlay = new JButton("");
+		botonPlay.setIcon(new ImageIcon(VentanaBuscar.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
+		botonPlay.setBorderPainted(false);
+		GridBagConstraints gbc_botonPlay = new GridBagConstraints();
+		gbc_botonPlay.insets = new Insets(0, 0, 5, 5);
+		gbc_botonPlay.gridx = 6;
+		gbc_botonPlay.gridy = 1;
+		panelMultimedia.add(botonPlay, gbc_botonPlay);
 
-		JLabel lblNewLabel = new JLabel("");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 5;
-		gbc_lblNewLabel.gridy = 1;
-		panelBotones.add(lblNewLabel, gbc_lblNewLabel);
+		botonPause = new JButton("");
+		botonPause.setVisible(false);
+		botonPause.setIcon(new ImageIcon(VentanaBuscar.class.getResource("/umu/tds/vista/imagenes/pausa.png")));
+		botonPause.setBorderPainted(false);
+		GridBagConstraints gbc_botonPause = new GridBagConstraints();
+		gbc_botonPause.insets = new Insets(0, 0, 5, 5);
+		gbc_botonPause.gridx = 7;
+		gbc_botonPause.gridy = 1;
+		panelMultimedia.add(botonPause, gbc_botonPause);
 
-		Component horizontalStrut = Box.createHorizontalStrut(40);
-		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
-		gbc_horizontalStrut.insets = new Insets(0, 0, 5, 5);
-		gbc_horizontalStrut.gridx = 7;
-		gbc_horizontalStrut.gridy = 1;
-		panelBotones.add(horizontalStrut, gbc_horizontalStrut);
+		Component horizontalStrut_6 = Box.createHorizontalStrut(10);
+		GridBagConstraints gbc_horizontalStrut_6 = new GridBagConstraints();
+		gbc_horizontalStrut_6.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut_6.gridx = 8;
+		gbc_horizontalStrut_6.gridy = 1;
+		panelMultimedia.add(horizontalStrut_6, gbc_horizontalStrut_6);
 
-		JLabel lblNewLabel_1 = new JLabel("");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_1.gridx = 8;
-		gbc_lblNewLabel_1.gridy = 1;
-		panelBotones.add(lblNewLabel_1, gbc_lblNewLabel_1);
-
-		JButton btnNewButton_1 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 2;
-		panelBotones.add(btnNewButton_1, gbc_btnNewButton_1);
-
-		JButton btnNewButton = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 2;
-		panelBotones.add(btnNewButton, gbc_btnNewButton);
-
-		JButton btnNewButton_2 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_2.gridx = 2;
-		gbc_btnNewButton_2.gridy = 2;
-		panelBotones.add(btnNewButton_2, gbc_btnNewButton_2);
-
-		JButton btnNewButton_4 = new JButton("New button");
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_4.gridx = 4;
-		gbc_btnNewButton_4.gridy = 2;
-		panelBotones.add(btnNewButton_4, gbc_btnNewButton_4);
-
-		modeloTabla.addColumn("TITULO");
-		modeloTabla.addColumn("INTERPRETE");
-		modeloTabla.addColumn("ESTILO");
-		modeloTabla.addColumn("SELECCIONAR");
-
-		table.getColumnModel().getColumn(3).setCellEditor(new CenteredCheckBoxEditor());
+		botonNext = new JButton("");
+		botonNext.setIcon(
+				new ImageIcon(VentanaBuscar.class.getResource("/umu/tds/vista/imagenes/un-paso-adelante.png")));
+		botonNext.setBorderPainted(false);
+		GridBagConstraints gbc_botonNext = new GridBagConstraints();
+		gbc_botonNext.insets = new Insets(0, 0, 5, 5);
+		gbc_botonNext.gridx = 9;
+		gbc_botonNext.gridy = 1;
+		panelMultimedia.add(botonNext, gbc_botonNext);
+		
+		verticalStrut_1 = Box.createVerticalStrut(40);
+		GridBagConstraints gbc_verticalStrut_1 = new GridBagConstraints();
+		gbc_verticalStrut_1.insets = new Insets(0, 0, 0, 5);
+		gbc_verticalStrut_1.gridx = 1;
+		gbc_verticalStrut_1.gridy = 2;
+		panelMultimedia.add(verticalStrut_1, gbc_verticalStrut_1);
+		
+		verticalStrut = Box.createVerticalStrut(40);
+		panelBotones.add(verticalStrut, BorderLayout.NORTH);
 
 		/*
-		 * for (Cancion u: Controlador.getUnicaInstancia().getCanciones()) { Object[]
-		 * usuario = {u.getTitulo(), u.getEstiloMusical(), u.getInterprete(), false};
-		 * modeloTabla.addRow(usuario); }
+		 * MANEJADORES BOTONES
 		 */
-		for (PlayList p : Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
-			Object[] playlist = { p.getNombre(), p.getListaCanciones().size(), null, false };
-			modeloTabla.addRow(playlist);
-		}
-
+		botonPlay.addActionListener(this);
+		botonPause.addActionListener(this);
 	}
 
-	static class CenteredCheckBoxEditor extends DefaultCellEditor {
-		private JCheckBox checkBox;
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == botonPlay) {
+			botonPlay.setVisible(false);
+			botonPause.setVisible(true);
+		}
 
-		public CenteredCheckBoxEditor() {
-			super(new JCheckBox());
-			checkBox = (JCheckBox) getComponent();
-			checkBox.setHorizontalAlignment(JCheckBox.CENTER);
+		if (e.getSource() == botonPause) {
+			botonPause.setVisible(false);
+			botonPlay.setVisible(true);
 		}
 	}
+	public void ponerPlayListEnTabla(String playlist) {
+		panelBotones.setVisible(true);
+		panelTabla.setVisible(true);
+		
+		if (botonPause.isVisible()) {
+			botonPause.setVisible(false);
+			botonPlay.setVisible(true);
+		}
+		
+		PlayList p = Controlador.getUnicaInstancia().getPlayList(playlist);
+
+		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		modeloFiltrado.addColumn("TITULO");
+		modeloFiltrado.addColumn("ESTILO");
+		modeloFiltrado.addColumn("INTERPRETE");
+
+		for (Cancion cancion : p.getListaCanciones()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete()};
+			modeloFiltrado.addRow(fila);
+		}
+
+		int anchoTabla = tablaCanciones.getWidth();
+		int numColumnas = tablaCanciones.getColumnCount();
+		int anchoUltColumna = (int) (anchoTabla * 0.05);
+		for (int i = 0; i < numColumnas; i++) {
+			tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
+			tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
+		}
+		
+		tablaCanciones.setModel(modeloFiltrado);
+		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
+		tablaCanciones.getTableHeader().setReorderingAllowed(false);
+	}
+	
+	public void esconderPanel() {
+		panelBotones.setVisible(false);
+		panelTabla.setVisible(false);
+	}	
 }

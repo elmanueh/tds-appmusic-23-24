@@ -167,6 +167,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				p_cardLayout.setVisible(true);
 				CardLayout card = (CardLayout) p_cardLayout.getLayout();
 				card.show(p_cardLayout, "ventanaBuscar");
+				ventanaBuscar.esconderPanel();
 			}
 		});
 		botonBuscar.setHorizontalAlignment(SwingConstants.LEFT);
@@ -278,6 +279,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				p_cardLayout.setVisible(true);
 				CardLayout card = (CardLayout) p_cardLayout.getLayout();
 				card.show(p_cardLayout, "ventanaMisPlaylist");
+				ventanaMisPlaylist.esconderPanel();
 			}
 		});
 		botonMisPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
@@ -350,7 +352,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 						// Me gustaria que depende de tipo de cardlayout, llame al metodo de una ventana
 						// En el caso de que queramos que la lista de playlist este en todos los sitios
-						//ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+						ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
 					}
 				}
 			}
