@@ -377,7 +377,6 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 			panelTabla.setVisible(false);
 			panelBotonera.setVisible(false);
-
 		}
 
 		if (e.getSource() == botonAñadirPlaylist) {
@@ -410,6 +409,13 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			botonPause.setVisible(false);
 			botonPlay.setVisible(true);
 		}
+	}
+	
+	public void esconderPanel() {
+		panelTabla.setVisible(false);
+		panelBotonera.setVisible(false);
+		
+		//aparte deberia vaciar los textos y tal
 	}
 
 }
