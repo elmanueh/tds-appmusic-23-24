@@ -1,22 +1,36 @@
 package umu.tds.modelo.musica;
 
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
 public class PlayList {
-	//ATRIBUTOS
-    private final String nombre;
-    private final HashSet<Cancion> listaCanciones;
-    private int codigo;
 
-    //GETTERS AND SETTERS
-    public String getNombre() {
+	/*
+	 * ATRIBUTOS
+	 */
+	private final String nombre;
+	private final LinkedList<Cancion> listaCanciones;
+	private int codigo;
+
+	/*
+	 * CONSTRUCTOR
+	 */
+	public PlayList(String nombre) {
+		this.nombre = nombre;
+		this.listaCanciones = new LinkedList<Cancion>();
+		this.codigo = 0;
+	}
+
+	/*
+	 * GETTERS AND SETTERS
+	 */
+	public String getNombre() {
 		return nombre;
 	}
 
-	public HashSet<Cancion> getListaCanciones() {
-		return new HashSet<Cancion>(listaCanciones);
+	public List<Cancion> getListaCanciones() {
+		return new LinkedList<Cancion>(listaCanciones);
 	}
 
 	public int getCodigo() {
@@ -26,28 +40,26 @@ public class PlayList {
 	public void setCodigo(int id) {
 		this.codigo = id;
 	}
-    
-    //CONSTRUCTOR
-    public PlayList(String nombre) {
-		this.nombre = nombre;
-		this.listaCanciones = new HashSet<Cancion>();
-		this.codigo = 0;
+
+	/*
+	 * METODOS
+	 */
+	public void addCancion(Cancion c) {
+		listaCanciones.add(c);
 	}
 
-	//METODOS
-    public void addCancion(Cancion c){
-    	listaCanciones.add(c);
-    }
-    
-    public void addAllCanciones(List<Cancion> canciones) {
-    	listaCanciones.addAll(canciones);
-    }
+	public void addAllCanciones(List<Cancion> canciones) {
+		listaCanciones.addAll(canciones);
+	}
 
-    public void removeCancion(Cancion c){
-    	listaCanciones.remove(c);
-    }
+	public void removeCancion(Cancion c) {
+		listaCanciones.remove(c);
+	}
 
-    
+	public boolean consultarCancion(Cancion c) {
+		return listaCanciones.contains(c);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(codigo, listaCanciones, nombre);
@@ -65,6 +77,5 @@ public class PlayList {
 		return codigo == other.codigo && Objects.equals(listaCanciones, other.listaCanciones)
 				&& Objects.equals(nombre, other.nombre);
 	}
-    
-    
+
 }
