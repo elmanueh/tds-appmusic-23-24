@@ -315,6 +315,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if (e.getSource() == botonBuscar) {
 			panelTabla.setVisible(true);
 			panelBotonera.setVisible(true);
@@ -326,19 +327,15 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
 				@Override
 				public boolean isCellEditable(int row, int column) {
-					for (int i = 0; i < 3; i++) {
-						if (column == i) {
-							return false;
-						}
-					}
+					if (column < 3)
+						return false;
 					return true;
 				}
 
 				@Override
 				public Class<?> getColumnClass(int columnIndex) {
-					if (columnIndex == 3) {
-						return Boolean.class; // Establece la columna 3 como Boolean
-					}
+					if (columnIndex == 3)
+						return Boolean.class;
 					return super.getColumnClass(columnIndex);
 				}
 			};
@@ -384,6 +381,23 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonAñadirPlaylist) {
+			Object[] opciones = { "Sí", "No" };
+			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?",
+					"Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
+					opciones[0]);
+
+			if (respuesta == JOptionPane.YES_OPTION) {
+				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
+				Controlador.getUnicaInstancia().crearPlayList(playlist, (DefaultTableModel) tablaCanciones.getModel());
+			} else {
+				/*JComboBox playlistComboBox = new JComboBox();
+				playlistComboBox.setModel(new DefaultComboBoxModel(Controlador.getUnicaInstancia().getPlayLists()));
+				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
+						JOptionPane.INFORMATION_MESSAGE);
+				if (!playlistComboBox.getSelectedItem().equals(""))
+					Controlador.getUnicaInstancia().anadirCancionesAPlayList(
+							(String) playlistComboBox.getSelectedItem(), (DefaultTableModel) tablaCanciones.getModel());*/
+			}
 
 		}
 

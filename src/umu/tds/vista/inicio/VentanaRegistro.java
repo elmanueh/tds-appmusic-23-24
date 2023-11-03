@@ -6,9 +6,6 @@ import com.toedter.calendar.JDateChooser;
 
 import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.PlayList;
-import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -667,7 +664,6 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		if (e.getSource() == botonRegistrar) { // esto lo tiene que hacer en otro lado
 			boolean OK = checkCeldas();
 			if (OK) {
-				boolean registrado = false;
 				String usuario = textoUsuario.getText();
 				String contraseña = new String(textoContraseña.getPassword());
 				String correo = textoEmail.getText();
@@ -688,7 +684,8 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 
 	private boolean checkCeldas() {
 		boolean salida = true;
-		boolean usuarioVacio = false;
+		@SuppressWarnings("unused")
+		boolean usuarioVacio;
 
 		String textoError = "";
 

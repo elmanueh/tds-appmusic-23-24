@@ -1,13 +1,11 @@
 package umu.tds.modelo;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import umu.tds.dao.AdaptadorPlayListTDS;
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
@@ -135,19 +133,18 @@ public class Controlador {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
 		if (estilo.equals(""))
 			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
-			.filter(c -> c.getInterprete().contains(interprete))
-			.forEach(canciones::add);
+					.filter(c -> c.getInterprete().contains(interprete)).forEach(canciones::add);
 		else
 			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
-				.filter(c -> c.getInterprete().contains(interprete)).filter(c -> c.getEstiloMusical().equals(estilo))
-				.forEach(canciones::add);
+					.filter(c -> c.getInterprete().contains(interprete))
+					.filter(c -> c.getEstiloMusical().equals(estilo)).forEach(canciones::add);
 		return canciones;
 	}
-	
+
 	public String[] getEstilos() {
 		LinkedList<String> estilos = new LinkedList<String>();
 		estilos.add("");
-		for (Cancion c: catalogoCanciones.getCanciones()) {
+		for (Cancion c : catalogoCanciones.getCanciones()) {
 			if (!estilos.contains(c.getEstiloMusical())) {
 				estilos.add(c.getEstiloMusical());
 			}
@@ -172,14 +169,14 @@ public class Controlador {
 				p.addCancion(cancion);
 			}
 		}
-		
+
 		adaptadorPL.registrarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
-		
+
 		PlayList p = usuarioActual.getPlayList(s);
 		int filasTotal = modelo.getRowCount();
 
@@ -197,8 +194,8 @@ public class Controlador {
 	public String[] getPlayLists() {
 		LinkedList<String> playlist = new LinkedList<String>();
 		playlist.add("");
-		for (PlayList p: usuarioActual.getListaPlayList()) {
-				playlist.add(p.getNombre());
+		for (PlayList p : usuarioActual.getListaPlayList()) {
+			playlist.add(p.getNombre());
 		}
 		String[] playlist2 = new String[playlist.size()];
 		for (int i = 0; i < playlist2.length; i++) {
@@ -206,11 +203,9 @@ public class Controlador {
 		}
 		return playlist2;
 	}
-	
+
 	public PlayList getPlayList(String s) {
 		return usuarioActual.getPlayList(s);
 	}
-
-
 
 }

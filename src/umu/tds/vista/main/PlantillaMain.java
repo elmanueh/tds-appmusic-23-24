@@ -231,7 +231,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_menuBotonesPremium.setLayout(gbl_p_menuBotonesPremium);
 
 		JButton botonMasReproducidas = new JButton("Más Reproducidas");
-		botonMasReproducidas.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
+		botonMasReproducidas
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/lupa.png")));
 		botonMasReproducidas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p_listas.setVisible(false);
@@ -305,60 +306,57 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
-		
-		//TABLA PLAYLIST
-		//habria que hacer algo para que se actualice el valor, aunque sea cada 
+
+		// TABLA PLAYLIST
+		// habria que hacer algo para que se actualice el valor, aunque sea cada
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(new TitledBorder(
 				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Playlist",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		p_listas.add(scrollPane, BorderLayout.CENTER);
-		
+
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		
+
 		DefaultTableModel model = new DefaultTableModel() {
-			@Override //ESTO ES PARA QUE NO SE PUEDA EDITAR EL CONTENIDO DE LA TABLA
+			@Override // ESTO ES PARA QUE NO SE PUEDA EDITAR EL CONTENIDO DE LA TABLA
 			public boolean isCellEditable(int row, int column) {
-						return false;
-			}	
+				return false;
+			}
 		};
-		
-		
+
 		table.setModel(model);
-		
+
 		model.addColumn("");
 		table.setTableHeader(null);
-		
-        for (PlayList p: Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
-        	Object[] playlist = {p.getNombre()};
-        	model.addRow(playlist);
-        }
-        
-        table.setBackground(Color.MAGENTA);
-		//AQUI VOY A TRATAR LO DE HACER CLICK EN UNA CELDA Y QUE MUESTRE LA PLAYLIST
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    int row = table.getSelectedRow();
-                    int column = table.getSelectedColumn();
 
-                    // Verifica si se ha hecho doble clic en una celda válida
-                    if (row >= 0 && column >= 0) {
-                        String playlist = table.getValueAt(row, column).toString();
+		for (PlayList p : Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
+			Object[] playlist = { p.getNombre() };
+			model.addRow(playlist);
+		}
 
-                        //Me gustaria que depende de  tipo de cardlayout, llame al metodo de una ventana
-                        //En el caso de que queramos que la lista de playlist este en todos los sitios
-                        ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+		table.setBackground(Color.MAGENTA);
+		// AQUI VOY A TRATAR LO DE HACER CLICK EN UNA CELDA Y QUE MUESTRE LA PLAYLIST
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int row = table.getSelectedRow();
+					int column = table.getSelectedColumn();
 
-                    }
-                }
-            }
-        });
-        
-        
-        //HASTA AQUI TABLA PLAYLIST
+					// Verifica si se ha hecho doble clic en una celda válida
+					if (row >= 0 && column >= 0) {
+						String playlist = table.getValueAt(row, column).toString();
+
+						// Me gustaria que depende de tipo de cardlayout, llame al metodo de una ventana
+						// En el caso de que queramos que la lista de playlist este en todos los sitios
+						//ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+					}
+				}
+			}
+		});
+
+		// HASTA AQUI TABLA PLAYLIST
 
 		GridBagConstraints gbc_p_cardLayout = new GridBagConstraints();
 		gbc_p_cardLayout.insets = new Insets(0, 0, 0, 5);
@@ -374,7 +372,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cardLayout.add(ventanaMasReproducidas, "ventanaMasReproducidas");
 		p_cardLayout.add(ventanaGenerarPDF, "ventanaGenerarPDF");
 		p_cardLayout.add(ventanaMisPlaylist, "ventanaMisPlaylist");
-		
+
 		Component horizontalStrut_3 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_3 = new GridBagConstraints();
 		gbc_horizontalStrut_3.gridx = 2;
@@ -386,7 +384,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
