@@ -52,11 +52,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton botonMasReproducidas;
 	private JButton botonGenerarPDF;
 	private JButton botonMisPlaylist;
-	private JPanel p_menuBotonesPremium;
+	private static JPanel p_menuBotonesPremium;
 	private JPanel p_listas;
 	private JPanel p_cardLayout;
 
-	private VentanaPremium ventanaPremium;
 	private VentanaBuscar ventanaBuscar;
 	private VentanaGestionPlaylist ventanaGestionPlaylist;
 	private VentanaRecientes ventanaRecientes;
@@ -77,7 +76,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
-		ventanaPremium = new VentanaPremium();
 		ventanaBuscar = new VentanaBuscar();
 		ventanaGestionPlaylist = new VentanaGestionPlaylist();
 		ventanaRecientes = new VentanaRecientes();
@@ -228,7 +226,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonRecientes.gridy = 2;
 		p_menuBotones.add(botonRecientes, gbc_botonRecientes);
 
-		p_menuBotonesPremium.setVisible(false);
+		p_menuBotonesPremium.setVisible(Controlador.getUnicaInstancia().getUsuarioActual().isPremium());
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
 		gbc_p_menuBotonesPremium.gridwidth = 2;
 		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
@@ -341,12 +339,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 	}
 
+	public static void modoPremium(boolean premium) {
+		p_menuBotonesPremium.setVisible(premium);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		// TODO
 		if (e.getSource() == botonPremium) {
-			p_menuBotonesPremium.setVisible(ventanaPremium.activar());
+			Controlador.getUnicaInstancia().configuracionPremium();
 		}
 
 		if (e.getSource() == botonLogOut) {

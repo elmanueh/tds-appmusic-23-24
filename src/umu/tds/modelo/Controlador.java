@@ -17,6 +17,8 @@ import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
+import umu.tds.vista.main.MenuPremium;
+import umu.tds.vista.main.PlantillaMain;
 import umu.tds.modelo.descuento.Descuento;
 
 public class Controlador {
@@ -212,11 +214,14 @@ public class Controlador {
 		return usuarioActual.aplicarDescuento(codigo);
 	}
 
-	// TODO
-	public void Premium(double precio) {
-		usuarioActual.setPremium(true);
+	public void configuracionPremium() {
+		MenuPremium.main(null);
+	}
+
+	public void configuracionPremiumConfirmado(boolean premium, double precio) {
+		usuarioActual.setPremium(premium);
+		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
-		
 	}
 
 }
