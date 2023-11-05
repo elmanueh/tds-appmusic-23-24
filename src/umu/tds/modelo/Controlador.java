@@ -206,10 +206,17 @@ public class Controlador {
 	}
 
 	/*
-	 * PLAYLIST
+	 * PREMIUM
 	 */
 	public Descuento aplicarDescuento(String codigo) {
 		return usuarioActual.aplicarDescuento(codigo);
+	}
+
+	// TODO
+	public void Premium(double precio) {
+		usuarioActual.setPremium(true);
+		usuarioActual.setCuota(precio);
+		
 	}
 
 }

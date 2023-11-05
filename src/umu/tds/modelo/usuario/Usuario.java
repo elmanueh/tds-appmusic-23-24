@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import umu.tds.modelo.descuento.Descuento;
+import umu.tds.modelo.descuento.DescuentoNulo;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
@@ -32,7 +33,7 @@ public class Usuario {
 	private final LinkedHashSet<Cancion> listaCancionesRecientes;
 	private boolean premium;
 	private int code;
-	private int cuota;
+	private double cuota;
 
 	/*
 	 * CONSTRUCTOR
@@ -94,11 +95,11 @@ public class Usuario {
 		this.code = code;
 	}
 
-	public int getCuota() {
+	public double getCuota() {
 		return cuota;
 	}
 
-	public void setCuota(int cuota) {
+	public void setCuota(double cuota) {
 		this.cuota = cuota;
 	}
 
@@ -140,10 +141,10 @@ public class Usuario {
 	}
 
 	public Descuento aplicarDescuento(String codigo) {
-		Descuento.descuentos(codigo).stream()
+		return Descuento.descuentos(codigo).stream()
 				.filter(d -> d.isAplicable(this))
-				.reduce((d1, d2) -> d1.Precio() < d2.Precio() ? d1 : d2);
-		return null;
+				.reduce((d1, d2) -> d1.Precio() < d2.Precio() ? d1 : d2)
+				.orElse(new DescuentoNulo());
 	}
 
 	@Override
