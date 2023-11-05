@@ -17,6 +17,7 @@ import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
+import umu.tds.modelo.descuento.Descuento;
 
 public class Controlador {
 
@@ -202,6 +203,20 @@ public class Controlador {
 
 	public PlayList getPlayList(String s) {
 		return usuarioActual.getPlayList(s);
+	}
+
+	/*
+	 * PREMIUM
+	 */
+	public Descuento aplicarDescuento(String codigo) {
+		return usuarioActual.aplicarDescuento(codigo);
+	}
+
+	// TODO
+	public void Premium(double precio) {
+		usuarioActual.setPremium(true);
+		usuarioActual.setCuota(precio);
+		
 	}
 
 }

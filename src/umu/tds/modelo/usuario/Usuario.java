@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import umu.tds.modelo.descuento.Descuento;
+import umu.tds.modelo.descuento.DescuentoNulo;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
@@ -29,8 +31,9 @@ public class Usuario {
 	private final String contraseña;
 	private final HashSet<PlayList> listaPlayList;
 	private final LinkedHashSet<Cancion> listaCancionesRecientes;
-	private int code;
 	private boolean premium;
+	private int code;
+	private double cuota;
 
 	/*
 	 * CONSTRUCTOR
@@ -41,6 +44,7 @@ public class Usuario {
 		this.fecha = fecha;
 		this.contraseña = contraseña;
 		this.code = 0;
+		this.cuota = 0;
 
 		this.listaPlayList = new HashSet<PlayList>();
 		this.listaCancionesRecientes = new LinkedHashSet<Cancion>();
@@ -79,8 +83,8 @@ public class Usuario {
 		return premium;
 	}
 
-	public void setPremium() {
-		premium = true;
+	public void setPremium(boolean premium) {
+		this.premium = premium;
 	}
 
 	public int getCode() {
@@ -89,6 +93,14 @@ public class Usuario {
 
 	public void setCode(int code) {
 		this.code = code;
+	}
+
+	public double getCuota() {
+		return cuota;
+	}
+
+	public void setCuota(double cuota) {
+		this.cuota = cuota;
 	}
 
 	/*
@@ -128,11 +140,12 @@ public class Usuario {
 		return playlist;
 	}
 
-	// FALTA TERMINARLO
-	/*
-	 * public Descuento hacerDescuento() { return Descuento.descuentos().stream()
-	 * .filter(d -> d.isAplicable(this)) }
-	 */
+	public Descuento aplicarDescuento(String codigo) {
+		return Descuento.descuentos(codigo).stream()
+				.filter(d -> d.isAplicable(this))
+				.reduce((d1, d2) -> d1.Precio() < d2.Precio() ? d1 : d2)
+				.orElse(new DescuentoNulo());
+	}
 
 	@Override
 	public int hashCode() {

@@ -56,6 +56,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JPanel p_listas;
 	private JPanel p_cardLayout;
 
+	private VentanaPremium ventanaPremium;
 	private VentanaBuscar ventanaBuscar;
 	private VentanaGestionPlaylist ventanaGestionPlaylist;
 	private VentanaRecientes ventanaRecientes;
@@ -76,6 +77,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 
+		ventanaPremium = new VentanaPremium();
 		ventanaBuscar = new VentanaBuscar();
 		ventanaGestionPlaylist = new VentanaGestionPlaylist();
 		ventanaRecientes = new VentanaRecientes();
@@ -342,8 +344,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// TODO
 		if (e.getSource() == botonPremium) {
-			p_menuBotonesPremium.setVisible(true);
+			p_menuBotonesPremium.setVisible(ventanaPremium.activar());
 		}
 
 		if (e.getSource() == botonLogOut) {

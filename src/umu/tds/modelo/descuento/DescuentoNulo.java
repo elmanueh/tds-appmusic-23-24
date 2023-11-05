@@ -14,4 +14,9 @@ public class DescuentoNulo implements Descuento{
 		return true;
 	}
 
+	@Override
+	public String tipoDescuento() {
+		return "Ninguno";
+	}
+
 }

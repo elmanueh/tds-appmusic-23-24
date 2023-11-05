@@ -18,4 +18,9 @@ public class DescuentoJovenes implements Descuento{
 
 	    return Integer.parseInt(anio) > 1999;
     }
+
+	@Override
+	public String tipoDescuento() {
+		return "Descuento Joven";
+	}
 }

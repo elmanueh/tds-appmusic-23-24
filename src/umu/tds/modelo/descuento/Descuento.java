@@ -12,9 +12,11 @@ public interface Descuento {
 	
 	boolean isAplicable(Usuario u);
 	
-	static Set<Descuento> descuentos(){
+	String tipoDescuento();
+	
+	static Set<Descuento> descuentos(String codigo){
 		Set<Descuento> descuentos = new HashSet<Descuento>();
-		Collections.addAll(descuentos, new DescuentoNulo(), new DescuentoFijo(), new DescuentoJovenes());
+		Collections.addAll(descuentos, new DescuentoFijo(codigo), new DescuentoJovenes(), new DescuentoNulo());
 
 		return descuentos;
 	}
