@@ -3,6 +3,7 @@ package umu.tds.modelo;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -129,28 +130,26 @@ public class Controlador {
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo) {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
 		if (estilo.equals(""))
-			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
-					.filter(c -> c.getInterprete().contains(interprete)).forEach(canciones::add);
+			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase())).forEach(canciones::add);
 		else
-			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().contains(titulo))
-					.filter(c -> c.getInterprete().contains(interprete))
-					.filter(c -> c.getEstiloMusical().equals(estilo)).forEach(canciones::add);
+			catalogoCanciones.getCanciones().stream()
+		    .filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+		    .filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+		    .filter(c -> c.getEstiloMusical().equals(estilo))
+		    .forEach(canciones::add);
+
 		return canciones;
 	}
 
-	public String[] getEstilos() {
-		LinkedList<String> estilos = new LinkedList<String>();
-		estilos.add("");
-		for (Cancion c : catalogoCanciones.getCanciones()) {
-			if (!estilos.contains(c.getEstiloMusical())) {
-				estilos.add(c.getEstiloMusical());
-			}
-		}
-		String[] estilos2 = new String[estilos.size()];
-		for (int i = 0; i < estilos2.length; i++) {
-			estilos2[i] = estilos.get(i);
-		}
-		return estilos2;
+	public LinkedList<String> getEstilos() {
+		LinkedList<String> estilos = (LinkedList<String>) catalogoCanciones.getCanciones().stream()
+			    .map(Cancion::getEstiloMusical)
+			    .distinct()
+			    .sorted()
+			    .collect(Collectors.toCollection(LinkedList::new));
+		estilos.addFirst("");
+		return estilos;
 	}
 
 	/*
