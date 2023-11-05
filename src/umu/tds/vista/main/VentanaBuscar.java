@@ -48,7 +48,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		add(panelBuscar, BorderLayout.NORTH);
 		GridBagLayout gbl_panelBuscar = new GridBagLayout();
 		gbl_panelBuscar.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_panelBuscar.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 100 };
+		gbl_panelBuscar.columnWidths = new int[] { 0, 0, 120, 0, 0, 120, 0, 100 };
 
 		panelBuscar.setLayout(gbl_panelBuscar);
 
@@ -64,6 +64,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		txtTitulo = new JTextField();
 		txtTitulo.setText("");
 		GridBagConstraints gbc_txtTitulo = new GridBagConstraints();
+		gbc_txtTitulo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTitulo.insets = new Insets(0, 0, 5, 5);
 		gbc_txtTitulo.gridx = 2;
 		gbc_txtTitulo.gridy = 0;
@@ -89,6 +90,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		txtInterprete = new JTextField();
 		txtInterprete.setText("");
 		GridBagConstraints gbc_txtInterprete = new GridBagConstraints();
+		gbc_txtInterprete.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtInterprete.insets = new Insets(0, 0, 5, 5);
 		gbc_txtInterprete.gridx = 5;
 		gbc_txtInterprete.gridy = 0;
@@ -415,7 +417,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
 		
-		//aparte deberia vaciar los textos y tal
+		//TODO: aparte deberia vaciar los textos y tal
 	}
 
 }

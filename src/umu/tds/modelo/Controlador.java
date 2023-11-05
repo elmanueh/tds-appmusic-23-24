@@ -28,7 +28,7 @@ public class Controlador {
 
 	private IAdaptadorCancionDAO adaptadorCancion;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
-	private IAdaptadorPlayListDAO adaptadorPL;
+	private IAdaptadorPlayListDAO adaptadorPlayList;
 	private CatalogoUsuarios catalogoUsuarios;
 	private CatalogoCanciones catalogoCanciones;
 
@@ -70,7 +70,7 @@ public class Controlador {
 		}
 		adaptadorUsuario = factoria.getUsuarioDAO();
 		adaptadorCancion = factoria.getCancionDAO();
-		adaptadorPL = factoria.getPlaylistDAO();
+		adaptadorPlayList = factoria.getPlaylistDAO();
 	}
 
 	private void inicializarCatalogos() {
@@ -82,16 +82,12 @@ public class Controlador {
 	 * USUARIO
 	 */
 	public Boolean login(String usuarioAux, String contraseñaAux) {
-		Usuario usuario = CatalogoUsuarios.getUnicaInstancia().getUsuario(usuarioAux);
+		Usuario usuario = getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			this.usuarioActual = usuario;
 			return true;
 		}
 		return false;
-	}
-
-	public boolean esUsuarioRegistrado(String login) {
-		return CatalogoUsuarios.getUnicaInstancia().getUsuario(login) != null;
 	}
 
 	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
@@ -101,8 +97,8 @@ public class Controlador {
 		catalogoUsuarios.addUsuario(usuario);
 	}
 
-	public Usuario getUsuario(String usuario) {
-		return catalogoUsuarios.getUsuario(usuario);
+	public Usuario getUsuario(String nombre_email) {
+		return catalogoUsuarios.getUsuario(nombre_email);
 	}
 
 	public List<Usuario> getUsuarios() {
@@ -114,7 +110,7 @@ public class Controlador {
 	}
 
 	public boolean existeUsuario(String nombre_email) {
-		return catalogoUsuarios.getUsuario(nombre_email) != null;
+		return getUsuario(nombre_email) != null;
 	}
 
 	/*
@@ -171,7 +167,7 @@ public class Controlador {
 			}
 		}
 
-		adaptadorPL.registrarPlayList(p);
+		adaptadorPlayList.registrarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
@@ -187,7 +183,7 @@ public class Controlador {
 				p.addCancion(cancion);
 			}
 		}
-		adaptadorPL.modificarPlayList(p);
+		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
