@@ -2,6 +2,7 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
@@ -13,6 +14,11 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
@@ -126,7 +132,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 		/* TODO: Esto puede dar problemas */
 		comboBoxEstilo = new JComboBox<>();
-		for (String s: Controlador.getUnicaInstancia().getEstilos())
+		for (String s : Controlador.getUnicaInstancia().getEstilos())
 			comboBoxEstilo.addItem(s);
 
 		GridBagConstraints gbc_comboBoxEstilo = new GridBagConstraints();
@@ -370,6 +376,16 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 			tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 			tablaCanciones.getTableHeader().setReorderingAllowed(false);
+
+			tablaCanciones.setAutoCreateRowSorter(true);
+			
+			tablaCanciones.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones.getRowSorter();
+					sorter.sort();				
+				}
+			});
 		}
 
 		if (e.getSource() == botonCancelar) {
@@ -389,7 +405,15 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 			if (respuesta == JOptionPane.YES_OPTION) {
 				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
-				Controlador.getUnicaInstancia().crearPlayList(playlist, (DefaultTableModel) tablaCanciones.getModel());
+				if (!(playlist == null)) {
+					if (Controlador.getUnicaInstancia().existePlayList(playlist))
+						Controlador.getUnicaInstancia().anadirCancionesAPlayList(playlist,
+								(DefaultTableModel) tablaCanciones.getModel());
+					else {
+						Controlador.getUnicaInstancia().crearPlayList(playlist,
+								(DefaultTableModel) tablaCanciones.getModel());
+					}
+				}
 			} else {
 				JComboBox<String> playlistComboBox = new JComboBox<>();
 				playlistComboBox
@@ -418,7 +442,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	public void esconderPanel() {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
-		
+
 		txtTitulo.setText("");
 		txtInterprete.setText("");
 		comboBoxEstilo.setSelectedIndex(0);

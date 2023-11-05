@@ -125,6 +125,13 @@ public class Controlador {
 		catalogoCanciones.addCancion(cancion);
 	}
 
+	public boolean existePlayList(String titulo) {
+		for (PlayList p: usuarioActual.getListaPlayList()) {
+			if (p.getNombre().equals(titulo))
+				return true;
+		}
+		return false;
+	}
 	public List<Cancion> getCanciones() {
 		return catalogoCanciones.getCanciones();
 	}
