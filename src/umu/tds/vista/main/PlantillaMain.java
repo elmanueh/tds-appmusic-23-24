@@ -14,7 +14,6 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,7 +42,6 @@ import javax.swing.UIManager;
 @SuppressWarnings("serial")
 public class PlantillaMain extends JFrame implements ActionListener {
 
-	private CardLayout cardLayout;
 	private GridBagLayout gridBagLayout;
 	private JTable tablaPlayList;
 	private JButton botonPremium;
@@ -135,9 +133,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		getContentPane().add(p_cabezera, gbc_p_cabezera);
 		p_cabezera.setLayout(new BorderLayout(0, 0));
 
+		/* TODO: si falla quitar aqui el usuario para probar */
 		String usuario = Controlador.getUnicaInstancia().getUsuarioActual().getNombre();
-
-		JLabel mensajeBienvenida = new JLabel("Bienvenido, {usuario} ");
+		JLabel mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
 		mensajeBienvenida
 				.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		mensajeBienvenida.setLocation(new Point(40, 0));
@@ -300,9 +298,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		p_listas.add(verticalStrut_2, BorderLayout.SOUTH);
-
-		// TABLA PLAYLIST
-		// TODO habria que hacer algo para que se actualice el valor, aunque sea cada
 
 		tablaPlayList = new JTable();
 		tablaPlayList.setFont(new Font("Tahoma", Font.PLAIN, 11));

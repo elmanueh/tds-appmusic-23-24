@@ -1,10 +1,7 @@
 package umu.tds.vista.main;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
@@ -39,6 +36,8 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	private JButton botonPause;
 	private JButton botonNext;
 	private JScrollPane scrollPane;
+
+	private JComboBox<String> comboBoxEstilo;
 
 	public VentanaBuscar() {
 		setLayout(new BorderLayout(0, 0));
@@ -125,10 +124,10 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		gbc_lblNewLabel_3.gridy = 1;
 		panelBuscar.add(lblNewLabel_3, gbc_lblNewLabel_3);
 
-		JComboBox comboBoxEstilo = new JComboBox();
+		/* TODO: Esto puede dar problemas */
+		comboBoxEstilo = new JComboBox<>();
+		comboBoxEstilo.setModel(new DefaultComboBoxModel<String>(Controlador.getUnicaInstancia().getEstilos()));
 
-		// comboBox.setModel(new
-		// DefaultComboBoxModel(Controlador.getUnicaInstancia().getEstilos()));
 		GridBagConstraints gbc_comboBoxEstilo = new GridBagConstraints();
 		gbc_comboBoxEstilo.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxEstilo.fill = GridBagConstraints.HORIZONTAL;
@@ -375,7 +374,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		if (e.getSource() == botonCancelar) {
 			txtTitulo.setText("");
 			txtInterprete.setText("");
-			// comboBoxEstilo.setSelectedIndex(0);
+			comboBoxEstilo.setSelectedIndex(0);
 
 			panelTabla.setVisible(false);
 			panelBotonera.setVisible(false);
@@ -391,13 +390,15 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
 				Controlador.getUnicaInstancia().crearPlayList(playlist, (DefaultTableModel) tablaCanciones.getModel());
 			} else {
-				/*JComboBox playlistComboBox = new JComboBox();
-				playlistComboBox.setModel(new DefaultComboBoxModel(Controlador.getUnicaInstancia().getPlayLists()));
+				JComboBox<String> playlistComboBox = new JComboBox<>();
+				playlistComboBox
+						.setModel(new DefaultComboBoxModel<String>(Controlador.getUnicaInstancia().getPlayLists()));
 				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
 						JOptionPane.INFORMATION_MESSAGE);
 				if (!playlistComboBox.getSelectedItem().equals(""))
 					Controlador.getUnicaInstancia().anadirCancionesAPlayList(
-							(String) playlistComboBox.getSelectedItem(), (DefaultTableModel) tablaCanciones.getModel());*/
+							(String) playlistComboBox.getSelectedItem(), (DefaultTableModel) tablaCanciones.getModel());
+
 			}
 
 		}
@@ -412,12 +413,12 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			botonPlay.setVisible(true);
 		}
 	}
-	
+
 	public void esconderPanel() {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
-		
-		//TODO: aparte deberia vaciar los textos y tal
+
+		// TODO: aparte deberia vaciar los textos y tal
 	}
 
 }

@@ -5,15 +5,14 @@
 	 					
 	    		// PLANTILLA-MAIN
 		- BARRA NEGRA CABEZERA
-		- IMPLEMENTAR NOMBRE DE USUARIO EN LA CABEZERA
 		- FUNCIONALIDAD BOTON PREMIUM
 		
 		
 				// PANEL-BUSCAR
 		- CASE SENSITIVE EN EL FILTRO
-		- ARREGLAR COMBOBOX
 	 	- QUE LA TABLA DEL BUSCAR SE CREE CON LOS TAMAÑOS BIEN
 	 	- ORDENACION DE LAS CANCIONES DEPENDIENDO DE LA CABEZERA DE LA TABLA QUE PULSES (ASCENDENTE Y DESCENDENTE)
+	 	- FILTRO PARA EL COMBOBOX
 	 
 	 
 	 			// PANEL-MIS-PLAYLIST
@@ -25,3 +24,12 @@
 	 	- TRYCATCH DEL SERVIDOR-DE-PERSISTENCIA
 	 	- INTENTAR QUE NO TARDE TANTO EL CARGAR EL SERVIDOR
 	 	
+	 	
+	 	
+	 	
+	 	/**********************************************/
+	 				SI FALLA WB AL ABRRILO
+	 	/**********************************************/	
+	 	
+	 	- "PlantillaMain" --> String usuario
+	 	- "VentanaBuscar" --> JComboBox<String> comboBoxEstilo
