@@ -136,9 +136,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
-		// ESTO SE DEBERIA HACER SOLO CON EL SET Y PASANDO COMO PARAMETRO premium
-		if (premium)
-			usuario.setPremium();
+		usuario.setPremium(premium);
 
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
 
