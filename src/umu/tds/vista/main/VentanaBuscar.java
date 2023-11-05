@@ -126,7 +126,8 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 		/* TODO: Esto puede dar problemas */
 		comboBoxEstilo = new JComboBox<>();
-		comboBoxEstilo.setModel(new DefaultComboBoxModel<String>(Controlador.getUnicaInstancia().getEstilos()));
+		for (String s: Controlador.getUnicaInstancia().getEstilos())
+			comboBoxEstilo.addItem(s);
 
 		GridBagConstraints gbc_comboBoxEstilo = new GridBagConstraints();
 		gbc_comboBoxEstilo.insets = new Insets(0, 0, 5, 5);
@@ -323,7 +324,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 			String tituloFiltrado = txtTitulo.getText();
 			String interpreteFiltrado = txtInterprete.getText();
-			String estiloFiltrado = "";
+			String estiloFiltrado = (String) comboBoxEstilo.getSelectedItem();
 
 			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
 				@Override
@@ -417,8 +418,10 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	public void esconderPanel() {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
-
-		// TODO: aparte deberia vaciar los textos y tal
+		
+		txtTitulo.setText("");
+		txtInterprete.setText("");
+		comboBoxEstilo.setSelectedIndex(0);
 	}
 
 }
