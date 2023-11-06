@@ -1,5 +1,6 @@
 package umu.tds.modelo;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,6 +115,26 @@ public class Controlador {
 
 	public boolean existeUsuario(String nombre_email) {
 		return getUsuario(nombre_email) != null;
+	}
+	
+	public long diasParaCumple() {
+		 Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
+	     Calendar fechaActual = Calendar.getInstance();
+	     
+	     Calendar fechaNacimientoCalendar = Calendar.getInstance();
+	     fechaNacimientoCalendar.setTime(fechaNacimiento);
+
+	     fechaNacimientoCalendar.set(Calendar.YEAR, fechaActual.get(Calendar.YEAR));
+	     
+	     if (fechaActual.after(fechaNacimientoCalendar)) {
+	    	 fechaNacimientoCalendar.add(Calendar.YEAR, 1);
+	     }
+	     
+	     long diferenciaEnMilisegundos = fechaNacimientoCalendar.getTimeInMillis() - fechaActual.getTimeInMillis();
+
+	     long diasHastaCumpleaños = diferenciaEnMilisegundos / (24 * 60 * 60 * 1000);
+	     
+	     return diasHastaCumpleaños;
 	}
 
 	/*
