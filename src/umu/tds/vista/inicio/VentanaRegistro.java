@@ -4,15 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import com.toedter.calendar.JDateChooser;
 
-import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.ControladorVentanas;
 
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 
-@SuppressWarnings("serial")
 public class VentanaRegistro extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanel WindowRegister;
 	private JTextPane labelTitulo;
 	private JLabel labelEmail;
@@ -735,7 +737,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 			Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
 			JOptionPane.showMessageDialog(null, "Usuario registrado correctamente.", "Registro satisfactorio",
 					JOptionPane.INFORMATION_MESSAGE);
-			AppMusic.logInSatisfactorio();
+			ControladorVentanas.getUnicaInstancia().logInSatisfactorio();
 		}
 	}
 

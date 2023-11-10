@@ -1,7 +1,5 @@
 package umu.tds.vista.main;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 
 import java.awt.CardLayout;
@@ -25,12 +23,12 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import javax.swing.JButton;
 
-public class MenuPremium implements ActionListener {
+public class MenuPremium extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = 1L;
 	/*
 	 * ATRIBUTOS
 	 */
-	private JFrame frame;
 	private JTextField codigo;
 	private JButton botonPremium;
 	private JButton botonDarDeBaja;
@@ -38,29 +36,16 @@ public class MenuPremium implements ActionListener {
 	/*
 	 * METODOS
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuPremium window = new MenuPremium();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	private void initialize() {
-		frame = new JFrame();
-		frame.setIconImage(Toolkit.getDefaultToolkit()
+		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
-		frame.setTitle("Spotifoo Premium");
-		frame.setSize(500, 300);
-		frame.setMinimumSize(frame.getSize());
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		setTitle("Spotifoo Premium");
+		setSize(500, 300);
+		setMinimumSize(getSize());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
+		getContentPane().setLayout(new CardLayout(0, 0));
 	}
 
 	public MenuPremium() {
@@ -68,7 +53,7 @@ public class MenuPremium implements ActionListener {
 		initialize();
 
 		JPanel panel_Normal = new JPanel();
-		frame.getContentPane().add(panel_Normal, "panel_Normal");
+		getContentPane().add(panel_Normal, "panel_Normal");
 		GridBagLayout gbl_panel_Normal = new GridBagLayout();
 		gbl_panel_Normal.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_panel_Normal.rowHeights = new int[] { 0, 20, 0, 30, 35 };
@@ -110,7 +95,7 @@ public class MenuPremium implements ActionListener {
 		panel_Normal.add(botonPremium, gbc_btnNewButton);
 
 		JPanel panel_Premium = new JPanel();
-		frame.getContentPane().add(panel_Premium, "panel_Premium");
+		getContentPane().add(panel_Premium, "panel_Premium");
 		GridBagLayout gbl_panel_Premium = new GridBagLayout();
 		gbl_panel_Premium.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_panel_Premium.rowHeights = new int[] { 0, 20, 0, 20, 35 };
@@ -141,12 +126,11 @@ public class MenuPremium implements ActionListener {
 
 		boolean premium = Controlador.getUnicaInstancia().getUsuarioActual().isPremium();
 		if (premium) {
-			((CardLayout) frame.getContentPane().getLayout()).show(frame.getContentPane(), "panel_Premium");
-			frame.setVisible(true);
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(), "panel_Premium");
 		} else {
-			((CardLayout) frame.getContentPane().getLayout()).show(frame.getContentPane(), "panel_Normal");
-			frame.setVisible(true);
+			((CardLayout) getContentPane().getLayout()).show(getContentPane(), "panel_Normal");
 		}
+		setVisible(true);
 
 		/*
 		 * Manejadores
@@ -172,16 +156,16 @@ public class MenuPremium implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(null, mensaje, "GRACIAS POR SUSCRIBIRTE", JOptionPane.PLAIN_MESSAGE);
-			Controlador.getUnicaInstancia().configuracionPremiumConfirmado(true, d.Precio());
-			frame.dispose();
+			Controlador.getUnicaInstancia().configuracionPremium(true, d.Precio());
+			dispose();
 		}
 
 		if (e.getSource() == botonDarDeBaja) {
 			JOptionPane.showMessageDialog(null,
 					"Te esperamos de vuelta pronto\n\nPuedes disfrutar de nuestros códigos promocionales",
 					"HASTA PRONTO !!!", JOptionPane.PLAIN_MESSAGE);
-			Controlador.getUnicaInstancia().configuracionPremiumConfirmado(false, 0);
-			frame.dispose();
+			Controlador.getUnicaInstancia().configuracionPremium(false, 0);
+			dispose();
 		}
 
 	}

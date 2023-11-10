@@ -30,8 +30,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 
-import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -348,11 +348,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		// TODO
 		if (e.getSource() == botonPremium) {
-			Controlador.getUnicaInstancia().configuracionPremium();
+			ControladorVentanas.getUnicaInstancia().iniciarPremium();
 		}
 
 		if (e.getSource() == botonLogOut) {
-			AppMusic.logOutSatisfactorio();
+			ControladorVentanas.getUnicaInstancia().logOutSatisfactorio();
 		}
 
 		if (e.getSource() == botonBuscar) {
@@ -389,8 +389,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGenerarPDF");
-			
-			//TODO: esto ponerlo en el panel
+
+			// TODO: esto ponerlo en el panel
 			long dias = Controlador.getUnicaInstancia().diasParaCumple();
 			if (dias == 0)
 				System.out.println("Feliz cumpleaños!!");

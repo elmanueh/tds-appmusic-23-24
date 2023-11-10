@@ -89,6 +89,7 @@ public class Controlador {
 		Usuario usuario = getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			this.usuarioActual = usuario;
+			ControladorVentanas.getUnicaInstancia().logInSatisfactorio();
 			return true;
 		}
 		return false;
@@ -116,25 +117,25 @@ public class Controlador {
 	public boolean existeUsuario(String nombre_email) {
 		return getUsuario(nombre_email) != null;
 	}
-	
+
 	public long diasParaCumple() {
-		 Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
-	     Calendar fechaActual = Calendar.getInstance();
-	     
-	     Calendar fechaNacimientoCalendar = Calendar.getInstance();
-	     fechaNacimientoCalendar.setTime(fechaNacimiento);
+		Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
+		Calendar fechaActual = Calendar.getInstance();
 
-	     fechaNacimientoCalendar.set(Calendar.YEAR, fechaActual.get(Calendar.YEAR));
-	     
-	     if (fechaActual.after(fechaNacimientoCalendar)) {
-	    	 fechaNacimientoCalendar.add(Calendar.YEAR, 1);
-	     }
-	     
-	     long diferenciaEnMilisegundos = fechaNacimientoCalendar.getTimeInMillis() - fechaActual.getTimeInMillis();
+		Calendar fechaNacimientoCalendar = Calendar.getInstance();
+		fechaNacimientoCalendar.setTime(fechaNacimiento);
 
-	     long diasHastaCumpleaños = diferenciaEnMilisegundos / (24 * 60 * 60 * 1000);
-	     
-	     return diasHastaCumpleaños;
+		fechaNacimientoCalendar.set(Calendar.YEAR, fechaActual.get(Calendar.YEAR));
+
+		if (fechaActual.after(fechaNacimientoCalendar)) {
+			fechaNacimientoCalendar.add(Calendar.YEAR, 1);
+		}
+
+		long diferenciaEnMilisegundos = fechaNacimientoCalendar.getTimeInMillis() - fechaActual.getTimeInMillis();
+
+		long diasHastaCumpleaños = diferenciaEnMilisegundos / (24 * 60 * 60 * 1000);
+
+		return diasHastaCumpleaños;
 	}
 
 	/*
@@ -147,12 +148,13 @@ public class Controlador {
 	}
 
 	public boolean existePlayList(String titulo) {
-		for (PlayList p: usuarioActual.getListaPlayList()) {
+		for (PlayList p : usuarioActual.getListaPlayList()) {
 			if (p.getNombre().equals(titulo))
 				return true;
 		}
 		return false;
 	}
+
 	public List<Cancion> getCanciones() {
 		return catalogoCanciones.getCanciones();
 	}
@@ -160,24 +162,22 @@ public class Controlador {
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo) {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
 		if (estilo.equals(""))
-			catalogoCanciones.getCanciones().stream().filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase())).forEach(canciones::add);
+			catalogoCanciones.getCanciones().stream()
+					.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+					.forEach(canciones::add);
 		else
 			catalogoCanciones.getCanciones().stream()
-		    .filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-		    .filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-		    .filter(c -> c.getEstiloMusical().equals(estilo))
-		    .forEach(canciones::add);
+					.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+					.filter(c -> c.getEstiloMusical().equals(estilo)).forEach(canciones::add);
 
 		return canciones;
 	}
 
 	public LinkedList<String> getEstilos() {
 		LinkedList<String> estilos = (LinkedList<String>) catalogoCanciones.getCanciones().stream()
-			    .map(Cancion::getEstiloMusical)
-			    .distinct()
-			    .sorted()
-			    .collect(Collectors.toCollection(LinkedList::new));
+				.map(Cancion::getEstiloMusical).distinct().sorted().collect(Collectors.toCollection(LinkedList::new));
 		estilos.addFirst("");
 		return estilos;
 	}
@@ -241,11 +241,7 @@ public class Controlador {
 		return usuarioActual.aplicarDescuento(codigo);
 	}
 
-	public void configuracionPremium() {
-		MenuPremium.main(null);
-	}
-
-	public void configuracionPremiumConfirmado(boolean premium, double precio) {
+	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
 		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
