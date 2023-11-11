@@ -1,8 +1,9 @@
 package umu.tds.modelo.musica;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class PlayList {
 
@@ -10,7 +11,7 @@ public class PlayList {
 	 * ATRIBUTOS
 	 */
 	private final String nombre;
-	private final LinkedList<Cancion> listaCanciones;
+	private final HashSet<Cancion> listaCanciones;
 	private int codigo;
 
 	/*
@@ -18,7 +19,7 @@ public class PlayList {
 	 */
 	public PlayList(String nombre) {
 		this.nombre = nombre;
-		this.listaCanciones = new LinkedList<Cancion>();
+		this.listaCanciones = new HashSet<Cancion>();
 		this.codigo = 0;
 	}
 
@@ -29,8 +30,8 @@ public class PlayList {
 		return nombre;
 	}
 
-	public List<Cancion> getListaCanciones() {
-		return new LinkedList<Cancion>(listaCanciones);
+	public Set<Cancion> getListaCanciones() {
+		return new HashSet<Cancion>(listaCanciones);
 	}
 
 	public int getCodigo() {
@@ -48,7 +49,7 @@ public class PlayList {
 		listaCanciones.add(c);
 	}
 
-	public void addAllCanciones(List<Cancion> canciones) {
+	public void addAllCanciones(HashSet<Cancion> canciones) {
 		listaCanciones.addAll(canciones);
 	}
 

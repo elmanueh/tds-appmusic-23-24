@@ -133,7 +133,7 @@ public class Usuario {
 		listaCancionesRecientes.addAll(listaRecienteActualizado);
 	}
 
-	public PlayList crearPlayList(String nombre, List<Cancion> canciones) {
+	public PlayList crearPlayList(String nombre, HashSet<Cancion> canciones) {
 		PlayList playlist = new PlayList(nombre);
 		playlist.addAllCanciones(canciones);
 		this.addPlayList(playlist);

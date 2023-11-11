@@ -2,6 +2,7 @@ package umu.tds.modelo;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class Controlador {
 
 	private Usuario usuarioActual;
 	private LinkedList<Cancion> cancionesSeleccionadas;
+	private HashSet<Cancion> cancionesSeleccionadas;
 
 	/*
 	 * CONSTRUCTOR
@@ -283,6 +285,7 @@ public class Controlador {
 	 */
 	public void setTablaSeleccionados(DefaultTableModel modelo) {
 		cancionesSeleccionadas = new LinkedList<Cancion>();
+		cancionesSeleccionadas = new HashSet<Cancion>();
 		int filasTotal = modelo.getRowCount();
 		
 
@@ -295,6 +298,7 @@ public class Controlador {
 	}
 
 	public LinkedList<Cancion> getCancionesSeleccionadas() {
+	public HashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
 }
