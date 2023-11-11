@@ -2,14 +2,13 @@ package umu.tds.modelo;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.table.DefaultTableModel;
 
-import umu.tds.componente.Canciones;
-import umu.tds.componente.MapperCancionesXMLtoJava;
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
@@ -21,9 +20,12 @@ import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
 import umu.tds.vista.main.PlantillaMain;
+import umu.tds.modelo.cargador.CancionesEvent;
+import umu.tds.modelo.cargador.CancionesListener;
+import umu.tds.modelo.cargador.CargadorCanciones;
 import umu.tds.modelo.descuento.Descuento;
 
-public class Controlador {
+public class Controlador implements CancionesListener {
 
 	/*
 	 * ATRIBUTOS
@@ -44,6 +46,7 @@ public class Controlador {
 	private Controlador() {
 		inicializarAdaptadores();
 		inicializarCatalogos();
+		CargadorCanciones.getUnicaInstancia().addCancionesListener(this);
 	}
 
 	/*
@@ -240,6 +243,19 @@ public class Controlador {
 		usuarioActual.setPremium(premium);
 		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
+	}
+
+	/*
+	 * CARGADOR CANCIONES
+	 */
+	public void cargarCanciones(String rutaXML) {
+		CargadorCanciones.getUnicaInstancia().setArchivoCanciones(rutaXML);
+	}
+
+	@Override
+	public void enteradoNuevasCanciones(EventObject e) {
+		CancionesEvent evento = (CancionesEvent) e;
+		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
 	}
 
 }
