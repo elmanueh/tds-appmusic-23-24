@@ -2,7 +2,7 @@ package umu.tds.modelo.descuento;
 
 import umu.tds.modelo.usuario.Usuario;
 
-public class DescuentoNulo implements Descuento{
+public class DescuentoNulo implements Descuento {
 
 	@Override
 	public double Precio() {

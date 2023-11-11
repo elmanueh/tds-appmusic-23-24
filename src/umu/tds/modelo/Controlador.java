@@ -3,6 +3,7 @@ package umu.tds.modelo;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,16 +16,17 @@ import umu.tds.dao.IAdaptadorCancionDAO;
 import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.CargadorCanciones;
 import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.vista.main.MenuPremium;
 import umu.tds.vista.main.PlantillaMain;
+import umu.tds.modelo.cargador.CancionesEvent;
+import umu.tds.modelo.cargador.CancionesListener;
+import umu.tds.modelo.cargador.CargadorCanciones;
 import umu.tds.modelo.descuento.Descuento;
 
-public class Controlador {
+public class Controlador implements CancionesListener {
 
 	/*
 	 * ATRIBUTOS
@@ -46,6 +48,7 @@ public class Controlador {
 	private Controlador() {
 		inicializarAdaptadores();
 		inicializarCatalogos();
+		CargadorCanciones.getUnicaInstancia().addCancionesListener(this);
 	}
 
 	/*
@@ -54,11 +57,6 @@ public class Controlador {
 	public static Controlador getUnicaInstancia() {
 		if (INSTANCIA == null) {
 			INSTANCIA = new Controlador();
-			try {
-				CargadorCanciones.INSTANCE.cargarCanciones();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 
 		return INSTANCIA;
@@ -91,6 +89,7 @@ public class Controlador {
 		Usuario usuario = getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			this.usuarioActual = usuario;
+			ControladorVentanas.getUnicaInstancia().logInSatisfactorio();
 			return true;
 		}
 		return false;
@@ -315,11 +314,7 @@ public class Controlador {
 		return usuarioActual.aplicarDescuento(codigo);
 	}
 
-	public void configuracionPremium() {
-		MenuPremium.main(null);
-	}
-
-	public void configuracionPremiumConfirmado(boolean premium, double precio) {
+	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
 		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
@@ -346,4 +341,22 @@ public class Controlador {
 	public HashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
+	 * CARGADOR CANCIONES
+	 */
+	public void cargarCanciones(String rutaXML) {
+		CargadorCanciones.getUnicaInstancia().setArchivoCanciones(rutaXML);
+	}
+
+	@Override
+	public void enteradoNuevasCanciones(EventObject e) {
+		CancionesEvent evento = (CancionesEvent) e;
+		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
+
+		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
+			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), c.getEstilo(), c.getInterprete());
+			adaptadorCancion.registrarCancion(cancion);
+			catalogoCanciones.addCancion(cancion);
+		}
+	}
+
 }

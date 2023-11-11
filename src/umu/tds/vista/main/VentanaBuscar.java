@@ -332,6 +332,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			boolean favorito = CheckBoxFavoritos.isSelected();
 
 			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -379,12 +380,14 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
 			tablaCanciones.setAutoCreateRowSorter(true);
-			
+
 			tablaCanciones.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones.getRowSorter();
-					sorter.sort();				
+					@SuppressWarnings("unchecked")
+					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
+							.getRowSorter();
+					sorter.sort();
 				}
 			});
 		}

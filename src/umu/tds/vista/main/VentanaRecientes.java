@@ -4,4 +4,6 @@ import javax.swing.*;
 
 public class VentanaRecientes extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 }

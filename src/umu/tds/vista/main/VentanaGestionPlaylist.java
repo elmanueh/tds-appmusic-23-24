@@ -42,6 +42,8 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	private JButton botonCrear;
 	private JButton botonEliminar;
 
+	private static final long serialVersionUID = 1L;
+
 	public VentanaGestionPlaylist() {
 		setLayout(new BorderLayout(0, 0));
 

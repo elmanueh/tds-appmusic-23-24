@@ -1,8 +1,6 @@
 package umu.tds.vista.inicio;
 
 import javax.swing.*;
-
-import umu.tds.AppMusic;
 import umu.tds.modelo.Controlador;
 
 import java.awt.*;
@@ -11,8 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-@SuppressWarnings("serial")
 public class VentanaLogin extends JPanel implements ActionListener, MouseListener {
+
+	private static final long serialVersionUID = 1L;
 
 	private JTextField textoUsuario;
 	private JPasswordField textoContraseña;
@@ -209,11 +208,10 @@ public class VentanaLogin extends JPanel implements ActionListener, MouseListene
 			String contraseña = new String(textoContraseña.getPassword());
 			Boolean login = Controlador.getUnicaInstancia().login(usuario, contraseña);
 
-			if (login) {
-				AppMusic.logInSatisfactorio();
-			} else
+			if (!login) {
 				JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos.",
 						"Problema en Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		if (e.getSource() == botonRegistro) {

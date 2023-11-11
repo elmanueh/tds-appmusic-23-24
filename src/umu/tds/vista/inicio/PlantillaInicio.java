@@ -16,9 +16,9 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JTextArea;
 
-@SuppressWarnings("serial")
 public class PlantillaInicio extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private static CardLayout cardLayout;
 	private static JPanel panelCardLayout;
 
