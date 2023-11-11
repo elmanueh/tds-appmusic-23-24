@@ -2,6 +2,7 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
@@ -13,6 +14,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
@@ -241,7 +244,6 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		panelBotonera.add(verticalStrut_3, BorderLayout.NORTH);
-		botonEliminarCancion.addActionListener(this);
 
 		/*
 		 * MANEJADORES BOTONES
@@ -267,7 +269,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			if (Controlador.getUnicaInstancia().existePlayList(txtTitulo.getText())) {
 				DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
 				for (Cancion c: Controlador.getUnicaInstancia().getPlayList(txtTitulo.getText()).getListaCanciones()) {
-					Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete()};
+					Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete(), false};
 					modelo.addRow(fila);
 				}
 				Controlador.getUnicaInstancia().anadirCancionesSelecAPL(txtTitulo.getText());
@@ -275,7 +277,6 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			else {
 				Controlador.getUnicaInstancia().crearPlayList(txtTitulo.getText());
 			}
-			txtTitulo.setText("");
 			}
 		}
 		
@@ -292,7 +293,14 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		}
 		
 		if (e.getSource() == botonEliminarCancion) {
-			
+			boolean b = Controlador.getUnicaInstancia().eliminarCancionDePlayList(txtTitulo.getText(), (DefaultTableModel) tablaCanciones.getModel());
+			if (b){
+				JOptionPane.showMessageDialog(null, "Canciones de la playlist " + txtTitulo.getText() + " se han eliminado.",
+						"Error borrar playlist", JOptionPane.CANCEL_OPTION);
+			} else {
+				JOptionPane.showMessageDialog(null, "La playlist " + txtTitulo.getText() + " no existe.\n No puede eliminar canciones.",
+						"Error borrar playlist", JOptionPane.CANCEL_OPTION);
+			}
 		}
 		
 		if (e.getSource() == botonPlay) {
@@ -315,16 +323,26 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				return false;
+				if (column < 3)
+					return false;
+				return true;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if (columnIndex == 3)
+					return Boolean.class;
+				return super.getColumnClass(columnIndex);
 			}
 		};
 
 		modeloFiltrado.addColumn("TITULO");
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
+		modeloFiltrado.addColumn("");
 
 		for (Cancion cancion : hashSet) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete()};
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false};
 			modeloFiltrado.addRow(fila);
 		}
 
@@ -333,12 +351,27 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		int anchoUltColumna = (int) (anchoTabla * 0.05);
 		for (int i = 0; i < numColumnas; i++) {
 			tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-			tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
+			if (i != numColumnas - 1)
+				tablaCanciones.getColumnModel().getColumn(i)
+						.setPreferredWidth((anchoTabla - anchoUltColumna) / (numColumnas - 1));
+
+			else
+				tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
 		}
 		
 		tablaCanciones.setModel(modeloFiltrado);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
+
+		tablaCanciones.setAutoCreateRowSorter(true);
+		
+		tablaCanciones.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones.getRowSorter();
+				sorter.sort();				
+			}
+		});
 	}
 	
 	public void vaciarCampos() {

@@ -283,6 +283,26 @@ public class Controlador {
 		adaptadorPlayList.borrarPlayList(p);
 		return true;
 	}
+	
+	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
+		PlayList p = usuarioActual.getPlayList(text);
+		if (p==null)
+			return false;
+		usuarioActual.removePlayList(p);
+		int filasTotal = modelo.getRowCount();
+
+		for (int fila = 0; fila < filasTotal; fila++) {
+			if ((Boolean) modelo.getValueAt(fila, 3)) {
+				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
+				p.removeCancion(cancion);
+			}
+		}
+		
+		adaptadorPlayList.modificarPlayList(p);
+		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		return true;
+	}
 
 	/*
 	 * PREMIUM
