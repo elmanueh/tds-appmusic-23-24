@@ -8,13 +8,14 @@ import java.util.stream.Collectors;
 
 import javax.swing.table.DefaultTableModel;
 
+import umu.tds.componente.Canciones;
+import umu.tds.componente.MapperCancionesXMLtoJava;
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
 import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.CargadorCanciones;
 import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
@@ -51,11 +52,6 @@ public class Controlador {
 	public static Controlador getUnicaInstancia() {
 		if (INSTANCIA == null) {
 			INSTANCIA = new Controlador();
-			try {
-				CargadorCanciones.INSTANCE.cargarCanciones();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 
 		return INSTANCIA;
