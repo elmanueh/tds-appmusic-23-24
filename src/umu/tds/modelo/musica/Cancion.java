@@ -69,7 +69,7 @@ public class Cancion {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(estiloMusical, interprete, numReproducciones, rutaFichero, titulo);
+		return Objects.hash(codigo, estiloMusical, interprete, numReproducciones, rutaFichero, titulo);
 	}
 
 	@Override
@@ -81,9 +81,8 @@ public class Cancion {
 		if (getClass() != obj.getClass())
 			return false;
 		Cancion other = (Cancion) obj;
-		return Objects.equals(estiloMusical, other.estiloMusical) && Objects.equals(interprete, other.interprete)
-				&& numReproducciones == other.numReproducciones && Objects.equals(rutaFichero, other.rutaFichero)
-				&& Objects.equals(titulo, other.titulo);
+		return codigo == other.codigo && Objects.equals(estiloMusical, other.estiloMusical)
+				&& Objects.equals(interprete, other.interprete) && numReproducciones == other.numReproducciones
+				&& Objects.equals(rutaFichero, other.rutaFichero) && Objects.equals(titulo, other.titulo);
 	}
-
 }

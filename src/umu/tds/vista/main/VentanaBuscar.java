@@ -16,16 +16,13 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
 
-@SuppressWarnings("serial")
 public class VentanaBuscar extends JPanel implements ActionListener {
-
+	private static final long serialVersionUID = 1L;
+	
 	private JTextField txtTitulo;
 	private JTextField txtInterprete;
 	private JTable tablaCanciones;
@@ -42,6 +39,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	private JButton botonPause;
 	private JButton botonNext;
 	private JScrollPane scrollPane;
+	private JCheckBox CheckBoxFavoritos;
 
 	private JComboBox<String> comboBoxEstilo;
 
@@ -113,13 +111,13 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		gbc_botonBuscar.gridy = 0;
 		panelBuscar.add(botonBuscar, gbc_botonBuscar);
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Favoritas");
-		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.BOLD, 12));
+		CheckBoxFavoritos = new JCheckBox("Favoritas");
+		CheckBoxFavoritos.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
 		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 5);
 		gbc_chckbxNewCheckBox.gridx = 2;
 		gbc_chckbxNewCheckBox.gridy = 1;
-		panelBuscar.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		panelBuscar.add(CheckBoxFavoritos, gbc_chckbxNewCheckBox);
 
 		JLabel lblNewLabel_3 = new JLabel("Estilo:");
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -331,8 +329,11 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			String tituloFiltrado = txtTitulo.getText();
 			String interpreteFiltrado = txtInterprete.getText();
 			String estiloFiltrado = (String) comboBoxEstilo.getSelectedItem();
+			boolean favorito = CheckBoxFavoritos.isSelected();
 
 			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					if (column < 3)
@@ -354,7 +355,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			modeloFiltrado.addColumn("");
 
 			for (Cancion cancion : Controlador.getUnicaInstancia().getCancionesFiltradas(tituloFiltrado,
-					interpreteFiltrado, estiloFiltrado)) {
+					interpreteFiltrado, estiloFiltrado, favorito)) {
 				Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
 				modeloFiltrado.addRow(fila);
 			}

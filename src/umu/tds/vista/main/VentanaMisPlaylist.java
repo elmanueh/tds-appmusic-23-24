@@ -20,6 +20,8 @@ import java.awt.event.ActionListener;
 import java.awt.Component;
 
 public class VentanaMisPlaylist extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	
 	private JPanel panelTabla;
 	private JTable tablaCanciones;
 	private JScrollPane scrollPane;

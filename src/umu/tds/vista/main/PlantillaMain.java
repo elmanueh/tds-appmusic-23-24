@@ -364,10 +364,28 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == botonGestionPlaylist) {
-			p_listas.setVisible(false);
+			p_listas.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
+			
+			/*
+			 * TABLA
+			 */
+			DefaultTableModel modeloTabla = new DefaultTableModel() {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+
+			modeloTabla.addColumn("");
+			for (PlayList p : Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
+				Object[] playlist = { p.getNombre() };
+				modeloTabla.addRow(playlist);
+			}
+
+			tablaPlayList.setModel(modeloTabla);
 		}
 
 		if (e.getSource() == botonRecientes) {
@@ -392,9 +410,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			
 			//TODO: esto ponerlo en el panel
 			long dias = Controlador.getUnicaInstancia().diasParaCumple();
-			if (dias == 0)
+			if (dias == 365)
 				System.out.println("Feliz cumpleaños!!");
-			System.out.println("Dias para mi cumpleaños: " + dias);
+			else
+				System.out.println("Dias para mi cumpleaños: " + dias);
 		}
 
 		if (e.getSource() == botonMisPlaylist) {
