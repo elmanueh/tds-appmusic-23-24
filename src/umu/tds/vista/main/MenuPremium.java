@@ -124,7 +124,7 @@ public class MenuPremium implements ActionListener {
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_Premium.add(lblNewLabel_2, gbc_lblNewLabel_2);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de X€");
+		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de "+ Controlador.getUnicaInstancia().getUsuarioActual().getCuota() + "€");
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_1_1.gridx = 0;

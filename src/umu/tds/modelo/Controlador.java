@@ -278,6 +278,8 @@ public class Controlador {
 		usuarioActual.setPremium(premium);
 		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
+		
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	/*
