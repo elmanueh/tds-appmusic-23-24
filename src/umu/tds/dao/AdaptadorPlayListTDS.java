@@ -62,7 +62,9 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 	}
 
 	public void borrarPlayList(PlayList playlist) {
+		Entidad ePlayList = servPersistencia.recuperarEntidad(playlist.getCodigo());
 
+		servPersistencia.borrarEntidad(ePlayList);
 	}
 
 	public void modificarPlayList(PlayList playlist) {
@@ -88,7 +90,6 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 			return (PlayList) PoolDAO.getUnicaInstancia().getObjeto(codigo);
 
 		Entidad ePlayList;
-		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
 		HashSet<Cancion> canciones = new HashSet<Cancion>();
 		String nombre;
 
@@ -124,8 +125,6 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		return codigosCanciones.trim();
 	}
 
-	private LinkedList<Cancion> obtenerCancionesDesdeCodigos(String canciones) {
-		LinkedList<Cancion> listaCanciones = new LinkedList<Cancion>();
 	private HashSet<Cancion> obtenerCancionesDesdeCodigos(String canciones) {
 		HashSet<Cancion> listaCanciones = new HashSet<Cancion>();
 		StringTokenizer strTok = new StringTokenizer(canciones, " ");

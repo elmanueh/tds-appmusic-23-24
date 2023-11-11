@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
@@ -258,22 +259,36 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == botonCrear) {
+			Object[] opciones = { "Sí", "No" };
+			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear la playlist " + txtTitulo.getText() + "?",
+					"Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
+					opciones[0]);
+			if (respuesta == JOptionPane.YES_OPTION) {
 			if (Controlador.getUnicaInstancia().existePlayList(txtTitulo.getText())) {
+				DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
 				for (Cancion c: Controlador.getUnicaInstancia().getPlayList(txtTitulo.getText()).getListaCanciones()) {
-					DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
 					Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete()};
 					modelo.addRow(fila);
 				}
 				Controlador.getUnicaInstancia().anadirCancionesSelecAPL(txtTitulo.getText());
 			}
 			else {
-				
+				Controlador.getUnicaInstancia().crearPlayList(txtTitulo.getText());
 			}
-				
+			txtTitulo.setText("");
+			}
 		}
 		
 		if (e.getSource() == botonEliminar) {
-			
+			boolean b = Controlador.getUnicaInstancia().eliminarPlayList(txtTitulo.getText());
+			if (b){
+				JOptionPane.showMessageDialog(null, "La playlist " + txtTitulo.getText() + " se ha eliminado.",
+						"Error borrar playlist", JOptionPane.CANCEL_OPTION);
+				txtTitulo.setText("");
+			} else {
+				JOptionPane.showMessageDialog(null, "La playlist " + txtTitulo.getText() + " no existe.\n No puede ser borrada.",
+						"Error borrar playlist", JOptionPane.CANCEL_OPTION);
+			}
 		}
 		
 		if (e.getSource() == botonEliminarCancion) {
@@ -291,7 +306,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		}
 	}
 	
-	public void ponerPlayListEnTabla(LinkedList<Cancion> listaCanciones) {		
+	public void ponerPlayListEnTabla(HashSet<Cancion> hashSet) {		
 		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
 
@@ -308,7 +323,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
 
-		for (Cancion cancion : listaCanciones) {
+		for (Cancion cancion : hashSet) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete()};
 			modeloFiltrado.addRow(fila);
 		}

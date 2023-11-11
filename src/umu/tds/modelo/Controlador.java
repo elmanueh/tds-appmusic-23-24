@@ -38,7 +38,6 @@ public class Controlador {
 	private CatalogoCanciones catalogoCanciones;
 
 	private Usuario usuarioActual;
-	private LinkedList<Cancion> cancionesSeleccionadas;
 	private HashSet<Cancion> cancionesSeleccionadas;
 
 	/*
@@ -220,15 +219,6 @@ public class Controlador {
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
-
-	public void anadirCancionesSelecAPL(String text) {
-		PlayList p = usuarioActual.getPlayList(text);
-		p.addAllCanciones(cancionesSeleccionadas);
-		
-		adaptadorPlayList.modificarPlayList(p);
-		usuarioActual.addPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-	}
 	
 	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
 
@@ -241,6 +231,27 @@ public class Controlador {
 				p.addCancion(cancion);
 			}
 		}
+		adaptadorPlayList.modificarPlayList(p);
+		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+	
+	/*
+	 * Metodos para ventanaGestionPlayList
+	 */
+	public void crearPlayList(String text) {
+		PlayList p = new PlayList(text);
+		p.addAllCanciones(cancionesSeleccionadas);
+
+		adaptadorPlayList.registrarPlayList(p);
+		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+	
+	public void anadirCancionesSelecAPL(String text) {
+		PlayList p = usuarioActual.getPlayList(text);
+		p.addAllCanciones(cancionesSeleccionadas);
+		
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
@@ -261,6 +272,16 @@ public class Controlador {
 
 	public PlayList getPlayList(String s) {
 		return usuarioActual.getPlayList(s);
+	}
+	
+	public boolean eliminarPlayList(String text) {
+		PlayList p = usuarioActual.getPlayList(text);
+		if (p==null)
+			return false;
+		usuarioActual.removePlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		adaptadorPlayList.borrarPlayList(p);
+		return true;
 	}
 
 	/*
@@ -286,7 +307,6 @@ public class Controlador {
 	 * TABLA SELECCIONADOS
 	 */
 	public void setTablaSeleccionados(DefaultTableModel modelo) {
-		cancionesSeleccionadas = new LinkedList<Cancion>();
 		cancionesSeleccionadas = new HashSet<Cancion>();
 		int filasTotal = modelo.getRowCount();
 		
@@ -299,7 +319,6 @@ public class Controlador {
 		}
 	}
 
-	public LinkedList<Cancion> getCancionesSeleccionadas() {
 	public HashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
