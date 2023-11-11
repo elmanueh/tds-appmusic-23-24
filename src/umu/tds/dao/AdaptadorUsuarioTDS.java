@@ -66,11 +66,14 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 
 		eUsuario = new Entidad();
 		eUsuario.setNombre("usuario");
-		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("email", usuario.getEmail()),
-				new Propiedad("nombre", usuario.getNombre()), new Propiedad("contraseña", usuario.getContraseña()),
+		eUsuario.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(
+				new Propiedad("email", usuario.getEmail()),
+				new Propiedad("nombre", usuario.getNombre()), 
+				new Propiedad("contraseña", usuario.getContraseña()),
 				new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
 				new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
 				new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
+				new Propiedad("cuota", String.valueOf(usuario.getCuota())),
 				new Propiedad("esPremium", String.valueOf(usuario.isPremium())))));
 
 		eUsuario = servPersistencia.registrarEntidad(eUsuario);
@@ -102,6 +105,8 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("listaCancionesRecientes")) {
 				String canciones = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
 				prop.setValor(canciones);
+			} else if (prop.getNombre().equals("cuota")) {
+					prop.setValor(String.valueOf(usuario.getCuota()));
 			} else if (prop.getNombre().equals("esPremium")) {
 				prop.setValor(String.valueOf(usuario.isPremium()));
 			}
@@ -121,6 +126,7 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		Date fecha = null;
 		String contraseña;
 		Boolean premium;
+		Double cuota;
 
 		eUsuario = servPersistencia.recuperarEntidad(codigo);
 
@@ -132,10 +138,12 @@ public class AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			e.printStackTrace();
 		}
 		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		cuota = Double.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "cuota"));
 		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "esPremium"));
 
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
 		usuario.setCode(codigo);
+		usuario.setCuota(cuota);
 		usuario.setPremium(premium);
 
 		PoolDAO.getUnicaInstancia().addObjeto(codigo, usuario);
