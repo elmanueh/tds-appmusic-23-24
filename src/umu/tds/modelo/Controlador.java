@@ -219,6 +219,15 @@ public class Controlador {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
+	public void anadirCancionesSelecAPL(String text) {
+		PlayList p = usuarioActual.getPlayList(text);
+		p.addAllCanciones(cancionesSeleccionadas);
+		
+		adaptadorPlayList.modificarPlayList(p);
+		usuarioActual.addPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+	
 	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
 
 		PlayList p = usuarioActual.getPlayList(s);

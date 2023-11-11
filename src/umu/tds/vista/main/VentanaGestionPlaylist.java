@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.PlayList;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,7 +23,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	
 	private JTextField txtTitulo;
 	private JTable tablaCanciones;
-	private JButton botonAñadirPlaylist;
+	private JButton botonEliminarCancion;
 	private JPanel panelTabla;
 	private JPanel panelBotonera;
 	private JPanel panelBuscar;
@@ -36,8 +35,8 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	private JButton botonNext;
 	private JScrollPane scrollPane;
 	private JPanel panel_1;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
+	private JButton botonCrear;
+	private JButton botonEliminar;
 
 	public VentanaGestionPlaylist() {
 		setLayout(new BorderLayout(0, 0));
@@ -83,20 +82,20 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
-		btnNewButton = new JButton("Crear");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 0;
-		panel_1.add(btnNewButton, gbc_btnNewButton);
+		botonCrear = new JButton("Crear");
+		GridBagConstraints gbc_botonCrear = new GridBagConstraints();
+		gbc_botonCrear.fill = GridBagConstraints.HORIZONTAL;
+		gbc_botonCrear.insets = new Insets(0, 0, 0, 5);
+		gbc_botonCrear.gridx = 0;
+		gbc_botonCrear.gridy = 0;
+		panel_1.add(botonCrear, gbc_botonCrear);
 		
-		btnNewButton_1 = new JButton("Eliminar");
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.gridx = 1;
-		gbc_btnNewButton_1.gridy = 0;
-		panel_1.add(btnNewButton_1, gbc_btnNewButton_1);
+		botonEliminar = new JButton("Eliminar");
+		GridBagConstraints gbc_botonEliminar = new GridBagConstraints();
+		gbc_botonEliminar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_botonEliminar.gridx = 1;
+		gbc_botonEliminar.gridy = 0;
+		panel_1.add(botonEliminar, gbc_botonEliminar);
 
 		panelTabla = new JPanel();
 		panelTabla.setVisible(true);
@@ -224,13 +223,13 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		gbc_horizontalStrut_7.gridy = 0;
 		panel.add(horizontalStrut_7, gbc_horizontalStrut_7);
 
-		botonAñadirPlaylist = new JButton("Eliminar Lista");
-		botonAñadirPlaylist.setFont(new Font("Tahoma", Font.BOLD, 12));
-		GridBagConstraints gbc_botonAñadirPlaylist = new GridBagConstraints();
-		gbc_botonAñadirPlaylist.fill = GridBagConstraints.BOTH;
-		gbc_botonAñadirPlaylist.gridx = 3;
-		gbc_botonAñadirPlaylist.gridy = 0;
-		panel.add(botonAñadirPlaylist, gbc_botonAñadirPlaylist);
+		botonEliminarCancion = new JButton("Eliminar de la Playlist");
+		botonEliminarCancion.setFont(new Font("Tahoma", Font.BOLD, 12));
+		GridBagConstraints gbc_botonEliminarCancion = new GridBagConstraints();
+		gbc_botonEliminarCancion.fill = GridBagConstraints.BOTH;
+		gbc_botonEliminarCancion.gridx = 3;
+		gbc_botonEliminarCancion.gridy = 0;
+		panel.add(botonEliminarCancion, gbc_botonEliminarCancion);
 
 		Component verticalStrut_2 = Box.createVerticalStrut(40);
 		GridBagConstraints gbc_verticalStrut_2 = new GridBagConstraints();
@@ -241,8 +240,15 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		panelBotonera.add(verticalStrut_3, BorderLayout.NORTH);
-		botonAñadirPlaylist.addActionListener(this);
+		botonEliminarCancion.addActionListener(this);
 
+		/*
+		 * MANEJADORES BOTONES
+		 */
+		botonCrear.addActionListener(this);
+		botonEliminar.addActionListener(this);
+		botonEliminarCancion.addActionListener(this);
+		
 		botonPlay.addActionListener(this);
 		botonPause.addActionListener(this);
 
@@ -250,43 +256,30 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	/*@Override
-	public void actionPerformed(ActionEvent e) {
 
-		if (e.getSource() == botonAñadirPlaylist) {
-			Object[] opciones = { "Sí", "No" };
-			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?",
-					"Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
-					opciones[0]);
-
-			if (respuesta == JOptionPane.YES_OPTION) {
-				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
-				if (!(playlist == null)) {
-					if (Controlador.getUnicaInstancia().existePlayList(playlist))
-						Controlador.getUnicaInstancia().anadirCancionesAPlayList(playlist,
-								(DefaultTableModel) tablaCanciones.getModel());
-					else {
-						Controlador.getUnicaInstancia().crearPlayList(playlist,
-								(DefaultTableModel) tablaCanciones.getModel());
-					}
+		if (e.getSource() == botonCrear) {
+			if (Controlador.getUnicaInstancia().existePlayList(txtTitulo.getText())) {
+				for (Cancion c: Controlador.getUnicaInstancia().getPlayList(txtTitulo.getText()).getListaCanciones()) {
+					DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
+					Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete()};
+					modelo.addRow(fila);
 				}
-			} else {
-				JComboBox<String> playlistComboBox = new JComboBox<>();
-				playlistComboBox
-						.setModel(new DefaultComboBoxModel<String>(Controlador.getUnicaInstancia().getPlayLists()));
-				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
-						JOptionPane.INFORMATION_MESSAGE);
-				if (!playlistComboBox.getSelectedItem().equals(""))
-					Controlador.getUnicaInstancia().anadirCancionesAPlayList(
-							(String) playlistComboBox.getSelectedItem(), (DefaultTableModel) tablaCanciones.getModel());
-
+				Controlador.getUnicaInstancia().anadirCancionesSelecAPL(txtTitulo.getText());
 			}
-
+			else {
+				
+			}
+				
 		}
-
+		
+		if (e.getSource() == botonEliminar) {
+			
+		}
+		
+		if (e.getSource() == botonEliminarCancion) {
+			
+		}
+		
 		if (e.getSource() == botonPlay) {
 			botonPlay.setVisible(false);
 			botonPause.setVisible(true);
@@ -296,7 +289,8 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			botonPause.setVisible(false);
 			botonPlay.setVisible(true);
 		}
-	}*/
+	}
+	
 	public void ponerPlayListEnTabla(LinkedList<Cancion> listaCanciones) {		
 		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
@@ -331,10 +325,8 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 	}
+	
 	public void vaciarCampos() {
 		txtTitulo.setText("");
 	}
-
-
-
 }
