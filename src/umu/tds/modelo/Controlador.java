@@ -256,6 +256,12 @@ public class Controlador implements CancionesListener {
 	public void enteradoNuevasCanciones(EventObject e) {
 		CancionesEvent evento = (CancionesEvent) e;
 		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
+
+		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
+			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), c.getEstilo(), c.getInterprete());
+			adaptadorCancion.registrarCancion(cancion);
+			catalogoCanciones.addCancion(cancion);
+		}
 	}
 
 }

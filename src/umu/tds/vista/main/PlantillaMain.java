@@ -63,6 +63,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaMasReproducidas ventanaMasReproducidas;
 	private VentanaGenerarPDF ventanaGenerarPDF;
 	private VentanaMisPlaylist ventanaMisPlaylist;
+	private JButton btnNewButton;
 
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -149,19 +150,31 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cabezeraBotones.setOpaque(false);
 		p_cabezera.add(p_cabezeraBotones, BorderLayout.EAST);
 		GridBagLayout gbl_p_cabezeraBotones = new GridBagLayout();
-		gbl_p_cabezeraBotones.columnWidths = new int[] { 100, 10, 100, 0 };
+		gbl_p_cabezeraBotones.columnWidths = new int[] { 0, 100, 10, 100, 0 };
 		gbl_p_cabezeraBotones.rowHeights = new int[] { 30 };
 		p_cabezeraBotones.setLayout(gbl_p_cabezeraBotones);
 		JPanel p_menuBotones = new JPanel();
 		botonPremium = new JButton("Premium");
 		p_menuBotonesPremium = new JPanel();
 
+		btnNewButton = new JButton("UP");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Controlador.getUnicaInstancia().cargarCanciones("xml/canciones.xml");
+			}
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 0;
+		p_cabezeraBotones.add(btnNewButton, gbc_btnNewButton);
+
 		botonPremium.setFont(new Font("Tahoma", Font.BOLD, 12));
 		botonPremium.setAlignmentX(0.5f);
 		GridBagConstraints gbc_botonPremium = new GridBagConstraints();
 		gbc_botonPremium.fill = GridBagConstraints.BOTH;
 		gbc_botonPremium.insets = new Insets(0, 0, 0, 5);
-		gbc_botonPremium.gridx = 0;
+		gbc_botonPremium.gridx = 1;
 		gbc_botonPremium.gridy = 0;
 		p_cabezeraBotones.add(botonPremium, gbc_botonPremium);
 
@@ -169,8 +182,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		botonLogOut.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GridBagConstraints gbc_botonLogOut = new GridBagConstraints();
+		gbc_botonLogOut.insets = new Insets(0, 0, 0, 5);
 		gbc_botonLogOut.fill = GridBagConstraints.BOTH;
-		gbc_botonLogOut.gridx = 2;
+		gbc_botonLogOut.gridx = 3;
 		gbc_botonLogOut.gridy = 0;
 		p_cabezeraBotones.add(botonLogOut, gbc_botonLogOut);
 
