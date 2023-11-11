@@ -449,4 +449,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		comboBoxEstilo.setSelectedIndex(0);
 	}
 
+	public void guardarSeleecionados() {
+		Controlador.getUnicaInstancia().setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
+	}
 }

@@ -346,6 +346,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		if (ventanaBuscar.isVisible() && 
+				e.getSource() != botonPremium && e.getSource() !=  botonLogOut) {
+			System.out.println("TENGO QUE GUARDAR");
+			ventanaBuscar.guardarSeleecionados();
+		}
+		
 		// TODO
 		if (e.getSource() == botonPremium) {
 			Controlador.getUnicaInstancia().configuracionPremium();
@@ -368,6 +374,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
+			ventanaGestionPlaylist.vaciarCampos();
+			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.getUnicaInstancia().getCancionesSeleccionadas()); 
 			
 			/*
 			 * TABLA

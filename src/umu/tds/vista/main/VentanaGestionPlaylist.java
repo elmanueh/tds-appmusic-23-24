@@ -2,7 +2,6 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
@@ -15,8 +14,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Component;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
@@ -299,13 +297,13 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			botonPlay.setVisible(true);
 		}
 	}*/
-	public void ponerPlayListEnTabla(String playlist) {		
+	public void ponerPlayListEnTabla(LinkedList<Cancion> listaCanciones) {		
 		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
-		
-		PlayList p = Controlador.getUnicaInstancia().getPlayList(playlist);
 
 		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -316,7 +314,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
 
-		for (Cancion cancion : p.getListaCanciones()) {
+		for (Cancion cancion : listaCanciones) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete()};
 			modeloFiltrado.addRow(fila);
 		}
@@ -333,8 +331,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 	}
-	public void esconderPanel() {
-
+	public void vaciarCampos() {
 		txtTitulo.setText("");
 	}
 

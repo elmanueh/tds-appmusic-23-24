@@ -37,6 +37,7 @@ public class Controlador {
 	private CatalogoCanciones catalogoCanciones;
 
 	private Usuario usuarioActual;
+	private LinkedList<Cancion> cancionesSeleccionadas;
 
 	/*
 	 * CONSTRUCTOR
@@ -268,4 +269,23 @@ public class Controlador {
 		usuarioActual.setCuota(precio);
 	}
 
+	/*
+	 * TABLA SELECCIONADOS
+	 */
+	public void setTablaSeleccionados(DefaultTableModel modelo) {
+		cancionesSeleccionadas = new LinkedList<Cancion>();
+		int filasTotal = modelo.getRowCount();
+		
+
+		for (int fila = 0; fila < filasTotal; fila++) {
+			if ((Boolean) modelo.getValueAt(fila, 3)) {
+				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
+				cancionesSeleccionadas.add(cancion);
+			}
+		}
+	}
+
+	public LinkedList<Cancion> getCancionesSeleccionadas() {
+		return cancionesSeleccionadas;
+	}
 }
