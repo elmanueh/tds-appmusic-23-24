@@ -39,9 +39,8 @@ import javax.swing.JTable;
 import java.awt.Point;
 import javax.swing.UIManager;
 
-@SuppressWarnings("serial")
 public class PlantillaMain extends JFrame implements ActionListener {
-
+	
 	private GridBagLayout gridBagLayout;
 	private JTable tablaPlayList;
 	private JButton botonPremium;
@@ -55,6 +54,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private static JPanel p_menuBotonesPremium;
 	private JPanel p_listas;
 	private JPanel p_cardLayout;
+	private JPanel p_cabezera;
+	private JLabel mensajeBienvenida;
+	private JLabel mensajeBienvenida_1;
 
 	private VentanaBuscar ventanaBuscar;
 	private VentanaGestionPlaylist ventanaGestionPlaylist;
@@ -62,6 +64,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaMasReproducidas ventanaMasReproducidas;
 	private VentanaGenerarPDF ventanaGenerarPDF;
 	private VentanaMisPlaylist ventanaMisPlaylist;
+	
 
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -123,8 +126,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut = Box.createVerticalStrut(90);
 		p_iconoTitulo.add(verticalStrut);
-
-		JPanel p_cabezera = new JPanel();
+		
+		p_cabezera = new JPanel();
 		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
 		gbc_p_cabezera.insets = new Insets(0, 0, 5, 5);
 		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
@@ -135,14 +138,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		/* TODO: si falla quitar aqui el usuario para probar */
 		String usuario = Controlador.getUnicaInstancia().getUsuarioActual().getNombre();
-		JLabel mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
+		mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
+		mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		mensajeBienvenida.setLocation(new Point(40, 0));
 		mensajeBienvenida.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
+		if (!Controlador.getUnicaInstancia().getUsuarioActual().isPremium())
+			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
 
 		JPanel p_cabezeraBotones = new JPanel();
 		p_cabezeraBotones.setOpaque(false);
@@ -172,6 +175,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonLogOut.gridx = 2;
 		gbc_botonLogOut.gridy = 0;
 		p_cabezeraBotones.add(botonLogOut, gbc_botonLogOut);
+		
+		mensajeBienvenida_1 = new JLabel("Bienvenido, " + usuario);
+		mensajeBienvenida_1.setVisible(Controlador.getUnicaInstancia().getUsuarioActual().isPremium());
+		mensajeBienvenida_1.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
+		mensajeBienvenida_1.setLocation(new Point(40, 0));
+		mensajeBienvenida_1.setHorizontalTextPosition(SwingConstants.LEFT);
+		mensajeBienvenida_1.setHorizontalAlignment(SwingConstants.CENTER);
+		mensajeBienvenida_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium())
+			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
 
 		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
 		gbc_p_menuBotones.insets = new Insets(0, 0, 0, 5);
