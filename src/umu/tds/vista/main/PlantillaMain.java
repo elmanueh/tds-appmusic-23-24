@@ -39,8 +39,9 @@ import javax.swing.JTable;
 import java.awt.Point;
 import javax.swing.UIManager;
 
-@SuppressWarnings("serial")
 public class PlantillaMain extends JFrame implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
 
 	private GridBagLayout gridBagLayout;
 	private JTable tablaPlayList;
@@ -408,6 +409,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			 * TABLA
 			 */
 			DefaultTableModel modeloTabla = new DefaultTableModel() {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;

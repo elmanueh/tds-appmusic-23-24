@@ -4,10 +4,12 @@ import javax.swing.*;
 
 public class VentanaGestionPlaylist extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+
 	public VentanaGestionPlaylist() {
-		
+
 		JLabel lblNewLabel = new JLabel("ventanaGestionPlaylist");
 		add(lblNewLabel);
-		
+
 	}
 }

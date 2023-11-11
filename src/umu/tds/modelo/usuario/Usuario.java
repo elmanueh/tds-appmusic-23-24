@@ -111,8 +111,9 @@ public class Usuario {
 	}
 
 	public PlayList getPlayList(String nombre) {
-		//return (PlayList) listaPlayList.stream().filter(p -> p.getNombre() == nombre);
-		for (PlayList p: listaPlayList)
+		// return (PlayList) listaPlayList.stream().filter(p -> p.getNombre() ==
+		// nombre);
+		for (PlayList p : listaPlayList)
 			if (p.getNombre().equals(nombre))
 				return p;
 		return null;
@@ -141,10 +142,8 @@ public class Usuario {
 	}
 
 	public Descuento aplicarDescuento(String codigo) {
-		return Descuento.descuentos(codigo).stream()
-				.filter(d -> d.isAplicable(this))
-				.reduce((d1, d2) -> d1.Precio() < d2.Precio() ? d1 : d2)
-				.orElse(new DescuentoNulo());
+		return Descuento.descuentos(codigo).stream().filter(d -> d.isAplicable(this))
+				.reduce((d1, d2) -> d1.Precio() < d2.Precio() ? d1 : d2).orElse(new DescuentoNulo());
 	}
 
 	@Override

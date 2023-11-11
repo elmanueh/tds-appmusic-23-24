@@ -7,12 +7,9 @@ import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -20,6 +17,9 @@ import java.awt.event.ActionListener;
 import java.awt.Component;
 
 public class VentanaMisPlaylist extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
+
 	private JPanel panelTabla;
 	private JTable tablaCanciones;
 	private JScrollPane scrollPane;
@@ -31,26 +31,26 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 	private JButton botonNext;
 	private Component verticalStrut;
 	private Component verticalStrut_1;
-	
+
 	public VentanaMisPlaylist() {
 		setLayout(new BorderLayout(0, 0));
-		
+
 		panelTabla = new JPanel();
 		panelTabla.setVisible(false);
 		add(panelTabla, BorderLayout.CENTER);
 		panelTabla.setLayout(new BorderLayout(0, 0));
-		
+
 		tablaCanciones = new JTable();
 		tablaCanciones.setAutoscrolls(false);
 		tablaCanciones.setFillsViewportHeight(true);
 		scrollPane = new JScrollPane(tablaCanciones);
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
-		
+
 		panelBotones = new JPanel();
 		panelBotones.setVisible(false);
 		add(panelBotones, BorderLayout.SOUTH);
 		panelBotones.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelMultimedia = new JPanel();
 		panelBotones.add(panelMultimedia, BorderLayout.CENTER);
 		GridBagLayout gbl_panelMultimedia = new GridBagLayout();
@@ -135,14 +135,14 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		gbc_botonNext.gridx = 9;
 		gbc_botonNext.gridy = 1;
 		panelMultimedia.add(botonNext, gbc_botonNext);
-		
+
 		verticalStrut_1 = Box.createVerticalStrut(40);
 		GridBagConstraints gbc_verticalStrut_1 = new GridBagConstraints();
 		gbc_verticalStrut_1.insets = new Insets(0, 0, 0, 5);
 		gbc_verticalStrut_1.gridx = 1;
 		gbc_verticalStrut_1.gridy = 2;
 		panelMultimedia.add(verticalStrut_1, gbc_verticalStrut_1);
-		
+
 		verticalStrut = Box.createVerticalStrut(40);
 		panelBotones.add(verticalStrut, BorderLayout.NORTH);
 
@@ -165,18 +165,21 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 			botonPlay.setVisible(true);
 		}
 	}
+
 	public void ponerPlayListEnTabla(String playlist) {
 		panelBotones.setVisible(true);
 		panelTabla.setVisible(true);
-		
+
 		if (botonPause.isVisible()) {
 			botonPause.setVisible(false);
 			botonPlay.setVisible(true);
 		}
-		
+
 		PlayList p = Controlador.getUnicaInstancia().getPlayList(playlist);
 
 		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -188,7 +191,7 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("INTERPRETE");
 
 		for (Cancion cancion : p.getListaCanciones()) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete()};
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
 			modeloFiltrado.addRow(fila);
 		}
 
@@ -199,14 +202,14 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 			tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
 			tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
 		}
-		
+
 		tablaCanciones.setModel(modeloFiltrado);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 	}
-	
+
 	public void esconderPanel() {
 		panelBotones.setVisible(false);
 		panelTabla.setVisible(false);
-	}	
+	}
 }

@@ -19,7 +19,6 @@ import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.vista.main.MenuPremium;
 import umu.tds.vista.main.PlantillaMain;
 import umu.tds.modelo.descuento.Descuento;
 

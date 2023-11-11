@@ -16,15 +16,13 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
 
-@SuppressWarnings("serial")
 public class VentanaBuscar extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1L;
 
 	private JTextField txtTitulo;
 	private JTextField txtInterprete;
@@ -333,6 +331,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			String estiloFiltrado = (String) comboBoxEstilo.getSelectedItem();
 
 			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					if (column < 3)
@@ -378,12 +379,14 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
 			tablaCanciones.setAutoCreateRowSorter(true);
-			
+
 			tablaCanciones.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones.getRowSorter();
-					sorter.sort();				
+					@SuppressWarnings("unchecked")
+					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
+							.getRowSorter();
+					sorter.sort();
 				}
 			});
 		}

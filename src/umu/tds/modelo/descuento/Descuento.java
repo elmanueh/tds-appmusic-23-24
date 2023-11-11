@@ -8,13 +8,13 @@ import umu.tds.modelo.usuario.Usuario;
 
 public interface Descuento {
 
-	double Precio();
-	
-	boolean isAplicable(Usuario u);
-	
-	String tipoDescuento();
-	
-	static Set<Descuento> descuentos(String codigo){
+	public double Precio();
+
+	public boolean isAplicable(Usuario u);
+
+	public String tipoDescuento();
+
+	public static Set<Descuento> descuentos(String codigo) {
 		Set<Descuento> descuentos = new HashSet<Descuento>();
 		Collections.addAll(descuentos, new DescuentoFijo(codigo), new DescuentoJovenes(), new DescuentoNulo());
 
