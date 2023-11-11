@@ -121,11 +121,6 @@ public class Usuario {
 	public void removePlayList(PlayList p) {
 		listaPlayList.remove(p);
 	}
-	
-	public void modificarPlayList(PlayList p) {
-		listaPlayList.remove(p);
-		
-	}
 
 	public void addCancionReciente(Cancion c) {
 		List<Cancion> listaRecienteActualizado = new ArrayList<Cancion>();

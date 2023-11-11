@@ -29,8 +29,15 @@ public class PlayList {
 	public String getNombre() {
 		return nombre;
 	}
-
-	public Set<Cancion> getListaCanciones() {
+	
+	public Cancion getCancion(String nombre) {;
+		for (Cancion c: listaCanciones)
+			if (c.getTitulo().equals(nombre))
+				return c;
+		return null;
+	}
+	
+	public HashSet<Cancion> getListaCanciones() {
 		return new HashSet<Cancion>(listaCanciones);
 	}
 
@@ -59,6 +66,14 @@ public class PlayList {
 
 	public boolean consultarCancion(Cancion c) {
 		return listaCanciones.contains(c);
+	}
+	
+	public boolean consultarCancion(String c) {
+		for (Cancion cancion: listaCanciones) {
+			if (cancion.getTitulo().equals(c))
+				return true;
+		}
+		return false;
 	}
 
 	@Override

@@ -348,7 +348,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		if (ventanaBuscar.isVisible() && 
 				e.getSource() != botonPremium && e.getSource() !=  botonLogOut) {
-			System.out.println("TENGO QUE GUARDAR");
 			ventanaBuscar.guardarSeleecionados();
 		}
 		

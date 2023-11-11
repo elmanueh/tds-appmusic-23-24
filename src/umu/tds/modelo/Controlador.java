@@ -250,7 +250,9 @@ public class Controlador {
 	
 	public void anadirCancionesSelecAPL(String text) {
 		PlayList p = usuarioActual.getPlayList(text);
-		p.addAllCanciones(cancionesSeleccionadas);
+		for (Cancion c: cancionesSeleccionadas)
+			if(!p.consultarCancion(c.getTitulo()))
+				p.addCancion(c);
 		
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
@@ -279,8 +281,8 @@ public class Controlador {
 		if (p==null)
 			return false;
 		usuarioActual.removePlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
 		adaptadorPlayList.borrarPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
 	
@@ -289,17 +291,19 @@ public class Controlador {
 		if (p==null)
 			return false;
 		usuarioActual.removePlayList(p);
-		int filasTotal = modelo.getRowCount();
 
+		int filasTotal = modelo.getRowCount();
+		
 		for (int fila = 0; fila < filasTotal; fila++) {
 			if ((Boolean) modelo.getValueAt(fila, 3)) {
-				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
+				Cancion cancion = p.getCancion((String) modelo.getValueAt(fila, 0));
 				p.removeCancion(cancion);
 			}
 		}
 		
-		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
+		
+		adaptadorPlayList.modificarPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
