@@ -15,6 +15,7 @@ import java.awt.Dimension;
 import javax.swing.Box;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.Font;
@@ -24,10 +25,14 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 import umu.tds.modelo.Controlador;
@@ -163,9 +168,21 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnNewButton = new JButton("UP");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Controlador.getUnicaInstancia().cargarCanciones("xml/canciones.xml");
+				JFileChooser fileChooser = new JFileChooser();
+
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
+		        fileChooser.setFileFilter(filter);
+
+		        int result = fileChooser.showOpenDialog(null);
+
+		        if (result == JFileChooser.APPROVE_OPTION) {
+		            File selectedFile = fileChooser.getSelectedFile();
+		            Controlador.getUnicaInstancia().cargarCanciones(selectedFile.getAbsolutePath());
+		            ventanaBuscar.actualizarEstilos();
+		        }
 			}
 		});
+		
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 0;
