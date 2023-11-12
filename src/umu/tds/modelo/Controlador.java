@@ -341,6 +341,7 @@ public class Controlador implements CancionesListener {
 	public HashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
+	/*
 	 * CARGADOR CANCIONES
 	 */
 	public void cargarCanciones(String rutaXML) {

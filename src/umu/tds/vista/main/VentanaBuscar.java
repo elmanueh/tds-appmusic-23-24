@@ -130,8 +130,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 		/* TODO: Esto puede dar problemas */
 		comboBoxEstilo = new JComboBox<>();
-		for (String s : Controlador.getUnicaInstancia().getEstilos())
-			comboBoxEstilo.addItem(s);
+		actualizarEstilos();
 
 		GridBagConstraints gbc_comboBoxEstilo = new GridBagConstraints();
 		gbc_comboBoxEstilo.insets = new Insets(0, 0, 5, 5);
@@ -162,6 +161,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		tablaCanciones = new JTable();
 		tablaCanciones.setAutoscrolls(false);
 		tablaCanciones.setFillsViewportHeight(true);
+
 		scrollPane = new JScrollPane(tablaCanciones);
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
@@ -360,9 +360,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 				Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
 				modeloFiltrado.addRow(fila);
 			}
-
 			tablaCanciones.setModel(modeloFiltrado);
-
+			
+			SwingUtilities.invokeLater(() -> {
 			int anchoTabla = tablaCanciones.getWidth();
 			int numColumnas = tablaCanciones.getColumnCount();
 			int anchoUltColumna = (int) (anchoTabla * 0.05);
@@ -375,12 +375,14 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 				else
 					tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
 			}
+			});
 
 			tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 			tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
 			tablaCanciones.setAutoCreateRowSorter(true);
 
+			
 			tablaCanciones.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -454,5 +456,10 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 	public void guardarSeleecionados() {
 		Controlador.getUnicaInstancia().setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
+	}
+
+	public void actualizarEstilos() {
+		for (String s : Controlador.getUnicaInstancia().getEstilos())
+			comboBoxEstilo.addItem(s);
 	}
 }

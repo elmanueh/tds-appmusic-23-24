@@ -2,10 +2,10 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.PlayList;
 
 import java.awt.Color;
 import java.awt.BorderLayout;
@@ -14,6 +14,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.Component;
 
 public class VentanaMisPlaylist extends JPanel implements ActionListener {
@@ -174,8 +176,6 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 			botonPlay.setVisible(true);
 		}
 
-		PlayList p = Controlador.getUnicaInstancia().getPlayList(playlist);
-
 		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -189,7 +189,7 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
 
-		for (Cancion cancion : p.getListaCanciones()) {
+		for (Cancion cancion : Controlador.getUnicaInstancia().getPlayList(playlist).getListaCanciones()) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
 			modeloFiltrado.addRow(fila);
 		}
@@ -205,6 +205,18 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		tablaCanciones.setModel(modeloFiltrado);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
+		
+		tablaCanciones.setAutoCreateRowSorter(true);
+		
+		tablaCanciones.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				@SuppressWarnings("unchecked")
+				TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
+						.getRowSorter();
+				sorter.sort();
+			}
+		});
 	}
 
 	public void esconderPanel() {
