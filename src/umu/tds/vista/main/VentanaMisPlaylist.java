@@ -189,7 +189,7 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
 
-		for (Cancion cancion : Controlador.getUnicaInstancia().getPlayList(playlist).getListaCanciones()) {
+		for (Cancion cancion : Controlador.getUnicaInstancia().getListaCancionesPlayList(playlist)) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
 			modeloFiltrado.addRow(fila);
 		}

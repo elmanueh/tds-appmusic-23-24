@@ -323,7 +323,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 							"Canciones de la playlist " + txtTitulo.getText() + " se han eliminado.",
 							"Error borrar playlist", JOptionPane.CANCEL_OPTION);
 					ponerPlayListEnTabla(
-							Controlador.getUnicaInstancia().getPlayList(txtTitulo.getText()).getListaCanciones());
+							Controlador.getUnicaInstancia().getListaCancionesPlayList(txtTitulo.getText()));
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"La playlist " + txtTitulo.getText() + " no existe.\n No puede eliminar canciones.",

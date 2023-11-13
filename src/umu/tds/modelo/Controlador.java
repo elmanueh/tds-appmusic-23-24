@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.swing.table.DefaultTableModel;
@@ -112,6 +113,22 @@ public class Controlador implements CancionesListener {
 
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
+	}
+	
+	public String getNombreUsuarioActual() {
+		return usuarioActual.getNombre();
+	}
+	
+	public boolean isUsuarioActualPremium() {
+		return usuarioActual.isPremium();
+	}
+	
+	public Set<PlayList> getPlayListUsuarioActual() {
+		return usuarioActual.getListaPlayList();
+	}
+	
+	public double getCuotaUsuarioActual() {
+		return usuarioActual.getCuota();
 	}
 
 	public boolean existeUsuario(String nombre_email) {
@@ -233,6 +250,10 @@ public class Controlador implements CancionesListener {
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+	}
+	
+	public HashSet<Cancion> getListaCancionesPlayList(String text) {
+		return getPlayList(text).getListaCanciones();
 	}
 	
 	/*
@@ -359,5 +380,15 @@ public class Controlador implements CancionesListener {
 			catalogoCanciones.addCancion(cancion);
 		}
 	}
+
+
+
+
+
+
+
+
+
+
 
 }

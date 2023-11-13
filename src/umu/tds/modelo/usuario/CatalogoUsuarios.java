@@ -61,6 +61,7 @@ public class CatalogoUsuarios {
 		usuarios.put(lista, usuario);
 	}
 
+	// TODO: no hace falta eliminarUsuario
 	@SuppressWarnings("unlikely-arg-type")
 	public void removeUsuario(Usuario usuario) {
 		Stream<LinkedList<String>> lista = usuarios.keySet().stream().filter(l -> usuarios.get(l) == usuario);

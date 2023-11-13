@@ -32,7 +32,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 import umu.tds.modelo.Controlador;
@@ -104,6 +103,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gridBagLayout.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 
 		JPanel p_iconoTitulo = new JPanel();
+		p_iconoTitulo.setBackground(new Color(40, 40, 40));
 		FlowLayout flowLayout = (FlowLayout) p_iconoTitulo.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_p_iconoTitulo = new GridBagConstraints();
@@ -135,6 +135,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_iconoTitulo.add(verticalStrut);
 		
 		p_cabezera = new JPanel();
+		p_cabezera.setBackground(new Color(40, 40, 40));
 		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
 		gbc_p_cabezera.insets = new Insets(0, 0, 5, 5);
 		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
@@ -144,14 +145,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cabezera.setLayout(new BorderLayout(0, 0));
 
 		/* TODO: si falla quitar aqui el usuario para probar */
-		String usuario = Controlador.getUnicaInstancia().getUsuarioActual().getNombre();
+		String usuario = Controlador.getUnicaInstancia().getNombreUsuarioActual();
 		mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
 		mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		mensajeBienvenida.setLocation(new Point(40, 0));
 		mensajeBienvenida.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (!Controlador.getUnicaInstancia().getUsuarioActual().isPremium())
+		if (!Controlador.getUnicaInstancia().isUsuarioActualPremium())
 			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
 
 		JPanel p_cabezeraBotones = new JPanel();
@@ -209,13 +210,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cabezeraBotones.add(botonLogOut, gbc_botonLogOut);
 		
 		mensajeBienvenida_1 = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida_1.setVisible(Controlador.getUnicaInstancia().getUsuarioActual().isPremium());
+		mensajeBienvenida_1.setVisible(Controlador.getUnicaInstancia().isUsuarioActualPremium());
 		mensajeBienvenida_1.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
 		mensajeBienvenida_1.setLocation(new Point(40, 0));
 		mensajeBienvenida_1.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida_1.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (Controlador.getUnicaInstancia().getUsuarioActual().isPremium())
+		if (Controlador.getUnicaInstancia().isUsuarioActualPremium())
 			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
 
 		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
@@ -271,7 +272,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonRecientes.gridy = 2;
 		p_menuBotones.add(botonRecientes, gbc_botonRecientes);
 
-		p_menuBotonesPremium.setVisible(Controlador.getUnicaInstancia().getUsuarioActual().isPremium());
+		p_menuBotonesPremium.setVisible(Controlador.getUnicaInstancia().isUsuarioActualPremium());
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
 		gbc_p_menuBotonesPremium.gridwidth = 2;
 		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
@@ -425,6 +426,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			 * TABLA
 			 */
 			DefaultTableModel modeloTabla = new DefaultTableModel() {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
@@ -432,7 +435,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			};
 
 			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
+			for (PlayList p : Controlador.getUnicaInstancia().getPlayListUsuarioActual()) {
 				Object[] playlist = { p.getNombre() };
 				modeloTabla.addRow(playlist);
 			}
@@ -488,7 +491,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			};
 
 			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.getUnicaInstancia().getUsuarioActual().getListaPlayList()) {
+			for (PlayList p : Controlador.getUnicaInstancia().getPlayListUsuarioActual()) {
 				Object[] playlist = { p.getNombre() };
 				modeloTabla.addRow(playlist);
 			}

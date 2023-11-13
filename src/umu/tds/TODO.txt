@@ -5,9 +5,11 @@
 	 					
 	    		// PLANTILLA-MAIN
 		- BARRA NEGRA CABEZERA
+			-> hecho pero creo que hay que hacer un panel que englobe los 2 paneles			
 		- FUNCIONALIDAD BOTON PREMIUM 
 			-> hacer que cambie el dibujo al cambiar entre premium y normal
 		- AÑADIR CUANTOS DIAS FALTAN PARA TU CUMPLEAÑOS
+			-> no merece la pena
 	 
 	 			// PANEL-MIS-PLAYLIST
 	 	- QUE NO SE MUEVAN LAS COLUMNAS EN LA TABLA
@@ -20,6 +22,11 @@
 	 	- TRYCATCH DEL SERVIDOR-DE-PERSISTENCIA
 	 	- INTENTAR QUE NO TARDE TANTO EL CARGAR EL SERVIDOR
 	 	
+	 			// CATALOGO USUARIO
+	 	- NO NOS SIRVE ELIMINAR USUARIOS
+	 	
+	 			// CARGADOR CANCIONES
+	 	- ELIMINAR TODOS LOS SYSOUT
 	 	
 	 	
 	 	
