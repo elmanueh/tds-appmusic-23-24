@@ -135,6 +135,7 @@ public class Controlador implements CancionesListener {
 		return getUsuario(nombre_email) != null;
 	}
 
+	//TODO: EN CASO DE UTILIZARLO MIRAR EL PATRON EXPERTO
 	public long diasParaCumple() {
 		Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
 		Calendar fechaActual = Calendar.getInstance();
@@ -253,7 +254,7 @@ public class Controlador implements CancionesListener {
 	}
 	
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
-		return getPlayList(text).getListaCanciones();
+		return getListaCancionesPlayList(text);
 	}
 	
 	/*
