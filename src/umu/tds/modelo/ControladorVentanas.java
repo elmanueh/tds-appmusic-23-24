@@ -77,4 +77,10 @@ public class ControladorVentanas {
 		menuPremium.setVisible(true);
 	}
 
+	public void quitarPremium(boolean b, double precio) {
+		menuPremium.setVisible(false);
+		Controlador.getUnicaInstancia().configuracionPremium(b, precio);
+		plantillaMain.modoPremium(b);
+	}
+
 }

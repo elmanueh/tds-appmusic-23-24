@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.descuento.Descuento;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -55,6 +56,8 @@ public class MenuPremium extends JFrame implements ActionListener {
 		JPanel panel_Normal = new JPanel();
 		getContentPane().add(panel_Normal, "panel_Normal");
 		GridBagLayout gbl_panel_Normal = new GridBagLayout();
+		gbl_panel_Normal.columnWeights = new double[]{0.0, 0.0};
+		gbl_panel_Normal.columnWidths = new int[]{0, 150};
 		gbl_panel_Normal.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_panel_Normal.rowHeights = new int[] { 0, 20, 0, 30, 35 };
 		panel_Normal.setLayout(gbl_panel_Normal);
@@ -78,8 +81,8 @@ public class MenuPremium extends JFrame implements ActionListener {
 
 		codigo = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.anchor = GridBagConstraints.WEST;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 2;
 		panel_Normal.add(codigo, gbc_textField);
@@ -156,7 +159,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(null, mensaje, "GRACIAS POR SUSCRIBIRTE", JOptionPane.PLAIN_MESSAGE);
-			Controlador.getUnicaInstancia().configuracionPremium(true, d.Precio());
+			ControladorVentanas.getUnicaInstancia().quitarPremium(true, d.Precio());
 			dispose();
 		}
 
@@ -164,7 +167,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null,
 					"Te esperamos de vuelta pronto\n\nPuedes disfrutar de nuestros códigos promocionales",
 					"HASTA PRONTO !!!", JOptionPane.PLAIN_MESSAGE);
-			Controlador.getUnicaInstancia().configuracionPremium(false, 0);
+			ControladorVentanas.getUnicaInstancia().quitarPremium(false, 0);
 			dispose();
 		}
 

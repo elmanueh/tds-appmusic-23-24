@@ -338,7 +338,6 @@ public class Controlador implements CancionesListener {
 
 	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
-		PlantillaMain.modoPremium(premium);
 		usuarioActual.setCuota(precio);
 		
 		adaptadorUsuario.modificarUsuario(usuarioActual);

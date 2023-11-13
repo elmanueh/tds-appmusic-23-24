@@ -385,8 +385,19 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 	}
 
-	public static void modoPremium(boolean premium) {
+	public void modoPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
+		if (premium) {
+			mensajeBienvenida.setVisible(!premium);
+			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
+			p_cabezera.add(mensajeBienvenida, BorderLayout.WEST);
+			mensajeBienvenida_1.setVisible(premium);
+		} else {
+			mensajeBienvenida_1.setVisible(premium);
+			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
+			p_cabezera.add(mensajeBienvenida_1, BorderLayout.WEST);
+			mensajeBienvenida.setVisible(!premium);
+		}
 	}
 
 	@Override
