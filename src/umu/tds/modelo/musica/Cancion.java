@@ -3,9 +3,8 @@ package umu.tds.modelo.musica;
 import java.util.Objects;
 
 public class Cancion {
-	/*
-	 * ATRIBUTOS
-	 */
+
+	// ATRIBUTOS
 	private String titulo;
 	private String rutaFichero;
 	private String estiloMusical;
@@ -13,9 +12,7 @@ public class Cancion {
 	private int numReproducciones;
 	private int codigo;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	public Cancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
 		this.titulo = titulo;
 		this.rutaFichero = rutaFichero;
@@ -25,9 +22,7 @@ public class Cancion {
 		this.codigo = 0;
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
+	// GETTERS AND SETTERS
 	public String getTitulo() {
 		return titulo;
 	}
@@ -60,9 +55,7 @@ public class Cancion {
 		this.codigo = id;
 	}
 
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void addReproducciones() {
 		numReproducciones++;
 	}

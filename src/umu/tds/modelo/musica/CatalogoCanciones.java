@@ -8,20 +8,15 @@ import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
 
-public class CatalogoCanciones {
+public enum CatalogoCanciones {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
-	private static CatalogoCanciones INSTANCIA;
-
+	// ATRIBUTOS
 	private HashMap<String, Cancion> canciones;
 	private FactoriaDAO dao;
 	private IAdaptadorCancionDAO adaptadorCancion;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private CatalogoCanciones() {
 		try {
 			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -33,15 +28,7 @@ public class CatalogoCanciones {
 		}
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
-	public static CatalogoCanciones getUnicaInstancia() {
-		if (INSTANCIA == null)
-			INSTANCIA = new CatalogoCanciones();
-		return INSTANCIA;
-	}
-
+	// GETTERS AND SETTERS
 	public List<Cancion> getCanciones() {
 		return new LinkedList<Cancion>(canciones.values());
 	}
@@ -50,9 +37,7 @@ public class CatalogoCanciones {
 		return canciones.get(titulo);
 	}
 
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void addCancion(Cancion c) {
 		canciones.put(c.getTitulo(), c);
 	}

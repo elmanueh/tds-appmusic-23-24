@@ -6,20 +6,15 @@ import umu.tds.vista.inicio.PlantillaInicio;
 import umu.tds.vista.main.MenuPremium;
 import umu.tds.vista.main.PlantillaMain;
 
-public class ControladorVentanas {
+public enum ControladorVentanas {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
-	private static ControladorVentanas INSTANCIA;
-
+	// ATRIBUTOS
 	private PlantillaInicio plantillaInicio;
 	private PlantillaMain plantillaMain;
 	private MenuPremium menuPremium;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private ControladorVentanas() {
 		try {
 			UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
@@ -28,19 +23,7 @@ public class ControladorVentanas {
 		}
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
-	public static ControladorVentanas getUnicaInstancia() {
-		if (INSTANCIA == null) {
-			INSTANCIA = new ControladorVentanas();
-		}
-		return INSTANCIA;
-	}
-
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void inicializarPrograma() {
 		mostrarLoginView();
 	}
@@ -79,7 +62,7 @@ public class ControladorVentanas {
 
 	public void quitarPremium(boolean b, double precio) {
 		menuPremium.setVisible(false);
-		Controlador.getUnicaInstancia().configuracionPremium(b, precio);
+		Controlador.INSTANCIA.configuracionPremium(b, precio);
 		plantillaMain.modoPremium(b);
 	}
 

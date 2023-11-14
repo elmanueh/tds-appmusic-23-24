@@ -1,42 +1,35 @@
 package umu.tds.modelo.musica;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class PlayList {
 
-	/*
-	 * ATRIBUTOS
-	 */
+	// ATRIBUTOS
 	private final String nombre;
 	private final HashSet<Cancion> listaCanciones;
 	private int codigo;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	public PlayList(String nombre) {
 		this.nombre = nombre;
 		this.listaCanciones = new HashSet<Cancion>();
 		this.codigo = 0;
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
+	// GETTERS AND SETTERS
 	public String getNombre() {
 		return nombre;
 	}
-	
-	public Cancion getCancion(String nombre) {;
-		for (Cancion c: listaCanciones)
+
+	public Cancion getCancion(String nombre) {
+		;
+		for (Cancion c : listaCanciones)
 			if (c.getTitulo().equals(nombre))
 				return c;
 		return null;
 	}
-	
+
 	public HashSet<Cancion> getListaCanciones() {
 		return new HashSet<Cancion>(listaCanciones);
 	}
@@ -49,9 +42,7 @@ public class PlayList {
 		this.codigo = id;
 	}
 
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void addCancion(Cancion c) {
 		listaCanciones.add(c);
 	}
@@ -67,9 +58,9 @@ public class PlayList {
 	public boolean consultarCancion(Cancion c) {
 		return listaCanciones.contains(c);
 	}
-	
+
 	public boolean consultarCancion(String c) {
-		for (Cancion cancion: listaCanciones) {
+		for (Cancion cancion : listaCanciones) {
 			if (cancion.getTitulo().equals(c))
 				return true;
 		}

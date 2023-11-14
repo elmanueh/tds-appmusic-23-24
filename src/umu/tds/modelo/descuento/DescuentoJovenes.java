@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import umu.tds.modelo.usuario.Usuario;
 
 public class DescuentoJovenes implements Descuento {
+
+	// METODOS
 	@Override
 	public double Precio() {
 		return Usuario.TARIFA_PREMIUM * 0.8;

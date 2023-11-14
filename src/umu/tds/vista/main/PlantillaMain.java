@@ -133,10 +133,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut = Box.createVerticalStrut(90);
 		p_iconoTitulo.add(verticalStrut);
-		
+
 		p_cabezera = new JPanel();
 		p_cabezera.setBackground(new Color(40, 40, 40));
 		GridBagConstraints gbc_p_cabezera = new GridBagConstraints();
+		gbc_p_cabezera.gridwidth = 2;
 		gbc_p_cabezera.insets = new Insets(0, 0, 5, 5);
 		gbc_p_cabezera.fill = GridBagConstraints.BOTH;
 		gbc_p_cabezera.gridx = 1;
@@ -145,14 +146,15 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cabezera.setLayout(new BorderLayout(0, 0));
 
 		/* TODO: si falla quitar aqui el usuario para probar */
-		String usuario = Controlador.getUnicaInstancia().getNombreUsuarioActual();
+		String usuario = Controlador.INSTANCIA.getNombreUsuarioActual();
 		mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
+		mensajeBienvenida
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		mensajeBienvenida.setLocation(new Point(40, 0));
 		mensajeBienvenida.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (!Controlador.getUnicaInstancia().isUsuarioActualPremium())
+		if (!Controlador.INSTANCIA.isUsuarioActualPremium())
 			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
 
 		JPanel p_cabezeraBotones = new JPanel();
@@ -171,19 +173,19 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
 
-		        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
-		        fileChooser.setFileFilter(filter);
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
+				fileChooser.setFileFilter(filter);
 
-		        int result = fileChooser.showOpenDialog(null);
+				int result = fileChooser.showOpenDialog(null);
 
-		        if (result == JFileChooser.APPROVE_OPTION) {
-		            File selectedFile = fileChooser.getSelectedFile();
-		            Controlador.getUnicaInstancia().cargarCanciones(selectedFile.getAbsolutePath());
-		            ventanaBuscar.actualizarEstilos();
-		        }
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					Controlador.INSTANCIA.cargarCanciones(selectedFile.getAbsolutePath());
+					ventanaBuscar.actualizarEstilos();
+				}
 			}
 		});
-		
+
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 0;
@@ -208,15 +210,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonLogOut.gridx = 3;
 		gbc_botonLogOut.gridy = 0;
 		p_cabezeraBotones.add(botonLogOut, gbc_botonLogOut);
-		
+
 		mensajeBienvenida_1 = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida_1.setVisible(Controlador.getUnicaInstancia().isUsuarioActualPremium());
-		mensajeBienvenida_1.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
+		mensajeBienvenida_1.setVisible(Controlador.INSTANCIA.isUsuarioActualPremium());
+		mensajeBienvenida_1.setIcon(
+				new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
 		mensajeBienvenida_1.setLocation(new Point(40, 0));
 		mensajeBienvenida_1.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida_1.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (Controlador.getUnicaInstancia().isUsuarioActualPremium())
+		if (Controlador.INSTANCIA.isUsuarioActualPremium())
 			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
 
 		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
@@ -272,7 +275,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonRecientes.gridy = 2;
 		p_menuBotones.add(botonRecientes, gbc_botonRecientes);
 
-		p_menuBotonesPremium.setVisible(Controlador.getUnicaInstancia().isUsuarioActualPremium());
+		p_menuBotonesPremium.setVisible(Controlador.INSTANCIA.isUsuarioActualPremium());
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
 		gbc_p_menuBotonesPremium.gridwidth = 2;
 		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
@@ -403,18 +406,17 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		if (ventanaBuscar.isVisible() && 
-				e.getSource() != botonPremium && e.getSource() !=  botonLogOut) {
+		if (ventanaBuscar.isVisible() && e.getSource() != botonPremium && e.getSource() != botonLogOut) {
 			ventanaBuscar.guardarSeleecionados();
 		}
-		
+
 		// TODO
 		if (e.getSource() == botonPremium) {
-			ControladorVentanas.getUnicaInstancia().iniciarPremium();
+			ControladorVentanas.INSTANCIA.iniciarPremium();
 		}
 
 		if (e.getSource() == botonLogOut) {
-			ControladorVentanas.getUnicaInstancia().logOutSatisfactorio();
+			ControladorVentanas.INSTANCIA.logOutSatisfactorio();
 		}
 
 		if (e.getSource() == botonBuscar) {
@@ -431,8 +433,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
 			ventanaGestionPlaylist.vaciarCampos();
-			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.getUnicaInstancia().getCancionesSeleccionadas()); 
-			
+			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.INSTANCIA.getCancionesSeleccionadas());
+
 			/*
 			 * TABLA
 			 */
@@ -446,7 +448,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			};
 
 			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.getUnicaInstancia().getPlayListUsuarioActual()) {
+			for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
 				Object[] playlist = { p.getNombre() };
 				modeloTabla.addRow(playlist);
 			}
@@ -475,7 +477,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			card.show(p_cardLayout, "ventanaGenerarPDF");
 
 			// TODO: esto ponerlo en el panel
-			long dias = Controlador.getUnicaInstancia().diasParaCumple();
+			long dias = Controlador.INSTANCIA.diasParaCumple();
 			if (dias == 365)
 				System.out.println("Feliz cumpleaños!!");
 			else
@@ -502,7 +504,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			};
 
 			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.getUnicaInstancia().getPlayListUsuarioActual()) {
+			for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
 				Object[] playlist = { p.getNombre() };
 				modeloTabla.addRow(playlist);
 			}

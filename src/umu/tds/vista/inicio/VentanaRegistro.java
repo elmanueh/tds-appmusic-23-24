@@ -670,7 +670,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 			if (email.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "El campo Correo Electrónico es obligatorio.",
 						"Problema en Correo Electrónico", JOptionPane.ERROR_MESSAGE);
-			} else if (Controlador.getUnicaInstancia().existeUsuario(email)) {
+			} else if (Controlador.INSTANCIA.existeUsuario(email)) {
 				JOptionPane.showMessageDialog(null, "Esta dirección ya esta vinculada a otra cuenta.",
 						"Dirección en uso", JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -711,7 +711,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 			if (nombre.isEmpty()) {
 				JOptionPane.showMessageDialog(null, "El campo Nombre es obligatorio.", "Problema en Nombre",
 						JOptionPane.ERROR_MESSAGE);
-			} else if (Controlador.getUnicaInstancia().existeUsuario(nombre)) {
+			} else if (Controlador.INSTANCIA.existeUsuario(nombre)) {
 				JOptionPane.showMessageDialog(null, "El nombre de usuario ya existe.", "Nombre usuario en uso",
 						JOptionPane.WARNING_MESSAGE);
 			} else {
@@ -734,10 +734,10 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 			String correo = textoEmail.getText().trim();
 			Date fecha = fechaNacimiento.getDate();
 
-			Controlador.getUnicaInstancia().registrarUsuario(usuario, correo, fecha, contraseña);
+			Controlador.INSTANCIA.registrarUsuario(usuario, correo, fecha, contraseña);
 			JOptionPane.showMessageDialog(null, "Usuario registrado correctamente.", "Registro satisfactorio",
 					JOptionPane.INFORMATION_MESSAGE);
-			ControladorVentanas.getUnicaInstancia().logInSatisfactorio();
+			ControladorVentanas.INSTANCIA.logInSatisfactorio();
 		}
 	}
 

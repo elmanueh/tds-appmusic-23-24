@@ -56,8 +56,8 @@ public class MenuPremium extends JFrame implements ActionListener {
 		JPanel panel_Normal = new JPanel();
 		getContentPane().add(panel_Normal, "panel_Normal");
 		GridBagLayout gbl_panel_Normal = new GridBagLayout();
-		gbl_panel_Normal.columnWeights = new double[]{0.0, 0.0};
-		gbl_panel_Normal.columnWidths = new int[]{0, 150};
+		gbl_panel_Normal.columnWeights = new double[] { 0.0, 0.0 };
+		gbl_panel_Normal.columnWidths = new int[] { 0, 150 };
 		gbl_panel_Normal.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_panel_Normal.rowHeights = new int[] { 0, 20, 0, 30, 35 };
 		panel_Normal.setLayout(gbl_panel_Normal);
@@ -112,7 +112,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_Premium.add(lblNewLabel_2, gbc_lblNewLabel_2);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de "+ Controlador.getUnicaInstancia().getCuotaUsuarioActual() + "€");
+		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de " + Controlador.INSTANCIA.getCuotaUsuarioActual() + "€");
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_1_1.gridx = 0;
@@ -127,7 +127,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbc_btnDarDeBaja.gridy = 4;
 		panel_Premium.add(botonDarDeBaja, gbc_btnDarDeBaja);
 
-		boolean premium = Controlador.getUnicaInstancia().isUsuarioActualPremium();
+		boolean premium = Controlador.INSTANCIA.isUsuarioActualPremium();
 		if (premium) {
 			((CardLayout) getContentPane().getLayout()).show(getContentPane(), "panel_Premium");
 		} else {
@@ -145,7 +145,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonPremium) {
-			Descuento d = Controlador.getUnicaInstancia().aplicarDescuento(codigo.getText());
+			Descuento d = Controlador.INSTANCIA.aplicarDescuento(codigo.getText());
 
 			String mensaje;
 			switch (d.tipoDescuento()) {
@@ -159,7 +159,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(null, mensaje, "GRACIAS POR SUSCRIBIRTE", JOptionPane.PLAIN_MESSAGE);
-			ControladorVentanas.getUnicaInstancia().quitarPremium(true, d.Precio());
+			ControladorVentanas.INSTANCIA.quitarPremium(true, d.Precio());
 			dispose();
 		}
 
@@ -167,7 +167,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null,
 					"Te esperamos de vuelta pronto\n\nPuedes disfrutar de nuestros códigos promocionales",
 					"HASTA PRONTO !!!", JOptionPane.PLAIN_MESSAGE);
-			ControladorVentanas.getUnicaInstancia().quitarPremium(false, 0);
+			ControladorVentanas.INSTANCIA.quitarPremium(false, 0);
 			dispose();
 		}
 

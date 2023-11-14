@@ -206,7 +206,7 @@ public class VentanaLogin extends JPanel implements ActionListener, MouseListene
 
 			String usuario = textoUsuario.getText();
 			String contraseña = new String(textoContraseña.getPassword());
-			Boolean login = Controlador.getUnicaInstancia().login(usuario, contraseña);
+			Boolean login = Controlador.INSTANCIA.login(usuario, contraseña);
 
 			if (!login) {
 				JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos.",

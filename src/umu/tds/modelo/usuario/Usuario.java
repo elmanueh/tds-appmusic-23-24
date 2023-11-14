@@ -13,15 +13,9 @@ import umu.tds.modelo.descuento.DescuentoNulo;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-/*
- * FALTA IMPLEMENTAR DESCUENTO
- * VA AQUI??????
- */
 public class Usuario {
 
-	/*
-	 * ATRIBUTOS
-	 */
+	// ATRIBUTOS
 	public static final double TARIFA_PREMIUM = 10;
 	private static final int MAX = 5;
 
@@ -35,9 +29,7 @@ public class Usuario {
 	private int code;
 	private double cuota;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	public Usuario(String nombre, String email, Date fecha, String contraseña) {
 		this.nombre = nombre;
 		this.email = email;
@@ -52,9 +44,7 @@ public class Usuario {
 		this.premium = false;
 	}
 
-	/*
-	 * METODOS DE CONSULTA Y ESTABLECIMIENTO
-	 */
+	// GETTERS AND SETTERS
 	public String getNombre() {
 		return nombre;
 	}
@@ -103,19 +93,16 @@ public class Usuario {
 		this.cuota = cuota;
 	}
 
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void addPlayList(PlayList p) {
 		listaPlayList.add(p);
 	}
 
 	public PlayList getPlayList(String nombre) {
-		// return (PlayList) listaPlayList.stream().filter(p -> p.getNombre() ==
-		// nombre);
-		for (PlayList p : listaPlayList)
+		for (PlayList p : listaPlayList) {
 			if (p.getNombre().equals(nombre))
 				return p;
+		}
 		return null;
 	}
 

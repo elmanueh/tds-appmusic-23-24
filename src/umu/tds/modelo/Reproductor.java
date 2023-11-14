@@ -12,13 +12,12 @@ import java.nio.file.StandardCopyOption;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+@SuppressWarnings("restriction")
 public class Reproductor {
 	private MediaPlayer mediaPlayer;
 	private String binPath;
 	private String tempPath;
-	
-	
-	
+
 	public Reproductor() {
 		inicializar();
 	}
@@ -27,9 +26,8 @@ public class Reproductor {
 		mediaPlayer = null;
 		binPath = Reproductor.class.getClassLoader().getResource(".").getPath();
 		binPath = binPath.replaceFirst("/", "");
-		// quitar "/" a�adida al inicio del path en plataforma Windows
 		tempPath = binPath.replace("/bin", "/temp");
-		
+
 	}
 
 	public void playCancion(String url) {
@@ -51,7 +49,7 @@ public class Reproductor {
 
 			Media media = new Media(mp3.toFile().toURI().toString());
 			mediaPlayer = new MediaPlayer(media);
-			
+
 			mediaPlayer.play();
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
@@ -61,7 +59,8 @@ public class Reproductor {
 	}
 
 	public void stopCancion() {
-		if (mediaPlayer != null) mediaPlayer.stop();
+		if (mediaPlayer != null)
+			mediaPlayer.stop();
 		File directorio = new File(tempPath);
 		String[] files = directorio.list();
 		for (String archivo : files) {
