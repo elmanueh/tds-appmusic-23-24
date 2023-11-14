@@ -11,36 +11,22 @@ import beans.Entidad;
 import beans.Propiedad;
 import umu.tds.modelo.musica.Cancion;
 
-public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
+public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
-	private static ServicioPersistencia servPersistencia;
-	private static AdaptadorCancionTDS unicaInstancia;
+	// ATRIBUTOS
+	private ServicioPersistencia servPersistencia;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private AdaptadorCancionTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
-	public static AdaptadorCancionTDS getUnicaInstancia() {
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorCancionTDS();
-		return unicaInstancia;
-	}
-
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void registrarCancion(Cancion cancion) {
 		Entidad eCancion = null;
 		eCancion = servPersistencia.recuperarEntidad(cancion.getCodigo());
+
 		if (eCancion != null)
 			return;
 
@@ -57,9 +43,6 @@ public class AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	}
 
 	public Cancion recuperarCancion(int codigo) {
-		if (PoolDAO.getUnicaInstancia().contiene(codigo))
-			return (Cancion) PoolDAO.getUnicaInstancia().getObjeto(codigo);
-
 		Entidad eCancion;
 		int numRep;
 		String titulo;

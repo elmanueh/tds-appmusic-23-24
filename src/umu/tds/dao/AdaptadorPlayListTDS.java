@@ -3,9 +3,6 @@ package umu.tds.dao;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
@@ -15,40 +12,22 @@ import tds.driver.ServicioPersistencia;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
+public enum AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
-	private static ServicioPersistencia servPersistencia;
-	private static AdaptadorPlayListTDS unicaInstancia = null;
+	// ATRIBUTOS
+	private ServicioPersistencia servPersistencia;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private AdaptadorPlayListTDS() {
 		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
-	public static AdaptadorPlayListTDS getUnicaInstancia() {
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorPlayListTDS();
-		return unicaInstancia;
-	}
-
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	public void registrarPlayList(PlayList playlist) {
 		Entidad ePlayList = null;
+		ePlayList = servPersistencia.recuperarEntidad(playlist.getCodigo());
 
-		try {
-			ePlayList = servPersistencia.recuperarEntidad(playlist.getCodigo());
-		} catch (NullPointerException e) {
-		}
 		if (ePlayList != null)
 			return;
 
@@ -63,7 +42,6 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 
 	public void borrarPlayList(PlayList playlist) {
 		Entidad ePlayList = servPersistencia.recuperarEntidad(playlist.getCodigo());
-
 		servPersistencia.borrarEntidad(ePlayList);
 	}
 
@@ -85,10 +63,6 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 	}
 
 	public PlayList recuperarPlayList(int codigo) {
-
-		if (PoolDAO.getUnicaInstancia().contiene(codigo))
-			return (PlayList) PoolDAO.getUnicaInstancia().getObjeto(codigo);
-
 		Entidad ePlayList;
 		HashSet<Cancion> canciones = new HashSet<Cancion>();
 		String nombre;
@@ -98,25 +72,12 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		PlayList playlist = new PlayList(nombre);
 		playlist.setCodigo(codigo);
 
-		PoolDAO.getUnicaInstancia().addObjeto(codigo, playlist);
-
 		canciones = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(ePlayList, "canciones"));
 		playlist.addAllCanciones(canciones);
 		return playlist;
 	}
 
-	public List<PlayList> recuperarTodosPlayLists() {
-		List<Entidad> ePLs = servPersistencia.recuperarEntidades("playlist");
-		List<PlayList> playlist = new LinkedList<PlayList>();
-		for (Entidad ePlayList : ePLs) {
-			playlist.add(recuperarPlayList(ePlayList.getId()));
-		}
-		return playlist;
-	}
-
-	/*
-	 * METODOS AUXILIARES
-	 */
+	// METODOS AUXILIARES
 	private String obtenerCodigosCanciones(PlayList playlist) {
 		String codigosCanciones = "";
 		for (Cancion c : playlist.getListaCanciones()) {
@@ -130,8 +91,8 @@ public class AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		StringTokenizer strTok = new StringTokenizer(canciones, " ");
 
 		while (strTok.hasMoreTokens()) {
-			listaCanciones.add(AdaptadorCancionTDS.getUnicaInstancia()
-					.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
+			listaCanciones.add(
+					AdaptadorCancionTDS.INSTANCIA.recuperarCancion(Integer.valueOf((String) strTok.nextElement())));
 		}
 		return listaCanciones;
 	}

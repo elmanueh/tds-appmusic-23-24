@@ -1,7 +1,5 @@
 package umu.tds.dao;
 
-import java.util.List;
-
 import umu.tds.modelo.musica.PlayList;
 
 public interface IAdaptadorPlayListDAO {
@@ -13,6 +11,4 @@ public interface IAdaptadorPlayListDAO {
 	public void modificarPlayList(PlayList playlist);
 
 	public PlayList recuperarPlayList(int codigo);
-
-	public List<PlayList> recuperarTodosPlayLists();
 }

@@ -1,22 +1,24 @@
 package umu.tds.dao;
 
 public class TDSFactoriaDAO extends FactoriaDAO {
+
+	// CONSTRUCTOR
 	public TDSFactoriaDAO() {
 	}
 
 	@Override
 	public IAdaptadorUsuarioDAO getUsuarioDAO() {
-		return AdaptadorUsuarioTDS.getUnicaInstancia();
+		return AdaptadorUsuarioTDS.INSTANCIA;
 	}
 
 	@Override
 	public IAdaptadorCancionDAO getCancionDAO() {
-		return AdaptadorCancionTDS.getUnicaInstancia();
+		return AdaptadorCancionTDS.INSTANCIA;
 	}
 
 	@Override
 	public IAdaptadorPlayListDAO getPlaylistDAO() {
-		return AdaptadorPlayListTDS.getUnicaInstancia();
+		return AdaptadorPlayListTDS.INSTANCIA;
 	}
 
 }

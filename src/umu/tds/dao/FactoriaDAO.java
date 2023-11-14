@@ -1,24 +1,16 @@
 package umu.tds.dao;
 
-/**
- * Define una factoria abstracta que devuelve todos los DAO de la aplicacion
- */
 public abstract class FactoriaDAO {
-	/*
-	 * ATRIBUTOS
-	 */
+
+	// ATRIBUTOS
 	private static FactoriaDAO unicaInstancia;
 	public static final String DAO_TDS = "umu.tds.dao.TDSFactoriaDAO";
 
-	/*
-	 * Constructor
-	 */
-	protected FactoriaDAO() {
+	// CONSTRUCTOR
+	public FactoriaDAO() {
 	}
 
-	/**
-	 * Crea un tipo de factoria DAO. Solo existe el tipo TDSFactoriaDAO
-	 */
+	// METODOS
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException {
 		if (unicaInstancia == null)
 			try {
@@ -30,9 +22,6 @@ public abstract class FactoriaDAO {
 		return unicaInstancia;
 	}
 
-	/**
-	 * Devuelve la instancia de la FactoriaDAO
-	 */
 	public static FactoriaDAO getInstancia() throws DAOException {
 		if (unicaInstancia == null)
 			return getInstancia(FactoriaDAO.DAO_TDS);
@@ -40,9 +29,7 @@ public abstract class FactoriaDAO {
 			return unicaInstancia;
 	}
 
-	/*
-	 * Metodos factoria que devuelven adaptadores que implementen estos interfaces
-	 */
+	// METODOS FACTORIA
 	public abstract IAdaptadorCancionDAO getCancionDAO();
 
 	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();

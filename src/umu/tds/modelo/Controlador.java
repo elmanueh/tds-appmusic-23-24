@@ -114,19 +114,19 @@ public class Controlador implements CancionesListener {
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
 	}
-	
+
 	public String getNombreUsuarioActual() {
 		return usuarioActual.getNombre();
 	}
-	
+
 	public boolean isUsuarioActualPremium() {
 		return usuarioActual.isPremium();
 	}
-	
+
 	public Set<PlayList> getPlayListUsuarioActual() {
 		return usuarioActual.getListaPlayList();
 	}
-	
+
 	public double getCuotaUsuarioActual() {
 		return usuarioActual.getCuota();
 	}
@@ -135,7 +135,7 @@ public class Controlador implements CancionesListener {
 		return getUsuario(nombre_email) != null;
 	}
 
-	//TODO: EN CASO DE UTILIZARLO MIRAR EL PATRON EXPERTO
+	// TODO: EN CASO DE UTILIZARLO MIRAR EL PATRON EXPERTO
 	public long diasParaCumple() {
 		Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
 		Calendar fechaActual = Calendar.getInstance();
@@ -182,31 +182,26 @@ public class Controlador implements CancionesListener {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
 		if (favorito) {
 			if (estilo.equals(""))
-				usuarioActual.getListaPlayList().stream()
-		        .flatMap(pl -> pl.getListaCanciones().stream())
-		        .filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-				.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-				.forEach(canciones::add);
+				usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream())
+						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+						.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+						.forEach(canciones::add);
 			else
-				usuarioActual.getListaPlayList().stream()
-			        .flatMap(pl -> pl.getListaCanciones().stream())
-			        .filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-					.filter(c -> c.getEstiloMusical().equals(estilo))
-					.forEach(canciones::add);
-		}
-		else {
-		if (estilo.equals(""))
-			catalogoCanciones.getCanciones().stream()
-					.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-					.forEach(canciones::add);
-		else
-			catalogoCanciones.getCanciones().stream()
-					.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-					.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-					.filter(c -> c.getEstiloMusical().equals(estilo))
-					.forEach(canciones::add);
+				usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream())
+						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+						.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+						.filter(c -> c.getEstiloMusical().equals(estilo)).forEach(canciones::add);
+		} else {
+			if (estilo.equals(""))
+				catalogoCanciones.getCanciones().stream()
+						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+						.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+						.forEach(canciones::add);
+			else
+				catalogoCanciones.getCanciones().stream()
+						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+						.filter(c -> c.getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+						.filter(c -> c.getEstiloMusical().equals(estilo)).forEach(canciones::add);
 		}
 		return canciones;
 	}
@@ -236,7 +231,7 @@ public class Controlador implements CancionesListener {
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
-	
+
 	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
 
 		PlayList p = usuarioActual.getPlayList(s);
@@ -252,11 +247,11 @@ public class Controlador implements CancionesListener {
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
-	
+
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
 		return getPlayList(text).getListaCanciones();
 	}
-	
+
 	/*
 	 * Metodos para ventanaGestionPlayList
 	 */
@@ -268,13 +263,13 @@ public class Controlador implements CancionesListener {
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
-	
+
 	public void anadirCancionesSelecAPL(String text) {
 		PlayList p = usuarioActual.getPlayList(text);
-		for (Cancion c: cancionesSeleccionadas)
-			if(!p.consultarCancion(c.getTitulo()))
+		for (Cancion c : cancionesSeleccionadas)
+			if (!p.consultarCancion(c.getTitulo()))
 				p.addCancion(c);
-		
+
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
@@ -296,34 +291,34 @@ public class Controlador implements CancionesListener {
 	public PlayList getPlayList(String s) {
 		return usuarioActual.getPlayList(s);
 	}
-	
+
 	public boolean eliminarPlayList(String text) {
 		PlayList p = usuarioActual.getPlayList(text);
-		if (p==null)
+		if (p == null)
 			return false;
 		usuarioActual.removePlayList(p);
 		adaptadorPlayList.borrarPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
-	
+
 	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
 		PlayList p = usuarioActual.getPlayList(text);
-		if (p==null)
+		if (p == null)
 			return false;
 		usuarioActual.removePlayList(p);
 
 		int filasTotal = modelo.getRowCount();
-		
+
 		for (int fila = 0; fila < filasTotal; fila++) {
 			if ((Boolean) modelo.getValueAt(fila, 3)) {
 				Cancion cancion = p.getCancion((String) modelo.getValueAt(fila, 0));
 				p.removeCancion(cancion);
 			}
 		}
-		
+
 		usuarioActual.addPlayList(p);
-		
+
 		adaptadorPlayList.modificarPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
@@ -339,7 +334,7 @@ public class Controlador implements CancionesListener {
 	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
 		usuarioActual.setCuota(precio);
-		
+
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
@@ -349,7 +344,6 @@ public class Controlador implements CancionesListener {
 	public void setTablaSeleccionados(DefaultTableModel modelo) {
 		cancionesSeleccionadas = new HashSet<Cancion>();
 		int filasTotal = modelo.getRowCount();
-		
 
 		for (int fila = 0; fila < filasTotal; fila++) {
 			if ((Boolean) modelo.getValueAt(fila, 3)) {
@@ -362,6 +356,7 @@ public class Controlador implements CancionesListener {
 	public HashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
+
 	/*
 	 * CARGADOR CANCIONES
 	 */
@@ -380,15 +375,5 @@ public class Controlador implements CancionesListener {
 			catalogoCanciones.addCancion(cancion);
 		}
 	}
-
-
-
-
-
-
-
-
-
-
 
 }
