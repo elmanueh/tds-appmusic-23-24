@@ -348,12 +348,12 @@ public enum Controlador implements CancionesListener {
 	 */
 	public void play(String titulo) {
 		Cancion c = catalogoCanciones.getCancion(titulo);
-		Reproductor.getUnicaInstancia().playCancion(c.getRutaFichero());
+		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
 	}
 
 	public void pause() {
-		Reproductor.getUnicaInstancia().pause();
-		
+		Reproductor.INSTANCIA.pause();
+
 	}
 
 }
