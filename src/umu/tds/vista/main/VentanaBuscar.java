@@ -316,6 +316,8 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 		botonPlay.addActionListener(this);
 		botonPause.addActionListener(this);
+		botonNext.addActionListener(this);
+		botonPrevious.addActionListener(this);
 
 	}
 
@@ -435,14 +437,38 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonPlay) {
-			botonPlay.setVisible(false);
-			botonPause.setVisible(true);
+			int x = tablaCanciones.getSelectedRow();
+			reproducir(x);
 		}
 
 		if (e.getSource() == botonPause) {
+			Controlador.getUnicaInstancia().pause();
+			
 			botonPause.setVisible(false);
 			botonPlay.setVisible(true);
 		}
+		
+		if (e.getSource() == botonNext) {
+			int x = tablaCanciones.getSelectedRow() + 1;
+			if (x == tablaCanciones.getRowCount())
+				x = 0;
+			reproducir(x);
+		}
+		
+		if (e.getSource() == botonPrevious) {
+			int x = tablaCanciones.getSelectedRow() - 1;
+			if (x == -2 || x == -1)
+				x = tablaCanciones.getRowCount()-1;
+			reproducir(x);
+		}
+	}
+	
+	private void reproducir(int x) {
+		tablaCanciones.setRowSelectionInterval(x, x);
+		String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel()).getValueAt(x, 0);
+		Controlador.getUnicaInstancia().play(titulo);
+		botonPlay.setVisible(false);
+		botonPause.setVisible(true);
 	}
 
 	public void esconderPanel() {
@@ -459,6 +485,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	}
 
 	public void actualizarEstilos() {
+		comboBoxEstilo.removeAllItems();
 		for (String s : Controlador.getUnicaInstancia().getEstilos())
 			comboBoxEstilo.addItem(s);
 	}
