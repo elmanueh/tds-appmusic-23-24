@@ -254,7 +254,7 @@ public class Controlador implements CancionesListener {
 	}
 	
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
-		return getListaCancionesPlayList(text);
+		return getPlayList(text).getListaCanciones();
 	}
 	
 	/*
