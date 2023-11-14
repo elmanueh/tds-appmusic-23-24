@@ -21,32 +21,20 @@
 		<interprete>King Crimson </interprete>
 	</cancion>
 
-	<cancion titulo="Confessing that I love you">
-		<URL><![CDATA[https://ia600108.us.archive.org/13/items/78_west-end-blues_louis-armstrong-and-his-orchestra-spencer-williams_gbia0031327/06%20-%20Confessin%27%20That%20I%20Love%20You%20-%20Louis%20Armstrong%20And%20His%20Orchcestra.mp3]]></URL>
-		<estilo>Jazz</estilo>
-		<interprete>Louis Armstrong</interprete>
-	</cancion>
-
-	<cancion titulo="Moonlight Serenade">
-		<URL><![CDATA[https://ia800803.us.archive.org/24/items/78_moonlight-serenade_glenn-miller-and-his-orchestra-glenn-miller_gbia0015151b/Moonlight%20Serenade%20-%20Glenn%20Miller%20and%20his%20Orchestra-restored.mp3]]></URL>
-		<estilo>Ballad</estilo>
-		<interprete>Glen Miller</interprete>
-	</cancion>
-
 	<cancion titulo="La Cumparsita">
 		<URL><![CDATA[https://ia801609.us.archive.org/14/items/78_la-cumparsita_pietro-g.h.-matos-rodriguez_gbia0001088b/La%20Cumparsita%20-%20Pietro%20-%20G.H.%20Matos%20Rodriguez-restored.mp3]]></URL>
 		<estilo>Tango</estilo>
 		<interprete>Pietro</interprete>
 	</cancion>
 	
-	<cancion titulo="Hibiki">
-		<URL><![CDATA[http://143.47.53.235/hibiki.mp3]]></URL>
-		<estilo>Hip Hop</estilo>
-		<interprete>Bad Bunny</interprete>
+	<cancion titulo="El Mambo">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/El%20Mambo%20-%20Kiko%20Rivera.mp3]]></URL>
+		<estilo>Urbano Latino</estilo>
+		<interprete>Kiko Rivera</interprete>
 	</cancion>
 	
 	<cancion titulo="Himno de España">
-		<URL><![CDATA[http://143.47.53.235/himno-españa.mp3]]></URL>
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20Spain.mp3]]></URL>
 		<estilo>Himno</estilo>
 		<interprete>Anonimo</interprete>
 	</cancion>

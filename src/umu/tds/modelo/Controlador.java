@@ -376,4 +376,17 @@ public class Controlador implements CancionesListener {
 		}
 	}
 
+	/*
+	 * REPRODUCIR CANCIONES
+	 */
+	public void play(String titulo) {
+		Cancion c = catalogoCanciones.getCancion(titulo);
+		Reproductor.getUnicaInstancia().playCancion(c.getRutaFichero());
+	}
+
+	public void pause() {
+		Reproductor.getUnicaInstancia().pause();
+		
+	}
+
 }
