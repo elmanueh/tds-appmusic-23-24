@@ -8,35 +8,21 @@ import java.util.List;
 import umu.tds.componente.Canciones;
 import umu.tds.componente.MapperCancionesXMLtoJava;
 
-public class CargadorCanciones implements Serializable {
+public enum CargadorCanciones implements Serializable {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
+	// ATRIBUTOS
 	private static final long serialVersionUID = 1L;
-
-	private static CargadorCanciones INSTANCIA;
 	private String archivoCanciones; // propiedad ligada
 	private List<CancionesListener> cancionesListeners;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private CargadorCanciones() {
 		archivoCanciones = "";
 		cancionesListeners = new LinkedList<>();
 	}
 
-	/*
-	 * METODOS GETTERS AND SETTERS
-	 */
-	public static CargadorCanciones getUnicaInstancia() {
-		if (INSTANCIA == null) {
-			INSTANCIA = new CargadorCanciones();
-		}
-		return INSTANCIA;
-	}
-
+	// METODOS
 	public String getArchivoCanciones() {
 		return archivoCanciones;
 	}
@@ -62,9 +48,6 @@ public class CargadorCanciones implements Serializable {
 		cancionesListeners.remove(listener);
 	}
 
-	/*
-	 * METODOS
-	 */
 	private void notificarCancionesEvent(CancionesEvent evento) {
 		ArrayList<CancionesListener> copia = null;
 		synchronized (cancionesListeners) {

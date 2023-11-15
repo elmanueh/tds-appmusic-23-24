@@ -22,7 +22,7 @@ import java.awt.Font;
 
 public class VentanaBuscar extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTextField txtTitulo;
 	private JTextField txtInterprete;
 	private JTable tablaCanciones;
@@ -357,26 +357,26 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			modeloFiltrado.addColumn("Interprete");
 			modeloFiltrado.addColumn("");
 
-			for (Cancion cancion : Controlador.getUnicaInstancia().getCancionesFiltradas(tituloFiltrado,
-					interpreteFiltrado, estiloFiltrado, favorito)) {
+			for (Cancion cancion : Controlador.INSTANCIA.getCancionesFiltradas(tituloFiltrado, interpreteFiltrado,
+					estiloFiltrado, favorito)) {
 				Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
 				modeloFiltrado.addRow(fila);
 			}
 			tablaCanciones.setModel(modeloFiltrado);
-			
-			SwingUtilities.invokeLater(() -> {
-			int anchoTabla = tablaCanciones.getWidth();
-			int numColumnas = tablaCanciones.getColumnCount();
-			int anchoUltColumna = (int) (anchoTabla * 0.05);
-			for (int i = 0; i < numColumnas; i++) {
-				tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-				if (i != numColumnas - 1)
-					tablaCanciones.getColumnModel().getColumn(i)
-							.setPreferredWidth((anchoTabla - anchoUltColumna) / (numColumnas - 1));
 
-				else
-					tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
-			}
+			SwingUtilities.invokeLater(() -> {
+				int anchoTabla = tablaCanciones.getWidth();
+				int numColumnas = tablaCanciones.getColumnCount();
+				int anchoUltColumna = (int) (anchoTabla * 0.05);
+				for (int i = 0; i < numColumnas; i++) {
+					tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
+					if (i != numColumnas - 1)
+						tablaCanciones.getColumnModel().getColumn(i)
+								.setPreferredWidth((anchoTabla - anchoUltColumna) / (numColumnas - 1));
+
+					else
+						tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
+				}
 			});
 
 			tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
@@ -384,7 +384,6 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 
 			tablaCanciones.setAutoCreateRowSorter(true);
 
-			
 			tablaCanciones.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -414,23 +413,21 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			if (respuesta == JOptionPane.YES_OPTION) {
 				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
 				if (!(playlist == null)) {
-					if (Controlador.getUnicaInstancia().existePlayList(playlist))
-						Controlador.getUnicaInstancia().anadirCancionesAPlayList(playlist,
+					if (Controlador.INSTANCIA.existePlayList(playlist))
+						Controlador.INSTANCIA.anadirCancionesAPlayList(playlist,
 								(DefaultTableModel) tablaCanciones.getModel());
 					else {
-						Controlador.getUnicaInstancia().crearPlayList(playlist,
-								(DefaultTableModel) tablaCanciones.getModel());
+						Controlador.INSTANCIA.crearPlayList(playlist, (DefaultTableModel) tablaCanciones.getModel());
 					}
 				}
 			} else {
 				JComboBox<String> playlistComboBox = new JComboBox<>();
-				playlistComboBox
-						.setModel(new DefaultComboBoxModel<String>(Controlador.getUnicaInstancia().getPlayLists()));
+				playlistComboBox.setModel(new DefaultComboBoxModel<String>(Controlador.INSTANCIA.getPlayLists()));
 				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
 						JOptionPane.INFORMATION_MESSAGE);
 				if (!playlistComboBox.getSelectedItem().equals(""))
-					Controlador.getUnicaInstancia().anadirCancionesAPlayList(
-							(String) playlistComboBox.getSelectedItem(), (DefaultTableModel) tablaCanciones.getModel());
+					Controlador.INSTANCIA.anadirCancionesAPlayList((String) playlistComboBox.getSelectedItem(),
+							(DefaultTableModel) tablaCanciones.getModel());
 
 			}
 
@@ -442,31 +439,31 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonPause) {
-			Controlador.getUnicaInstancia().pause();
-			
+			Controlador.INSTANCIA.pause();
+
 			botonPause.setVisible(false);
 			botonPlay.setVisible(true);
 		}
-		
+
 		if (e.getSource() == botonNext) {
 			int x = tablaCanciones.getSelectedRow() + 1;
 			if (x == tablaCanciones.getRowCount())
 				x = 0;
 			reproducir(x);
 		}
-		
+
 		if (e.getSource() == botonPrevious) {
 			int x = tablaCanciones.getSelectedRow() - 1;
 			if (x == -2 || x == -1)
-				x = tablaCanciones.getRowCount()-1;
+				x = tablaCanciones.getRowCount() - 1;
 			reproducir(x);
 		}
 	}
-	
+
 	private void reproducir(int x) {
 		tablaCanciones.setRowSelectionInterval(x, x);
 		String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel()).getValueAt(x, 0);
-		Controlador.getUnicaInstancia().play(titulo);
+		Controlador.INSTANCIA.play(titulo);
 		botonPlay.setVisible(false);
 		botonPause.setVisible(true);
 	}
@@ -481,12 +478,11 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	}
 
 	public void guardarSeleecionados() {
-		Controlador.getUnicaInstancia().setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
+		Controlador.INSTANCIA.setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
 	}
 
 	public void actualizarEstilos() {
-		comboBoxEstilo.removeAllItems();
-		for (String s : Controlador.getUnicaInstancia().getEstilos())
+		for (String s : Controlador.INSTANCIA.getEstilos())
 			comboBoxEstilo.addItem(s);
 	}
 }

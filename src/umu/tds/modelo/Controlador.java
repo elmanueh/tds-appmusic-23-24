@@ -24,19 +24,15 @@ import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.vista.main.PlantillaMain;
 import umu.tds.modelo.cargador.CancionesEvent;
 import umu.tds.modelo.cargador.CancionesListener;
 import umu.tds.modelo.cargador.CargadorCanciones;
 import umu.tds.modelo.descuento.Descuento;
 
-public class Controlador implements CancionesListener {
+public enum Controlador implements CancionesListener {
+	INSTANCIA;
 
-	/*
-	 * ATRIBUTOS
-	 */
-	private static Controlador INSTANCIA;
-
+	// ATRIBUTOS
 	private IAdaptadorCancionDAO adaptadorCancion;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 	private IAdaptadorPlayListDAO adaptadorPlayList;
@@ -46,29 +42,14 @@ public class Controlador implements CancionesListener {
 	private Usuario usuarioActual;
 	private HashSet<Cancion> cancionesSeleccionadas;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	private Controlador() {
 		inicializarAdaptadores();
 		inicializarCatalogos();
-		CargadorCanciones.getUnicaInstancia().addCancionesListener(this);
+		CargadorCanciones.INSTANCIA.addCancionesListener(this);
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
-	public static Controlador getUnicaInstancia() {
-		if (INSTANCIA == null) {
-			INSTANCIA = new Controlador();
-		}
-
-		return INSTANCIA;
-	}
-
-	/*
-	 * METODOS
-	 */
+	// METODOS
 	private void inicializarAdaptadores() {
 		FactoriaDAO factoria = null;
 		try {
@@ -82,18 +63,16 @@ public class Controlador implements CancionesListener {
 	}
 
 	private void inicializarCatalogos() {
-		catalogoUsuarios = CatalogoUsuarios.getUnicaInstancia();
-		catalogoCanciones = CatalogoCanciones.getUnicaInstancia();
+		catalogoUsuarios = CatalogoUsuarios.INSTANCIA;
+		catalogoCanciones = CatalogoCanciones.INSTANCIA;
 	}
 
-	/*
-	 * USUARIO
-	 */
+	// USUARIO
 	public Boolean login(String usuarioAux, String contraseñaAux) {
 		Usuario usuario = getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			this.usuarioActual = usuario;
-			ControladorVentanas.getUnicaInstancia().logInSatisfactorio();
+			ControladorVentanas.INSTANCIA.logInSatisfactorio();
 			return true;
 		}
 		return false;
@@ -138,9 +117,8 @@ public class Controlador implements CancionesListener {
 		return getUsuario(nombre_email) != null;
 	}
 
-	// TODO: EN CASO DE UTILIZARLO MIRAR EL PATRON EXPERTO
-	public long diasParaCumple() {
-		Date fechaNacimiento = Controlador.getUnicaInstancia().getUsuarioActual().getFecha();
+	public long diasParaCumple() { // revisar
+		Date fechaNacimiento = usuarioActual.getFecha();
 		Calendar fechaActual = Calendar.getInstance();
 
 		Calendar fechaNacimientoCalendar = Calendar.getInstance();
@@ -159,9 +137,7 @@ public class Controlador implements CancionesListener {
 		return diasHastaCumpleaños;
 	}
 
-	/*
-	 * CANCION
-	 */
+	// CANCION
 	public void registrarCancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
 		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interprete);
 		adaptadorCancion.registrarCancion(cancion);
@@ -216,9 +192,7 @@ public class Controlador implements CancionesListener {
 		return estilos;
 	}
 
-	/*
-	 * PLAYLIST
-	 */
+	// PLAYLIST
 	public void crearPlayList(String s, DefaultTableModel modelo) {
 		PlayList p = new PlayList(s);
 		int filasTotal = modelo.getRowCount();
@@ -271,9 +245,6 @@ public class Controlador implements CancionesListener {
 		
 	}
 
-	/*
-	 * Metodos para ventanaGestionPlayList
-	 */
 	public void crearPlayList(String text) {
 		PlayList p = new PlayList(text);
 		p.addAllCanciones(cancionesSeleccionadas);
@@ -343,9 +314,7 @@ public class Controlador implements CancionesListener {
 		return true;
 	}
 
-	/*
-	 * PREMIUM
-	 */
+	// PREMIUM
 	public Descuento aplicarDescuento(String codigo) {
 		return usuarioActual.aplicarDescuento(codigo);
 	}
@@ -376,11 +345,9 @@ public class Controlador implements CancionesListener {
 		return cancionesSeleccionadas;
 	}
 
-	/*
-	 * CARGADOR CANCIONES
-	 */
+	// CARGADOR DE CANCIONES
 	public void cargarCanciones(String rutaXML) {
-		CargadorCanciones.getUnicaInstancia().setArchivoCanciones(rutaXML);
+		CargadorCanciones.INSTANCIA.setArchivoCanciones(rutaXML);
 	}
 
 	@Override
@@ -406,11 +373,11 @@ public class Controlador implements CancionesListener {
 		catalogoCanciones.addCancion(c);
 		usuarioActual.addCancionReciente(c);
 		
-		Reproductor.getUnicaInstancia().playCancion(c.getRutaFichero());
+		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
 	}
 
 	public void pause() {
-		Reproductor.getUnicaInstancia().pause();
-		
+		Reproductor.INSTANCIA.pause();
+
 	}
 }

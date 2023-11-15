@@ -12,34 +12,26 @@ import java.nio.file.StandardCopyOption;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class Reproductor {
-	private static Reproductor INSTANCIA;
+@SuppressWarnings("restriction")
+public enum Reproductor {
+	INSTANCIA;
 
+	// ATRIBUTOS
 	private MediaPlayer mediaPlayer;
 	private String binPath;
 	private String tempPath;
-	private String url="";
+	private String url;
 
-	public static Reproductor getUnicaInstancia() {
-		if (INSTANCIA == null) {
-			INSTANCIA = new Reproductor();
-		}
-		return INSTANCIA;
-	}
-
-	public Reproductor() {
-		inicializar();
-	}
-
-	private void inicializar() {
+	// CONSTRUCTOR
+	private Reproductor() {
+		url = "";
 		mediaPlayer = null;
 		binPath = Reproductor.class.getClassLoader().getResource(".").getPath();
 		binPath = binPath.replaceFirst("/", "");
-		// quitar "/" a�adida al inicio del path en plataforma Windows
 		tempPath = binPath.replace("/bin", "/temp");
-
 	}
 
+	// METODOS
 	public void playCancion(String url2) {
 		if (url.equals(url2)) {
 			mediaPlayer.play();
@@ -56,7 +48,7 @@ public class Reproductor {
 
 				System.setProperty("java.io.tmpdir", tempPath);
 				Path mp3 = Files.createTempFile("now-playing", ".mp3");
-				mp3.toFile().deleteOnExit(); //que los archivos terminales se borren al temrinar la app
+				mp3.toFile().deleteOnExit(); // que los archivos terminales se borren al temrinar la app
 
 				System.out.println(mp3.getFileName());
 				try (InputStream stream = uri.openStream()) {

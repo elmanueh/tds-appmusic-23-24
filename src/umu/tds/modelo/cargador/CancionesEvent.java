@@ -6,23 +6,17 @@ import umu.tds.componente.Canciones;
 
 public class CancionesEvent extends EventObject {
 
-	/*
-	 * ATRIBUTOS
-	 */
+	// ATRIBUTOS
 	private static final long serialVersionUID = 1L;
 	private Canciones canciones;
 
-	/*
-	 * CONSTRUCTOR
-	 */
+	// CONSTRUCTOR
 	public CancionesEvent(Object fuente, Canciones canciones) {
 		super(fuente);
 		this.canciones = canciones;
 	}
 
-	/*
-	 * GETTERS AND SETTERS
-	 */
+	// METODOS
 	public Canciones getCanciones() {
 		return canciones;
 	}

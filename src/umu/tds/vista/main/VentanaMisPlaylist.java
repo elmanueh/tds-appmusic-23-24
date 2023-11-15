@@ -20,7 +20,7 @@ import java.awt.Component;
 
 public class VentanaMisPlaylist extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel panelTabla;
 	private JTable tablaCanciones;
 	private JScrollPane scrollPane;
@@ -189,7 +189,7 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("ESTILO");
 		modeloFiltrado.addColumn("INTERPRETE");
 
-		for (Cancion cancion : Controlador.getUnicaInstancia().getListaCancionesPlayList(playlist)) {
+		for (Cancion cancion : Controlador.INSTANCIA.getListaCancionesPlayList(playlist)) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
 			modeloFiltrado.addRow(fila);
 		}
@@ -205,9 +205,9 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		tablaCanciones.setModel(modeloFiltrado);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
-		
+
 		tablaCanciones.setAutoCreateRowSorter(true);
-		
+
 		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

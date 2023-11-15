@@ -4,6 +4,7 @@ import umu.tds.modelo.usuario.Usuario;
 
 public class DescuentoNulo implements Descuento {
 
+	// METODOS
 	@Override
 	public double Precio() {
 		return Usuario.TARIFA_PREMIUM;
