@@ -230,7 +230,7 @@ public enum Controlador implements CancionesListener {
 	}
 	
 	public List<Cancion> getCancionesMasReproducidas() {
-		LinkedList<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
+		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
 		
         Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
         

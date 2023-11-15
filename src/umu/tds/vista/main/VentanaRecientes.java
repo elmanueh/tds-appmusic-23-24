@@ -17,7 +17,7 @@ public class VentanaRecientes extends JPanel {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LinkedHashSet<Cancion> lista = Controlador.getUnicaInstancia().getCancionesRecientes();
+				LinkedHashSet<Cancion> lista = Controlador.INSTANCIA.getCancionesRecientes();
 				
 				System.out.println();
 				System.out.println("----------- LSITA CANCIONES RECIENTES (MAX: " + Usuario.MAX + ") -----------");

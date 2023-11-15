@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,7 +20,7 @@ public class VentanaMasReproducidas extends JPanel {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				List<Cancion> lista = Controlador.getUnicaInstancia().getCancionesMasReproducidas();
+				List<Cancion> lista = Controlador.INSTANCIA.getCancionesMasReproducidas();
 
 				System.out.println();
 				System.out.println("----------- LSITA CANCIONES TOP10 -----------");
