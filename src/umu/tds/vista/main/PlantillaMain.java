@@ -32,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.URL;
 import java.awt.event.ActionEvent;
 
 import umu.tds.modelo.Controlador;
@@ -171,7 +172,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnNewButton = new JButton("UP");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser();
+		        String path = System.getProperty("user.dir") + File.separator + "xml";
+				File inicio = new File(path);
+				JFileChooser fileChooser = new JFileChooser(inicio);
 
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
 				fileChooser.setFileFilter(filter);
