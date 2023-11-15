@@ -3,12 +3,6 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
 	xs:schemaLocation="http://www.tds.es/canciones canciones.xsd">
 
-	<cancion titulo="I'll take a melody">
-		<URL><![CDATA[https://ia801406.us.archive.org/8/items/tsheaffer2020-11-08/16%20I%27ll%20Take%20A%20Melody.mp3]]></URL>
-		<estilo>Folk</estilo>
-		<interprete>Todd Sheaffer</interprete>
-	</cancion>
-
 	<cancion titulo="La Vie en rose">
 		<URL><![CDATA[https://ia801605.us.archive.org/16/items/78_la-vie-en-rose-slow-chante_edith-piaf-louiguy-edith-piaf-chansons-parisiennes-guy_gbia0000684a/La%20Vie%20En%20Rose%20%28Slow%20Chante%29%20-%20Edith%20Piaf-restored.mp3]]></URL>
 		<estilo>Cabaret</estilo>
@@ -31,6 +25,12 @@
 		<URL><![CDATA[http://143.47.53.235/tds/canciones/El%20Mambo%20-%20Kiko%20Rivera.mp3]]></URL>
 		<estilo>Urbano Latino</estilo>
 		<interprete>Kiko Rivera</interprete>
+	</cancion>
+
+	<cancion titulo="Mal De Amores">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Juan%20Magan%20-%20Mal%20De%20Amores.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Juan Magan</interprete>
 	</cancion>
 	
 	<cancion titulo="Himno de España">

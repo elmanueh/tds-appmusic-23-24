@@ -75,4 +75,10 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		return canciones;
 	}
 
+	@Override
+	public void modificarCancion(Cancion c) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

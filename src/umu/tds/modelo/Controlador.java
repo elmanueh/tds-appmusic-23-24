@@ -1,13 +1,16 @@
 package umu.tds.modelo;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -251,6 +254,22 @@ public class Controlador implements CancionesListener {
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
 		return getPlayList(text).getListaCanciones();
 	}
+	
+	public List<Cancion> getCancionesMasReproducidas() {
+		LinkedList<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
+		
+        Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
+        
+        Collections.sort(listaTOP10, comparadorReproducciones.reversed());
+
+        // Obtener las 10 canciones más reproducidas
+        return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
+	}
+	
+	public LinkedHashSet<Cancion> getCancionesRecientes() {
+		return usuarioActual.getListaCancionesRecientes();
+		
+	}
 
 	/*
 	 * Metodos para ventanaGestionPlayList
@@ -381,6 +400,12 @@ public class Controlador implements CancionesListener {
 	 */
 	public void play(String titulo) {
 		Cancion c = catalogoCanciones.getCancion(titulo);
+		catalogoCanciones.removeCancion(c);
+		c.addReproducciones();
+		// TODO: adaptadorCancion.modificarCancion(c);
+		catalogoCanciones.addCancion(c);
+		usuarioActual.addCancionReciente(c);
+		
 		Reproductor.getUnicaInstancia().playCancion(c.getRutaFichero());
 	}
 
@@ -388,5 +413,4 @@ public class Controlador implements CancionesListener {
 		Reproductor.getUnicaInstancia().pause();
 		
 	}
-
 }

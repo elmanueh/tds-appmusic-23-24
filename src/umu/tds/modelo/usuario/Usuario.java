@@ -23,7 +23,7 @@ public class Usuario {
 	 * ATRIBUTOS
 	 */
 	public static final double TARIFA_PREMIUM = 10;
-	private static final int MAX = 5;
+	public static final int MAX = 5;
 
 	private final String nombre;
 	private final String email;
@@ -75,7 +75,7 @@ public class Usuario {
 		return new HashSet<PlayList>(listaPlayList);
 	}
 
-	public Set<Cancion> getListaCancionesRecientes() {
+	public LinkedHashSet<Cancion> getListaCancionesRecientes() {
 		return new LinkedHashSet<Cancion>(listaCancionesRecientes);
 	}
 

@@ -42,7 +42,7 @@ public class CatalogoCanciones {
 		return INSTANCIA;
 	}
 
-	public List<Cancion> getCanciones() {
+	public LinkedList<Cancion> getCanciones() {
 		return new LinkedList<Cancion>(canciones.values());
 	}
 

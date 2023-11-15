@@ -28,6 +28,10 @@
 	 			// CARGADOR CANCIONES
 	 	- ELIMINAR TODOS LOS SYSOUT
 	 	
+	 			// CONTROLADOR
+	 	- Guardar en base de datos cada vez que se reproduce una cancion
+	 	pq aumenta el numrep
+	 	
 	 	
 	 	
 	 	/**********************************************/
