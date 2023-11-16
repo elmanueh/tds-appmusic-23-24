@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Usuario {
 	private final Date fecha;
 	private final String contraseña;
 	private final HashSet<PlayList> listaPlayList;
-	private final LinkedHashSet<Cancion> listaCancionesRecientes;
+	private final ArrayList<Cancion> listaCancionesRecientes;
 	private boolean premium;
 	private int code;
 	private double cuota;
@@ -39,7 +40,7 @@ public class Usuario {
 		this.cuota = 0;
 
 		this.listaPlayList = new HashSet<PlayList>();
-		this.listaCancionesRecientes = new LinkedHashSet<Cancion>();
+		this.listaCancionesRecientes = new ArrayList<Cancion>();
 
 		this.premium = false;
 	}
@@ -110,10 +111,11 @@ public class Usuario {
 		listaPlayList.remove(p);
 	}
 
-	public void addCancionReciente(Cancion c) {
+	public void addCancionReciente(Cancion cancion) {
 		List<Cancion> listaRecienteActualizado = new ArrayList<Cancion>();
-		listaRecienteActualizado.add(c);
-		listaRecienteActualizado.addAll(listaCancionesRecientes);
+		listaRecienteActualizado.add(cancion);
+		for (Cancion c: listaCancionesRecientes)
+			listaRecienteActualizado.add(c);
 		if (listaRecienteActualizado.size() > MAX) {
 			listaRecienteActualizado.remove(MAX);
 		}

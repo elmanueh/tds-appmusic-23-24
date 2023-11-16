@@ -76,9 +76,25 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	}
 
 	@Override
-	public void modificarCancion(Cancion c) {
-		// TODO Auto-generated method stub
-		
+	public void modificarCancion(Cancion cancion) {
+		Entidad eCancion = servPersistencia.recuperarEntidad(cancion.getCodigo());
+
+		for (Propiedad prop : eCancion.getPropiedades()) {
+			if (prop.getNombre().equals("codigo")) {
+				prop.setValor(String.valueOf(cancion.getCodigo()));
+			} else if (prop.getNombre().equals("titulo")) {
+				prop.setValor(cancion.getTitulo());
+			} else if (prop.getNombre().equals("rutaFichero")) {
+				prop.setValor(cancion.getRutaFichero());
+			} else if (prop.getNombre().equals("estiloMusical")) {
+				prop.setValor(cancion.getEstiloMusical());
+			} else if (prop.getNombre().equals("interprete")) {
+				prop.setValor(cancion.getInterprete());
+			} else if (prop.getNombre().equals("numeroRep")) {
+				prop.setValor(String.valueOf(cancion.getNumReproducciones()));
+			}
+			servPersistencia.modificarPropiedad(prop);
+		}
 	}
 
 }

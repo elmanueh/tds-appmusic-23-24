@@ -32,11 +32,35 @@
 		<estilo>Pop</estilo>
 		<interprete>Juan Magan</interprete>
 	</cancion>
-	
-	<cancion titulo="Himno de España">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20Spain.mp3]]></URL>
+
+	<cancion titulo="Himno">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20Espa%c3%83%c2%b1a.mp3]]></URL>
 		<estilo>Himno</estilo>
 		<interprete>Anonimo</interprete>
+	</cancion>
+
+	<cancion titulo="Ferxxo 151">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Icon%20-%20Ferxxo%20151.mp3]]></URL>
+		<estilo>Urbano Latino</estilo>
+		<interprete>Feid,Icon</interprete>
+	</cancion>
+
+	<cancion titulo="BUBALU">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Rema%20-%20BUBALU.mp3]]></URL>
+		<estilo>Urbano Latino</estilo>
+		<interprete>Feid, Rema</interprete>
+	</cancion>
+
+	<cancion titulo="CLASSY 101">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Young%20Miko%20-%20CLASSY%20101.mp3]]></URL>
+		<estilo>Urbano Latino</estilo>
+		<interprete>Feid, Young Miko</interprete>
+	</cancion>
+	
+		<cancion titulo="Luces Tecno">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid%20-%20Luces%20De%20Tecno.mp3]]></URL>
+		<estilo>Urbano Latino</estilo>
+		<interprete>Feid</interprete>
 	</cancion>
 
 </canciones>

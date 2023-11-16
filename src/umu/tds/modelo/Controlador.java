@@ -369,9 +369,10 @@ public enum Controlador implements CancionesListener {
 		Cancion c = catalogoCanciones.getCancion(titulo);
 		catalogoCanciones.removeCancion(c);
 		c.addReproducciones();
-		// TODO: adaptadorCancion.modificarCancion(c);
+		adaptadorCancion.modificarCancion(c);
 		catalogoCanciones.addCancion(c);
 		usuarioActual.addCancionReciente(c);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		
 		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
 	}

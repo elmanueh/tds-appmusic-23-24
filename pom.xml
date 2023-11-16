@@ -46,6 +46,7 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- PARA REPRODUCIR CANCIONES -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
@@ -60,6 +61,19 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-media</artifactId>
 			<version>11.0.2</version>
+		</dependency>
+
+		<!-- A LA HORA DE METER NUEVAS CANCIONES ME HAN SALTADO NUEVOS ERRORES Y
+		HE TENIOD QUE AÑADIR ESTOS DOS TB -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>2.3.3</version>
 		</dependency>
 	</dependencies>
 
