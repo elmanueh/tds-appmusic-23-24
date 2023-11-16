@@ -4,12 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.ControladorVentanas;
-import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import java.awt.BorderLayout;
@@ -24,7 +21,6 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -32,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -122,7 +117,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		cumpleaños.setIcon(
 				new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/torta-cumpleanos.png")));
 		p_iconoTitulo.add(cumpleaños);
-		if (Controlador.INSTANCIA.diasParaCumple() == 365)
+		if (Controlador.INSTANCIA.isCumpleañosUsuario())
 			cumpleaños.setVisible(true);
 
 		JPanel p_cabezeraBotones = new JPanel();
@@ -173,16 +168,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_2.gridy = 0;
 		p_botonConfiguracion.add(horizontalStrut_2, gbc_horizontalStrut_2);
 
-		String usuario = Controlador.INSTANCIA.getNombreUsuarioActual();
-		mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
+		mensajeBienvenida = new JLabel("Bienvenido, " + Controlador.INSTANCIA.getNombreUsuarioActual());
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (Controlador.INSTANCIA.isUsuarioActualPremium())
-			mensajeBienvenida.setIcon(
-					new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
-		else
-			mensajeBienvenida
-					.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
+		mensajeBienvenida
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+
 		p_cabezeraBotones.add(mensajeBienvenida, BorderLayout.CENTER);
 
 		JPanel p_contenido = new JPanel();
@@ -394,11 +385,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cardLayout.add(ventanaMasReproducidas, "ventanaMasReproducidas");
 		p_cardLayout.add(ventanaGenerarPDF, "ventanaGenerarPDF");
 		p_cardLayout.add(ventanaMisPlaylist, "ventanaMisPlaylist");
-		
+
 		JPanel p_bordeSuperior = new JPanel();
 		p_bordeSuperior.setBackground(new Color(40, 40, 40));
 		p_contenido2.add(p_bordeSuperior, BorderLayout.NORTH);
-		
+
 		Component verticalStrut_1 = Box.createVerticalStrut(20);
 		p_bordeSuperior.add(verticalStrut_1);
 
@@ -418,24 +409,19 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnMasReproducidas.addActionListener(this);
 		btnGenerarPDF.addActionListener(this);
 		btnMisPlaylist.addActionListener(this);
-
 		btnUp.addActionListener(this);
 	}
 
 	public void modoPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
-		if (premium) {
-			mensajeBienvenida.setIcon(
-					new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
-		} else {
-			mensajeBienvenida
-					.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
-		}
+		mensajeBienvenida
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+		// TODO pensarlo de otra forma
 		if (ventanaBuscar.isVisible() && e.getSource() != btnPremium && e.getSource() != btnLogOut) {
 			ventanaBuscar.guardarSeleecionados();
 		}
@@ -464,26 +450,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			ventanaGestionPlaylist.vaciarCampos();
 			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.INSTANCIA.getCancionesSeleccionadas());
 
-			/*
-			 * TABLA
-			 */
-			DefaultTableModel modeloTabla = new DefaultTableModel() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-
-			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
-				Object[] playlist = { p.getNombre() };
-				modeloTabla.addRow(playlist);
-			}
-
-			tablaPlayList.setModel(modeloTabla);
-
+			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
 			tablaPlayList.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -524,26 +491,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			card.show(p_cardLayout, "ventanaMisPlaylist");
 			ventanaMisPlaylist.esconderPanel();
 
-			/*
-			 * TABLA
-			 */
-			DefaultTableModel modeloTabla = new DefaultTableModel() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-
-			modeloTabla.addColumn("");
-			for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
-				Object[] playlist = { p.getNombre() };
-				modeloTabla.addRow(playlist);
-			}
-
-			tablaPlayList.setModel(modeloTabla);
-
+			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
 			tablaPlayList.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -558,20 +506,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnUp) {
-			String path = System.getProperty("user.dir") + File.separator + "xml";
-			File inicio = new File(path);
-			JFileChooser fileChooser = new JFileChooser(inicio);
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
-			fileChooser.setFileFilter(filter);
-
-			int result = fileChooser.showOpenDialog(null);
-
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = fileChooser.getSelectedFile();
-				Controlador.INSTANCIA.cargarCanciones(selectedFile.getAbsolutePath());
-				ventanaBuscar.actualizarEstilos();
-			}
+			Controlador.INSTANCIA.cargarCanciones();
+			ventanaBuscar.actualizarEstilos();
 		}
 
 	}

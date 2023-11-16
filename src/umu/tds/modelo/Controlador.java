@@ -1,6 +1,7 @@
 package umu.tds.modelo;
 
-import java.util.Calendar;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Comparator;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import umu.tds.dao.DAOException;
@@ -117,24 +120,20 @@ public enum Controlador implements CancionesListener {
 		return getUsuario(nombre_email) != null;
 	}
 
-	public long diasParaCumple() { // revisar
+	public boolean isCumpleañosUsuario() {
 		Date fechaNacimiento = usuarioActual.getFecha();
-		Calendar fechaActual = Calendar.getInstance();
+		Date fechaActual = new Date();
+		SimpleDateFormat formatoDiaMes = new SimpleDateFormat("dd-MM");
 
-		Calendar fechaNacimientoCalendar = Calendar.getInstance();
-		fechaNacimientoCalendar.setTime(fechaNacimiento);
+		if (formatoDiaMes.format(fechaActual).equals(formatoDiaMes.format(fechaNacimiento)))
+			return true;
+		return false;
+	}
 
-		fechaNacimientoCalendar.set(Calendar.YEAR, fechaActual.get(Calendar.YEAR));
-
-		if (fechaActual.after(fechaNacimientoCalendar)) {
-			fechaNacimientoCalendar.add(Calendar.YEAR, 1);
-		}
-
-		long diferenciaEnMilisegundos = fechaNacimientoCalendar.getTimeInMillis() - fechaActual.getTimeInMillis();
-
-		long diasHastaCumpleaños = diferenciaEnMilisegundos / (24 * 60 * 60 * 1000);
-
-		return diasHastaCumpleaños;
+	public String getIconoUsuario() {
+		if (usuarioActual.isPremium())
+			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
+		return new String("/umu/tds/vista/imagenes/usuario.png");
 	}
 
 	// CANCION
@@ -228,21 +227,21 @@ public enum Controlador implements CancionesListener {
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
 		return getPlayList(text).getListaCanciones();
 	}
-	
+
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
-		
-        Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
-        
-        Collections.sort(listaTOP10, comparadorReproducciones.reversed());
 
-        // Obtener las 10 canciones más reproducidas
-        return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
+		Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
+
+		Collections.sort(listaTOP10, comparadorReproducciones.reversed());
+
+		// Obtener las 10 canciones más reproducidas
+		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
-	
+
 	public LinkedHashSet<Cancion> getCancionesRecientes() {
 		return usuarioActual.getListaCancionesRecientes();
-		
+
 	}
 
 	public void crearPlayList(String text) {
@@ -345,9 +344,40 @@ public enum Controlador implements CancionesListener {
 		return cancionesSeleccionadas;
 	}
 
+	public DefaultTableModel getTablaPlaylist() {
+		DefaultTableModel modeloTabla = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		modeloTabla.addColumn("");
+		for (PlayList p : getPlayListUsuarioActual()) {
+			Object[] playlist = { p.getNombre() };
+			modeloTabla.addRow(playlist);
+		}
+		return modeloTabla;
+	}
+
 	// CARGADOR DE CANCIONES
-	public void cargarCanciones(String rutaXML) {
-		CargadorCanciones.INSTANCIA.setArchivoCanciones(rutaXML);
+	public void cargarCanciones() {
+		String path = System.getProperty("user.dir") + File.separator + "xml";
+		File inicio = new File(path);
+		JFileChooser fileChooser = new JFileChooser(inicio);
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
+		fileChooser.setFileFilter(filter);
+
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile.getAbsolutePath());
+		}
+
 	}
 
 	@Override
@@ -373,7 +403,7 @@ public enum Controlador implements CancionesListener {
 		catalogoCanciones.addCancion(c);
 		usuarioActual.addCancionReciente(c);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		
+
 		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
 	}
 
