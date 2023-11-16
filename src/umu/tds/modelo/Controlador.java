@@ -1,10 +1,10 @@
 package umu.tds.modelo;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -240,7 +240,7 @@ public enum Controlador implements CancionesListener {
         return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
 	
-	public LinkedHashSet<Cancion> getCancionesRecientes() {
+	public ArrayList<Cancion> getCancionesRecientes() {
 		return usuarioActual.getListaCancionesRecientes();
 		
 	}

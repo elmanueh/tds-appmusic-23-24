@@ -8,7 +8,7 @@ import umu.tds.modelo.usuario.Usuario;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 
 public class VentanaRecientes extends JPanel {
 	public VentanaRecientes() {
@@ -17,7 +17,7 @@ public class VentanaRecientes extends JPanel {
 		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				LinkedHashSet<Cancion> lista = Controlador.INSTANCIA.getCancionesRecientes();
+				ArrayList<Cancion> lista = Controlador.INSTANCIA.getCancionesRecientes();
 				
 				System.out.println();
 				System.out.println("----------- LSITA CANCIONES RECIENTES (MAX: " + Usuario.MAX + ") -----------");
