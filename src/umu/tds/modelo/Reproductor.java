@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-@SuppressWarnings("restriction")
+
 public enum Reproductor {
 	INSTANCIA;
 

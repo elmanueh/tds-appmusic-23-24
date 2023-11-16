@@ -482,7 +482,13 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	}
 
 	public void actualizarEstilos() {
+		comboBoxEstilo.removeAllItems();
+		if (panelTabla != null) {
+			panelTabla.setVisible(false);
+			panelBotonera.setVisible(false);
+		}
 		for (String s : Controlador.INSTANCIA.getEstilos())
 			comboBoxEstilo.addItem(s);
+		
 	}
 }
