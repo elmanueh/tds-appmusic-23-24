@@ -447,6 +447,17 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			}
 
 			tablaPlayList.setModel(modeloTabla);
+			
+			tablaPlayList.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int row = tablaPlayList.getSelectedRow();
+					int column = tablaPlayList.getSelectedColumn();
+
+					String playlist = tablaPlayList.getValueAt(row, column).toString();
+					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
+				}
+			});
 		}
 
 		if (e.getSource() == botonRecientes) {

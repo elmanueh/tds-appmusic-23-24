@@ -409,4 +409,28 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	public void vaciarCampos() {
 		txtTitulo.setText("");
 	}
+
+	public void ponerPlayListEnTabla(String playlist) {
+		Object[] opciones = { "Sí", "No" };
+		int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres añadir las canciones seleccionadas a la playlist " + playlist + "?"
+				+ "\n Después podrás editar la playlist ",
+				"Editar Playlist", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
+				opciones[0]);
+		if (respuesta == JOptionPane.YES_OPTION) {
+			Controlador.INSTANCIA.anadirCancionesSelecAPL(playlist);
+			DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
+			modelo.setRowCount(0);
+			for (Cancion c : Controlador.INSTANCIA.getPlayList(playlist).getListaCanciones()) {
+				Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete(), false };
+				modelo.addRow(fila);
+			}
+		} else if (respuesta == JOptionPane.NO_OPTION) {
+			DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
+			modelo.setRowCount(0);
+			for (Cancion c : Controlador.INSTANCIA.getPlayList(playlist).getListaCanciones()) {
+				Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete(), false };
+				modelo.addRow(fila);
+			}
+		}
+	}
 }
