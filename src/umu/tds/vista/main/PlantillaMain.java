@@ -32,7 +32,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.net.URL;
 import java.awt.event.ActionEvent;
 
 import umu.tds.modelo.Controlador;
@@ -72,6 +71,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaMisPlaylist ventanaMisPlaylist;
 	private JButton btnNewButton;
 	private JLabel lblNewLabel_1;
+	
+	public int auxiliar;
 
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -355,6 +356,21 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		scrollPane.setBorder(new TitledBorder(UIManager.getBorder("Button.border"), "Playlist", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
 		p_listas.add(scrollPane, BorderLayout.CENTER);
+		
+		tablaPlayList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tablaPlayList.getSelectedRow();
+				int column = tablaPlayList.getSelectedColumn();
+
+				String playlist = tablaPlayList.getValueAt(row, column).toString();
+				if (auxiliar == 0)
+					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
+				if (auxiliar == 1)
+					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+					
+			}
+		});
 
 		// HASTA AQUI TABLA PLAYLIST
 
@@ -421,6 +437,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == botonGestionPlaylist) {
+			auxiliar = 0;
 			p_listas.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
@@ -447,17 +464,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			}
 
 			tablaPlayList.setModel(modeloTabla);
-			
-			tablaPlayList.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int row = tablaPlayList.getSelectedRow();
-					int column = tablaPlayList.getSelectedColumn();
-
-					String playlist = tablaPlayList.getValueAt(row, column).toString();
-					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
-				}
-			});
 		}
 
 		if (e.getSource() == botonRecientes) {
@@ -482,6 +488,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == botonMisPlaylist) {
+			auxiliar = 1;
 			p_listas.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
@@ -507,20 +514,19 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			}
 
 			tablaPlayList.setModel(modeloTabla);
-
-			tablaPlayList.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int row = tablaPlayList.getSelectedRow();
-					int column = tablaPlayList.getSelectedColumn();
-
-					String playlist = tablaPlayList.getValueAt(row, column).toString();
-					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
-				}
-			});
-
 		}
 
+	}
+	
+	public void actualizarListPlaylist() {
+		DefaultTableModel modelo = (DefaultTableModel) tablaPlayList.getModel();
+		modelo.setRowCount(0);
+		
+		modelo.addColumn("");
+		for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
+			Object[] playlist = { p.getNombre() };
+			modelo.addRow(playlist);
+		}
 	}
 
 }

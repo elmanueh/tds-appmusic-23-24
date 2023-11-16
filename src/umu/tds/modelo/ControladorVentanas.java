@@ -66,4 +66,8 @@ public enum ControladorVentanas {
 		plantillaMain.modoPremium(b);
 	}
 
+	public void actualizarListaPlayList() {
+		plantillaMain.actualizarListPlaylist();
+	}
+
 }
