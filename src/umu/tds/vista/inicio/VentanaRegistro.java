@@ -76,6 +76,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 	private Component verticalStrut_11;
 
 	private CardLayout cardLayout;
+	private JCheckBox mostrarContraseña;
 
 	public VentanaRegistro() {
 		cardLayout = new CardLayout();
@@ -193,17 +194,17 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		WindowRegister_1.setForeground(Color.WHITE);
 		add(WindowRegister_1, "WindowRegister_1");
 		GridBagLayout gbl_WindowRegister_1 = new GridBagLayout();
-		gbl_WindowRegister_1.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-		gbl_WindowRegister_1.columnWidths = new int[] { 0, 250, 0 };
-		gbl_WindowRegister_1.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_WindowRegister_1.rowHeights = new int[] { 0, 0, 0, 0, 20, 0, 30, 0, 0, 30 };
+		gbl_WindowRegister_1.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_1.columnWidths = new int[] { 0, 250, 0, 0 };
+		gbl_WindowRegister_1.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_WindowRegister_1.rowHeights = new int[] { 0, 0, 0, 0, 20, 0, 30, 0, 0, 0, 30 };
 		WindowRegister_1.setLayout(gbl_WindowRegister_1);
 
 		barraProgreso = new JProgressBar();
 		barraProgreso.setValue(33);
 		GridBagConstraints gbc_barraProgreso = new GridBagConstraints();
 		gbc_barraProgreso.fill = GridBagConstraints.HORIZONTAL;
-		gbc_barraProgreso.gridwidth = 3;
+		gbc_barraProgreso.gridwidth = 4;
 		gbc_barraProgreso.insets = new Insets(0, 0, 5, 0);
 		gbc_barraProgreso.gridx = 0;
 		gbc_barraProgreso.gridy = 0;
@@ -240,7 +241,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		horizontalStrut = Box.createHorizontalStrut(50);
 		GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
 		gbc_horizontalStrut.insets = new Insets(0, 0, 5, 0);
-		gbc_horizontalStrut.gridx = 2;
+		gbc_horizontalStrut.gridx = 3;
 		gbc_horizontalStrut.gridy = 2;
 		WindowRegister_1.add(horizontalStrut, gbc_horizontalStrut);
 
@@ -278,6 +279,21 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_textoContraseña.gridx = 1;
 		gbc_textoContraseña.gridy = 6;
 		WindowRegister_1.add(textoContraseña, gbc_textoContraseña);
+		
+		mostrarContraseña = new JCheckBox("Mostrar Contraseña");
+
+		mostrarContraseña.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textoContraseña.setEchoChar(mostrarContraseña.isSelected() ? '\0' : '*');
+            }
+        });
+        
+		GridBagConstraints gbc_mostrarContraseña = new GridBagConstraints();
+		gbc_mostrarContraseña.insets = new Insets(0, 0, 5, 5);
+		gbc_mostrarContraseña.gridx = 1;
+		gbc_mostrarContraseña.gridy = 7;
+		WindowRegister_1.add(mostrarContraseña, gbc_mostrarContraseña);
 
 		labelContraseñaInfo = new JTextArea(
 				"La contraseña debe tener al menos 8 caracteres. \r\nTe recomendamos que incluyas como mínimo \r\n1 número y 1 carácter especial.");
@@ -291,14 +307,14 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_labelContraseñaInfo.fill = GridBagConstraints.BOTH;
 		gbc_labelContraseñaInfo.insets = new Insets(0, 0, 5, 5);
 		gbc_labelContraseñaInfo.gridx = 1;
-		gbc_labelContraseñaInfo.gridy = 7;
+		gbc_labelContraseñaInfo.gridy = 8;
 		WindowRegister_1.add(labelContraseñaInfo, gbc_labelContraseñaInfo);
 
 		verticalStrut_7 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_7 = new GridBagConstraints();
 		gbc_verticalStrut_7.insets = new Insets(0, 0, 5, 5);
 		gbc_verticalStrut_7.gridx = 1;
-		gbc_verticalStrut_7.gridy = 8;
+		gbc_verticalStrut_7.gridy = 9;
 		WindowRegister_1.add(verticalStrut_7, gbc_verticalStrut_7);
 
 		botonSiguiente1 = new JButton("     Siguiente     ");
@@ -308,7 +324,7 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		gbc_botonSiguiente1.fill = GridBagConstraints.VERTICAL;
 		gbc_botonSiguiente1.insets = new Insets(0, 0, 0, 5);
 		gbc_botonSiguiente1.gridx = 1;
-		gbc_botonSiguiente1.gridy = 9;
+		gbc_botonSiguiente1.gridy = 10;
 		WindowRegister_1.add(botonSiguiente1, gbc_botonSiguiente1);
 
 		WindowRegister_2 = new JPanel();

@@ -4,12 +4,7 @@
 	 	/**********************************************/			
 	 					
 	    		// PLANTILLA-MAIN
-		- BARRA NEGRA CABEZERA
-			-> hecho pero creo que hay que hacer un panel que englobe los 2 paneles			
-		- FUNCIONALIDAD BOTON PREMIUM 
-			-> hacer que cambie el dibujo al cambiar entre premium y normal
-		- AÑADIR CUANTOS DIAS FALTAN PARA TU CUMPLEAÑOS
-			-> no merece la pena
+		- BARRA NEGRA CABEZERA	
 	 
 	 			// PANEL-MIS-PLAYLIST
 	 	- QUE NO SE MUEVAN LAS COLUMNAS EN LA TABLA
@@ -19,11 +14,19 @@
 	 	- PONER QUE AL CLIQUEAR SOBRE UNA PLAYLIST SE AÑADAN LAS SELECCIONADAS Y MUESTRE PLAYLIST
 
 	 			// PANEL-BUSCAR
-	 	- SI SE SUBE EL XML VARIAS VECES, EL COMBOBOX ACUMULA LOS ESTILOS
+	 	- SI SE SUBE EL XML VARIAS VECES, EL COMBOBOX ACUMULA LOS ESTILOS (julian no le pasa)
 	 	
 	 			// CONTROLADOR
 	 	- Guardar en base de datos cada vez que se reproduce una cancion
-	 	pq aumenta el numrep
+	 	
+	 	
+	 			// GENERALES
+	 	- ERORR JAVAFX
+	 	- HACER VENTANAS RESTANTES
+	 	- HACER BIEN LA REPRODUCCION DE CANCIONES CON BOTON PARAR
+	 			
+	 			// OPCIONAL
+	 	- AÑADIR BOTON PARA REPRODUCIR LISTAS ALEATORIASS Y SECUENCIAL
 	 	
 	 	
 	 	

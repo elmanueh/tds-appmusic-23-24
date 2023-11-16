@@ -63,7 +63,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JPanel p_cardLayout;
 	private JPanel p_cabezera;
 	private JLabel mensajeBienvenida;
-	private JLabel mensajeBienvenida_1;
 
 	private VentanaBuscar ventanaBuscar;
 	private VentanaGestionPlaylist ventanaGestionPlaylist;
@@ -72,6 +71,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaGenerarPDF ventanaGenerarPDF;
 	private VentanaMisPlaylist ventanaMisPlaylist;
 	private JButton btnNewButton;
+	private JLabel lblNewLabel_1;
 
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -134,6 +134,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component verticalStrut = Box.createVerticalStrut(90);
 		p_iconoTitulo.add(verticalStrut);
+		
+		lblNewLabel_1 = new JLabel("");
+		if (Controlador.INSTANCIA.diasParaCumple() == 365)
+			lblNewLabel_1.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/torta-cumpleanos.png")));
+		p_iconoTitulo.add(lblNewLabel_1);
 
 		p_cabezera = new JPanel();
 		p_cabezera.setBackground(new Color(40, 40, 40));
@@ -149,15 +154,17 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		/* TODO: si falla quitar aqui el usuario para probar */
 		String usuario = Controlador.INSTANCIA.getNombreUsuarioActual();
 		mensajeBienvenida = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		mensajeBienvenida.setLocation(new Point(40, 0));
 		mensajeBienvenida.setHorizontalTextPosition(SwingConstants.LEFT);
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (!Controlador.INSTANCIA.isUsuarioActualPremium())
-			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
-
+		if (Controlador.INSTANCIA.isUsuarioActualPremium())
+			mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
+		else
+			mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
+			
+		p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
+		
 		JPanel p_cabezeraBotones = new JPanel();
 		p_cabezeraBotones.setOpaque(false);
 		p_cabezera.add(p_cabezeraBotones, BorderLayout.EAST);
@@ -213,17 +220,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_botonLogOut.gridx = 3;
 		gbc_botonLogOut.gridy = 0;
 		p_cabezeraBotones.add(botonLogOut, gbc_botonLogOut);
-
-		mensajeBienvenida_1 = new JLabel("Bienvenido, " + usuario);
-		mensajeBienvenida_1.setVisible(Controlador.INSTANCIA.isUsuarioActualPremium());
-		mensajeBienvenida_1.setIcon(
-				new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
-		mensajeBienvenida_1.setLocation(new Point(40, 0));
-		mensajeBienvenida_1.setHorizontalTextPosition(SwingConstants.LEFT);
-		mensajeBienvenida_1.setHorizontalAlignment(SwingConstants.CENTER);
-		mensajeBienvenida_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		if (Controlador.INSTANCIA.isUsuarioActualPremium())
-			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
 
 		GridBagConstraints gbc_p_menuBotones = new GridBagConstraints();
 		gbc_p_menuBotones.insets = new Insets(0, 0, 0, 5);
@@ -394,15 +390,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	public void modoPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
 		if (premium) {
-			mensajeBienvenida.setVisible(!premium);
-			p_cabezera.add(mensajeBienvenida_1, BorderLayout.CENTER);
-			p_cabezera.add(mensajeBienvenida, BorderLayout.WEST);
-			mensajeBienvenida_1.setVisible(premium);
+			mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/corona-de-usuario.png")));
 		} else {
-			mensajeBienvenida_1.setVisible(premium);
-			p_cabezera.add(mensajeBienvenida, BorderLayout.CENTER);
-			p_cabezera.add(mensajeBienvenida_1, BorderLayout.WEST);
-			mensajeBienvenida.setVisible(!premium);
+			mensajeBienvenida.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/usuario.png")));
 		}
 	}
 
@@ -478,13 +468,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGenerarPDF");
-
-			// TODO: esto ponerlo en el panel
-			long dias = Controlador.INSTANCIA.diasParaCumple();
-			if (dias == 365)
-				System.out.println("Feliz cumpleaños!!");
-			else
-				System.out.println("Dias para mi cumpleaños: " + dias);
 		}
 
 		if (e.getSource() == botonMisPlaylist) {
