@@ -27,6 +27,7 @@ import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
+import umu.tds.vista.main.PlantillaMain;
 import umu.tds.modelo.cargador.CancionesEvent;
 import umu.tds.modelo.cargador.CancionesListener;
 import umu.tds.modelo.cargador.CargadorCanciones;
@@ -43,7 +44,12 @@ public enum Controlador implements CancionesListener {
 	private CatalogoCanciones catalogoCanciones;
 
 	private Usuario usuarioActual;
+	private String cancionActual;
+	private String playlistActual;
 	private HashSet<Cancion> cancionesSeleccionadas;
+
+	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
+	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
 
 	// CONSTRUCTOR
 	private Controlador() {
@@ -224,7 +230,7 @@ public enum Controlador implements CancionesListener {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
-	public HashSet<Cancion> getListaCancionesPlayList(String text) {
+	public Set<Cancion> getListaCancionesPlayList(String text) {
 		return getPlayList(text).getListaCanciones();
 	}
 
@@ -395,20 +401,69 @@ public enum Controlador implements CancionesListener {
 	/*
 	 * REPRODUCIR CANCIONES
 	 */
-	public void play(String titulo) {
-		Cancion c = catalogoCanciones.getCancion(titulo);
-		catalogoCanciones.removeCancion(c);
-		c.addReproducciones();
-		adaptadorCancion.modificarCancion(c);
-		catalogoCanciones.addCancion(c);
-		usuarioActual.addCancionReciente(c);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
+	public void reproducirCancion() {
+		if (cancionActual != null) {
+			Cancion cancion = catalogoCanciones.getCancion(cancionActual);
+			cancion.addReproducciones();
+			adaptadorCancion.modificarCancion(cancion);
+			usuarioActual.addCancionReciente(cancion);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
 
-		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
+			Reproductor.INSTANCIA.playCancion(catalogoCanciones.getCancion(cancionActual).getRutaFichero());
+			if (Reproductor.INSTANCIA.isReproduciendo())
+				ControladorVentanas.INSTANCIA.estadoReproductor(iconoParar);
+			else
+				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+		}
 	}
 
-	public void pause() {
-		Reproductor.INSTANCIA.pause();
+	public void siguienteCancion() {
+		PlayList plActual = usuarioActual.getPlayList(playlistActual);
+		if (plActual == null) {
+			Reproductor.INSTANCIA.stopCancion();
+			ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+		} else {
+			int posicion = plActual.getPosicionCancionEnPlaylist(cancionActual);
+			posicion++;
+			Cancion cancion = plActual.getCancionEnPosicion(posicion);
+			if (cancion == null) {
+				Reproductor.INSTANCIA.stopCancion();
+				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+			} else {
+				setCancionActual(cancion.getTitulo());
+				reproducirCancion();
+			}
+		}
+	}
 
+	public void anteriorCancion() {
+		PlayList plActual = usuarioActual.getPlayList(playlistActual);
+		if (plActual == null) {
+			Reproductor.INSTANCIA.stopCancion();
+			ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+		} else {
+			int posicion = plActual.getPosicionCancionEnPlaylist(cancionActual);
+			posicion--;
+			Cancion cancion = plActual.getCancionEnPosicion(posicion);
+			if (cancion == null) {
+				Reproductor.INSTANCIA.stopCancion();
+				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+			} else {
+				setCancionActual(cancion.getTitulo());
+				reproducirCancion();
+			}
+		}
+	}
+
+	public void setCancionActual(String cancionActual) {
+		this.cancionActual = cancionActual;
+	}
+
+	public void setPlayListActual(String playlistActual) {
+		this.playlistActual = playlistActual;
+	}
+
+	public void volumen(int volumen) {
+		Reproductor.INSTANCIA.establecerVolumen(volumen);
 	}
 }

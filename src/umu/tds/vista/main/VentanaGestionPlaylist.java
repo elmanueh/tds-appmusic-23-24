@@ -17,6 +17,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
@@ -342,7 +344,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		}
 	}
 
-	public void ponerPlayListEnTabla(HashSet<Cancion> hashSet) {
+	public void ponerPlayListEnTabla(Set<Cancion> set) {
 		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
 
@@ -369,7 +371,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("INTERPRETE");
 		modeloFiltrado.addColumn("");
 
-		for (Cancion cancion : hashSet) {
+		for (Cancion cancion : set) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
 			modeloFiltrado.addRow(fila);
 		}

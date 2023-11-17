@@ -63,7 +63,11 @@ public enum ControladorVentanas {
 	public void quitarPremium(boolean b, double precio) {
 		menuPremium.setVisible(false);
 		Controlador.INSTANCIA.configuracionPremium(b, precio);
-		plantillaMain.modoPremium(b);
+		plantillaMain.estadoPremium(b);
+	}
+	
+	public void estadoReproductor(String estadoReproductor) {
+		plantillaMain.estadoReproduciendo(estadoReproductor);
 	}
 
 }

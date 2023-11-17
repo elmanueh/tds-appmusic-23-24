@@ -211,6 +211,10 @@ public class VentanaMisPlaylist extends JPanel implements ActionListener {
 		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel())
+						.getValueAt(tablaCanciones.getSelectedRow(), 0);
+				Controlador.INSTANCIA.setCancionActual(titulo);
+				
 				@SuppressWarnings("unchecked")
 				TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
 						.getRowSorter();

@@ -1,19 +1,21 @@
 package umu.tds.modelo.musica;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class PlayList {
 
 	// ATRIBUTOS
 	private final String nombre;
-	private final HashSet<Cancion> listaCanciones;
+	private final LinkedHashSet<Cancion> listaCanciones;
 	private int codigo;
 
 	// CONSTRUCTOR
 	public PlayList(String nombre) {
 		this.nombre = nombre;
-		this.listaCanciones = new HashSet<Cancion>();
+		this.listaCanciones = new LinkedHashSet<Cancion>();
 		this.codigo = 0;
 	}
 
@@ -30,8 +32,8 @@ public class PlayList {
 		return null;
 	}
 
-	public HashSet<Cancion> getListaCanciones() {
-		return new HashSet<Cancion>(listaCanciones);
+	public Set<Cancion> getListaCanciones() {
+		return new LinkedHashSet<Cancion>(listaCanciones);
 	}
 
 	public int getCodigo() {
@@ -47,8 +49,8 @@ public class PlayList {
 		listaCanciones.add(c);
 	}
 
-	public void addAllCanciones(HashSet<Cancion> canciones) {
-		listaCanciones.addAll(canciones);
+	public void addAllCanciones(HashSet<Cancion> cancionesSeleccionadas) {
+		listaCanciones.addAll(cancionesSeleccionadas);
 	}
 
 	public void removeCancion(Cancion c) {
@@ -65,6 +67,26 @@ public class PlayList {
 				return true;
 		}
 		return false;
+	}
+
+	public int getPosicionCancionEnPlaylist(String cancion) {
+		int x = 0;
+		for (Cancion c : getListaCanciones()) {
+			if (c.getTitulo().equals(cancion))
+				return x;
+			x++;
+		}
+		return -1;
+	}
+
+	public Cancion getCancionEnPosicion(int posicion) {
+		int x = 0;
+		for (Cancion cancion : getListaCanciones()) {
+			if (x == posicion)
+				return cancion;
+			x++;
+		}
+		return null;
 	}
 
 	@Override

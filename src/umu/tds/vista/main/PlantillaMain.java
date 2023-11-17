@@ -35,6 +35,8 @@ import javax.swing.UIManager;
 import java.awt.CardLayout;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class PlantillaMain extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -61,6 +63,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnGenerarPDF;
 	private JButton btnMisPlaylist;
 	private JButton btnUp;
+	private JButton btnShuffle;
+	private JButton btnPrevious;
+	private JButton btnPlayPause;
+	private JButton btnNext;
+	private JButton btnSecuential;
 
 	// METODOS
 	private void inicializar() {
@@ -79,6 +86,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		ventanaMasReproducidas = new VentanaMasReproducidas();
 		ventanaGenerarPDF = new VentanaGenerarPDF();
 		ventanaMisPlaylist = new VentanaMisPlaylist();
+	}
+
+	public void estadoPremium(boolean premium) {
+		p_menuBotonesPremium.setVisible(premium);
+		mensajeBienvenida
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+	}
+
+	public void estadoReproduciendo(String reproduciendo) {
+		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(reproduciendo)));
 	}
 
 	// CONSTRUCTOR
@@ -309,7 +326,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 10, 0, 10, 0, 10, 0, 10, 0, 15, 0 };
 		p_botonesMultimedia.setLayout(gbl_p_botonesMultimedia);
 
-		JButton btnShuffle = new JButton("");
+		btnShuffle = new JButton("");
 		btnShuffle.setBorderPainted(false);
 		btnShuffle.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
 		GridBagConstraints gbc_btnShuffle = new GridBagConstraints();
@@ -318,7 +335,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_btnShuffle.gridy = 1;
 		p_botonesMultimedia.add(btnShuffle, gbc_btnShuffle);
 
-		JButton btnPrevious = new JButton("");
+		btnPrevious = new JButton("");
 		btnPrevious.setBorderPainted(false);
 		btnPrevious.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/paso-atras.png")));
 		GridBagConstraints gbc_btnPrevious = new GridBagConstraints();
@@ -327,7 +344,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_btnPrevious.gridy = 1;
 		p_botonesMultimedia.add(btnPrevious, gbc_btnPrevious);
 
-		JButton btnPlayPause = new JButton("");
+		btnPlayPause = new JButton("");
 		btnPlayPause.setBorderPainted(false);
 		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
 		GridBagConstraints gbc_btnPlayPause = new GridBagConstraints();
@@ -336,7 +353,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_btnPlayPause.gridy = 1;
 		p_botonesMultimedia.add(btnPlayPause, gbc_btnPlayPause);
 
-		JButton btnNext = new JButton("");
+		btnNext = new JButton("");
 		btnNext.setBorderPainted(false);
 		btnNext.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/un-paso-adelante.png")));
 		GridBagConstraints gbc_btnNext = new GridBagConstraints();
@@ -345,7 +362,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_btnNext.gridy = 1;
 		p_botonesMultimedia.add(btnNext, gbc_btnNext);
 
-		JButton btnSecuential = new JButton("");
+		btnSecuential = new JButton("");
 		btnSecuential.setBorderPainted(false);
 		btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
 		GridBagConstraints gbc_btnSecuential = new GridBagConstraints();
@@ -364,6 +381,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_botonesMultimedia.add(sliderCancion, gbc_sliderCancion);
 
 		JSlider sliderVolumen = new JSlider();
+		sliderVolumen.setValue(25);
+		sliderVolumen.setMaximum(50);
+		sliderVolumen.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				Controlador.INSTANCIA.volumen(sliderVolumen.getValue());
+			}
+		});
 		sliderVolumen.setPreferredSize(new Dimension(20, 50));
 		sliderVolumen.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_sliderVolumen = new GridBagConstraints();
@@ -410,12 +434,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnGenerarPDF.addActionListener(this);
 		btnMisPlaylist.addActionListener(this);
 		btnUp.addActionListener(this);
-	}
 
-	public void modoPremium(boolean premium) {
-		p_menuBotonesPremium.setVisible(premium);
-		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+		btnShuffle.addActionListener(this);
+		btnPrevious.addActionListener(this);
+		btnPlayPause.addActionListener(this);
+		btnNext.addActionListener(this);
+		btnSecuential.addActionListener(this);
+
 	}
 
 	@Override
@@ -499,6 +524,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 					int column = tablaPlayList.getSelectedColumn();
 
 					String playlist = tablaPlayList.getValueAt(row, column).toString();
+					Controlador.INSTANCIA.setPlayListActual(playlist);
 					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
 				}
 			});
@@ -508,6 +534,27 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnUp) {
 			Controlador.INSTANCIA.cargarCanciones();
 			ventanaBuscar.actualizarEstilos();
+		}
+
+		// MULTIMEDEA
+		if (e.getSource() == btnShuffle) {
+
+		}
+
+		if (e.getSource() == btnPrevious) {
+			Controlador.INSTANCIA.anteriorCancion();
+		}
+
+		if (e.getSource() == btnPlayPause) {
+			Controlador.INSTANCIA.reproducirCancion();
+		}
+
+		if (e.getSource() == btnNext) {
+			Controlador.INSTANCIA.siguienteCancion();
+		}
+
+		if (e.getSource() == btnSecuential) {
+
 		}
 
 	}
