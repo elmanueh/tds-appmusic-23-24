@@ -1,6 +1,5 @@
 package umu.tds.modelo.musica;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -25,10 +24,10 @@ public class PlayList {
 	}
 
 	public Cancion getCancion(String nombre) {
-		;
-		for (Cancion c : listaCanciones)
+		for (Cancion c : listaCanciones) {
 			if (c.getTitulo().equals(nombre))
 				return c;
+		}
 		return null;
 	}
 
@@ -49,7 +48,7 @@ public class PlayList {
 		listaCanciones.add(c);
 	}
 
-	public void addAllCanciones(HashSet<Cancion> cancionesSeleccionadas) {
+	public void addAllCanciones(LinkedHashSet<Cancion> cancionesSeleccionadas) {
 		listaCanciones.addAll(cancionesSeleccionadas);
 	}
 

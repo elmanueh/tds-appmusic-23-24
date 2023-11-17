@@ -50,6 +50,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaMasReproducidas ventanaMasReproducidas;
 	private VentanaGenerarPDF ventanaGenerarPDF;
 	private VentanaMisPlaylist ventanaMisPlaylist;
+	private CardLayout cardlayout;
 	private JPanel p_menuBotonesPremium;
 	private JLabel mensajeBienvenida;
 	private JButton btnPremium;
@@ -99,6 +100,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 	public void estadoReproduciendo(String reproduciendo) {
 		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(reproduciendo)));
+	}
+
+	public String ventanaActual() {
+		for (Component comp : p_cardLayout.getComponents()) {
+			if (comp.isVisible())
+				return comp.getClass().getSimpleName();
+		}
+		return null;
 	}
 
 	// CONSTRUCTOR
@@ -419,7 +428,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cardLayout = new JPanel();
 		p_cardLayout.setVisible(false);
 		p_contenido2.add(p_cardLayout, BorderLayout.CENTER);
-		p_cardLayout.setLayout(new CardLayout(0, 0));
+		cardlayout = new CardLayout(0, 0);
+		p_cardLayout.setLayout(cardlayout);
 
 		p_cardLayout.add(ventanaBuscar, "ventanaBuscar");
 		p_cardLayout.add(ventanaGestionPlaylist, "ventanaGestionPlaylist");
@@ -546,7 +556,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 					int column = tablaPlayList.getSelectedColumn();
 
 					String playlist = tablaPlayList.getValueAt(row, column).toString();
-					Controlador.INSTANCIA.setPlayListActual(playlist);
+					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
 					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
 				}
 			});

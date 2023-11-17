@@ -34,34 +34,30 @@ public enum Reproductor {
 		volumen = 0.3;
 	}
 
+	// METODOS
 	public boolean isReproduciendo() {
 		return reproduciendo;
 	}
 
-	// METODOS
 	@SuppressWarnings("deprecation")
-	public void playCancion(String url2) {
-		if (url.equals(url2)) {
-			if (reproduciendo) {
-				pause();
-			} else {
-				mediaPlayer.play();
-				reproduciendo = true;
-			}
+	public void playCancion(String urlNueva) {
+		if (url.equals(urlNueva) && reproduciendo) {
+			pauseCancion();
+		} else if (url.equals(urlNueva) && !reproduciendo) {
+			mediaPlayer.play();
+			reproduciendo = true;
 		} else {
-			if (mediaPlayer != null) {
-				stopCancion();
-			}
+			stopCancion();
 			URL uri = null;
 			try {
 				com.sun.javafx.application.PlatformImpl.startup(() -> {
 				});
 
-				uri = new URL(url2);
+				uri = new URL(urlNueva);
 
 				System.setProperty("java.io.tmpdir", tempPath);
 				Path mp3 = Files.createTempFile("now-playing", ".mp3");
-				mp3.toFile().deleteOnExit(); // que los archivos terminales se borren al temrinar la app
+				mp3.toFile().deleteOnExit();
 
 				System.out.println(mp3.getFileName());
 				try (InputStream stream = uri.openStream()) {
@@ -72,7 +68,7 @@ public enum Reproductor {
 				Media media = new Media(mp3.toFile().toURI().toString());
 				mediaPlayer = new MediaPlayer(media);
 				mediaPlayer.setVolume(volumen);
-				url = url2;
+				url = urlNueva;
 				reproduciendo = true;
 				mediaPlayer.play();
 			} catch (MalformedURLException e1) {
@@ -80,6 +76,7 @@ public enum Reproductor {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+
 		}
 	}
 
@@ -98,7 +95,7 @@ public enum Reproductor {
 		url = "";
 	}
 
-	public void pause() {
+	public void pauseCancion() {
 		if (mediaPlayer != null) {
 			mediaPlayer.pause();
 			reproduciendo = false;

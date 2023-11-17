@@ -2,11 +2,10 @@ package umu.tds.modelo;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.EventObject;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -44,9 +43,10 @@ public enum Controlador implements CancionesListener {
 	private CatalogoCanciones catalogoCanciones;
 
 	private Usuario usuarioActual;
-	private String cancionActual;
-	private String playlistActual;
-	private HashSet<Cancion> cancionesSeleccionadas;
+	private String cancionSeleccionada, cancionReproducciendo;
+	private String playlistSeleccionada, playlistReproducciendo;
+	private LinkedHashSet<Cancion> cancionesSeleccionadas;
+	private PlayList playlistMasReproducidas;
 
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
 	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
@@ -120,6 +120,10 @@ public enum Controlador implements CancionesListener {
 
 	public double getCuotaUsuarioActual() {
 		return usuarioActual.getCuota();
+	}
+	
+	public String getPlaylistSeleccionada() {
+		return playlistSeleccionada;
 	}
 
 	public boolean existeUsuario(String nombre_email) {
@@ -247,9 +251,8 @@ public enum Controlador implements CancionesListener {
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
 
-	public ArrayList<Cancion> getCancionesRecientes() {
-		return usuarioActual.getListaCancionesRecientes();
-
+	public Set<Cancion> getCancionesRecientes() {
+		return usuarioActual.getPlaylistRecientes().getListaCanciones();
 	}
 
 	public void crearPlayList(String text) {
@@ -337,7 +340,7 @@ public enum Controlador implements CancionesListener {
 	 * TABLA SELECCIONADOS
 	 */
 	public void setTablaSeleccionados(DefaultTableModel modelo) {
-		cancionesSeleccionadas = new HashSet<Cancion>();
+		cancionesSeleccionadas = new LinkedHashSet<Cancion>();
 		int filasTotal = modelo.getRowCount();
 
 		for (int fila = 0; fila < filasTotal; fila++) {
@@ -348,7 +351,7 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
-	public HashSet<Cancion> getCancionesSeleccionadas() {
+	public LinkedHashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
 	}
 
@@ -408,65 +411,109 @@ public enum Controlador implements CancionesListener {
 	 * REPRODUCIR CANCIONES
 	 */
 	public void reproducirCancion() {
-		if (cancionActual != null) {
-			Cancion cancion = catalogoCanciones.getCancion(cancionActual);
-			cancion.addReproducciones();
-			adaptadorCancion.modificarCancion(cancion);
-			usuarioActual.addCancionReciente(cancion);
-			adaptadorUsuario.modificarUsuario(usuarioActual);
 
-			Reproductor.INSTANCIA.playCancion(catalogoCanciones.getCancion(cancionActual).getRutaFichero());
-			if (Reproductor.INSTANCIA.isReproduciendo())
+		switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+		case "VentanaBuscar":
+			break;
+		case "VentanaRecientes":
+			playlistSeleccionada = usuarioActual.getPlaylistRecientes().getNombre();
+			break;
+		case "VentanaMasReproducidas":
+			playlistMasReproducidas = new PlayList("masReproducidas");
+			playlistMasReproducidas.addAllCanciones(new LinkedHashSet<>(getCancionesMasReproducidas()));
+			playlistSeleccionada = playlistMasReproducidas.getNombre();
+			break;
+		}
+
+		if (playlistSeleccionada != null && cancionSeleccionada != null) {
+			playlistReproducciendo = playlistSeleccionada;
+			cancionReproducciendo = cancionSeleccionada;
+		}
+
+		if (cancionReproducciendo != null) {
+			Reproductor.INSTANCIA.playCancion(catalogoCanciones.getCancion(cancionReproducciendo).getRutaFichero());
+			if (Reproductor.INSTANCIA.isReproduciendo()) {
+				Cancion cancion = catalogoCanciones.getCancion(cancionReproducciendo);
+				cancion.addReproducciones();
+				adaptadorCancion.modificarCancion(cancion);
+				usuarioActual.addCancionReciente(cancion);
+				adaptadorUsuario.modificarUsuario(usuarioActual);
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoParar);
-			else
+			} else {
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
+			}
 		}
 	}
 
 	public void siguienteCancion() {
-		PlayList plActual = usuarioActual.getPlayList(playlistActual);
+		PlayList plActual = usuarioActual.getPlayList(playlistReproducciendo);
+		switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+		case "VentanaBuscar":
+			break;
+		case "VentanaRecientes":
+			plActual = usuarioActual.getPlaylistRecientes();
+			break;
+		case "VentanaMasReproducidas":
+			plActual = playlistMasReproducidas;
+			break;
+		}
+
 		if (plActual == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 		} else {
-			int posicion = plActual.getPosicionCancionEnPlaylist(cancionActual);
+			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
 			posicion++;
 			Cancion cancion = plActual.getCancionEnPosicion(posicion);
 			if (cancion == null) {
 				Reproductor.INSTANCIA.stopCancion();
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 			} else {
-				setCancionActual(cancion.getTitulo());
+				setPlayListSeleccionada(playlistReproducciendo);
+				setCancionSeleccionada(cancion.getTitulo());
 				reproducirCancion();
 			}
 		}
 	}
 
 	public void anteriorCancion() {
-		PlayList plActual = usuarioActual.getPlayList(playlistActual);
+		PlayList plActual = usuarioActual.getPlayList(playlistReproducciendo);
+		switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+		case "VentanaBuscar":
+			break;
+		case "VentanaRecientes":
+			plActual = usuarioActual.getPlaylistRecientes();
+			break;
+		case "VentanaMasReproducidas":
+			plActual = playlistMasReproducidas;
+			break;
+		}
+
 		if (plActual == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 		} else {
-			int posicion = plActual.getPosicionCancionEnPlaylist(cancionActual);
+			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
 			posicion--;
 			Cancion cancion = plActual.getCancionEnPosicion(posicion);
 			if (cancion == null) {
 				Reproductor.INSTANCIA.stopCancion();
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 			} else {
-				setCancionActual(cancion.getTitulo());
+				setPlayListSeleccionada(playlistReproducciendo);
+				setCancionSeleccionada(cancion.getTitulo());
 				reproducirCancion();
 			}
 		}
 	}
 
-	public void setCancionActual(String cancionActual) {
-		this.cancionActual = cancionActual;
+	public void setCancionSeleccionada(String cancionSeleccionada) {
+		this.cancionSeleccionada = cancionSeleccionada;
 	}
 
-	public void setPlayListActual(String playlistActual) {
-		this.playlistActual = playlistActual;
+	public void setPlayListSeleccionada(String playlistSeleccionada) {
+		this.playlistSeleccionada = playlistSeleccionada;
+		cancionSeleccionada = null;
 	}
 
 	public void volumen(int volumen) {
@@ -490,7 +537,7 @@ public enum Controlador implements CancionesListener {
 		modelo.addColumn("Interprete");
 		modelo.addColumn("Número Reproducciones");
 
-		for (Cancion cancion : usuarioActual.getListaCancionesRecientes()) {
+		for (Cancion cancion : usuarioActual.getPlaylistRecientes().getListaCanciones()) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(),
 					cancion.getNumReproducciones() };
 			modelo.addRow(fila);
