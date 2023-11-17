@@ -56,11 +56,18 @@
 		<estilo>Urbano Latino</estilo>
 		<interprete>Feid, Young Miko</interprete>
 	</cancion>
-	
-		<cancion titulo="Luces Tecno">
+
+	<cancion titulo="Luces Tecno">
 		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid%20-%20Luces%20De%20Tecno.mp3]]></URL>
 		<estilo>Urbano Latino</estilo>
 		<interprete>Feid</interprete>
 	</cancion>
+
+	<cancion titulo="Himno Region de Murcia (Parranda)">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20la%20Regi%c3%83%c2%b3n%20de%20Murcia.mp3]]></URL>
+		<estilo>Himno</estilo>
+		<interprete>Anonimo</interprete>
+	</cancion>
+
 
 </canciones>

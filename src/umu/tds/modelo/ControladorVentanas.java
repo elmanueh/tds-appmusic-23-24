@@ -70,4 +70,8 @@ public enum ControladorVentanas {
 		plantillaMain.estadoReproduciendo(estadoReproductor);
 	}
 
+	public void actualizarListaPlayList() {
+		plantillaMain.actualizarListPlaylist();
+	}
+
 }

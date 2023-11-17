@@ -2,10 +2,11 @@ package umu.tds.modelo;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.EventObject;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Comparator;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
@@ -245,7 +247,7 @@ public enum Controlador implements CancionesListener {
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
 
-	public LinkedHashSet<Cancion> getCancionesRecientes() {
+	public ArrayList<Cancion> getCancionesRecientes() {
 		return usuarioActual.getListaCancionesRecientes();
 
 	}
@@ -465,5 +467,47 @@ public enum Controlador implements CancionesListener {
 
 	public void volumen(int volumen) {
 		Reproductor.INSTANCIA.establecerVolumen(volumen);
+	}
+
+	public TableModel ponerTablaCancionesRecientes() {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Interprete");
+		modelo.addColumn("Número Reproducciones");
+	
+		for (Cancion cancion : usuarioActual.getListaCancionesRecientes()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+		return modelo;
+	}
+
+	public TableModel ponerTablaTop10() {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Interprete");
+		modelo.addColumn("Número Reproducciones");
+		
+		for (Cancion cancion : getCancionesMasReproducidas()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+		return modelo;
 	}
 }

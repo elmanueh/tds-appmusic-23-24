@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,7 +24,7 @@ public class Usuario {
 	private final Date fecha;
 	private final String contraseña;
 	private final HashSet<PlayList> listaPlayList;
-	private final ArrayList<Cancion> listaCancionesRecientes;
+	private final LinkedList<Cancion> listaCancionesRecientes;
 	private boolean premium;
 	private int code;
 	private double cuota;
@@ -40,7 +39,7 @@ public class Usuario {
 		this.cuota = 0;
 
 		this.listaPlayList = new HashSet<PlayList>();
-		this.listaCancionesRecientes = new ArrayList<Cancion>();
+		this.listaCancionesRecientes = new LinkedList<Cancion>();
 
 		this.premium = false;
 	}
@@ -66,8 +65,8 @@ public class Usuario {
 		return new HashSet<PlayList>(listaPlayList);
 	}
 
-	public LinkedHashSet<Cancion> getListaCancionesRecientes() {
-		return new LinkedHashSet<Cancion>(listaCancionesRecientes);
+	public ArrayList<Cancion> getListaCancionesRecientes() {
+		return new ArrayList<Cancion>(listaCancionesRecientes);
 	}
 
 	public boolean isPremium() {
@@ -112,10 +111,13 @@ public class Usuario {
 	}
 
 	public void addCancionReciente(Cancion cancion) {
-		List<Cancion> listaRecienteActualizado = new ArrayList<Cancion>();
+		ArrayList<Cancion> listaRecienteActualizado = new ArrayList<Cancion>();
 		listaRecienteActualizado.add(cancion);
-		for (Cancion c: listaCancionesRecientes)
-			listaRecienteActualizado.add(c);
+		for (Cancion c: listaCancionesRecientes) {
+			if (!cancion.getTitulo().equals(c.getTitulo()))
+				listaRecienteActualizado.add(c);
+		}
+		
 		if (listaRecienteActualizado.size() > MAX) {
 			listaRecienteActualizado.remove(MAX);
 		}
