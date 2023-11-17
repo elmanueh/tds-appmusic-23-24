@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.musica.Cancion;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -229,38 +228,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			String interpreteFiltrado = txtInterprete.getText();
 			String estiloFiltrado = (String) comboBoxEstilo.getSelectedItem();
 			boolean favorito = CheckBoxFavoritos.isSelected();
-
-			DefaultTableModel modeloFiltrado = new DefaultTableModel() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public boolean isCellEditable(int row, int column) {
-					if (column < 3)
-						return false;
-					return true;
-				}
-
-				@Override
-				public Class<?> getColumnClass(int columnIndex) {
-					if (columnIndex == 3)
-						return Boolean.class;
-					return super.getColumnClass(columnIndex);
-				}
-			};
-
-			modeloFiltrado.addColumn("Título");
-			modeloFiltrado.addColumn("Estilo");
-			modeloFiltrado.addColumn("Interprete");
-			modeloFiltrado.addColumn("");
-
-			for (Cancion cancion : Controlador.INSTANCIA.getCancionesFiltradas(tituloFiltrado, interpreteFiltrado,
-					estiloFiltrado, favorito)) {
-				Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
-				modeloFiltrado.addRow(fila);
-			}
-			tablaCanciones.setModel(modeloFiltrado);
-
+			
+			tablaCanciones.setModel(Controlador.INSTANCIA.getTablaFiltrado(tituloFiltrado, interpreteFiltrado, estiloFiltrado, favorito));
+			
 			SwingUtilities.invokeLater(() -> {
 				int anchoTabla = tablaCanciones.getWidth();
 				int numColumnas = tablaCanciones.getColumnCount();
@@ -305,28 +275,21 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			panelBotonera.setVisible(false);
 		}
 		if (e.getSource() == botonAñadirPlaylist) {
+			String playlist;
 			Object[] opciones = { "Sí", "No" };
 			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?",
 					"Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
 					opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
-				String playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
-				if (!(playlist == null)) {
-					if (Controlador.INSTANCIA.existePlayList(playlist))
-						Controlador.INSTANCIA.anadirCancionesAPlayList(playlist,
-								(DefaultTableModel) tablaCanciones.getModel());
-					else {
-						Controlador.INSTANCIA.crearPlayList(playlist, (DefaultTableModel) tablaCanciones.getModel());
-					}
-				}
+				playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
+				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
 			} else {
 				JComboBox<String> playlistComboBox = new JComboBox<>();
 				playlistComboBox.setModel(new DefaultComboBoxModel<String>(Controlador.INSTANCIA.getPlayLists()));
 				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
 						JOptionPane.INFORMATION_MESSAGE);
-				if (!playlistComboBox.getSelectedItem().equals(""))
-					Controlador.INSTANCIA.anadirCancionesAPlayList((String) playlistComboBox.getSelectedItem(),
-							(DefaultTableModel) tablaCanciones.getModel());
+				playlist = (String) playlistComboBox.getSelectedItem();
+				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
 			}
 		}
 	}
