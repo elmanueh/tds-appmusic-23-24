@@ -12,7 +12,9 @@
 	 			
 	 			// OPCIONAL
 	 	- AÑADIR BOTON PARA REPRODUCIR LISTAS ALEATORIASS Y SECUENCIAL
-	 	
+		
+				// TABLITA PLAYLIST
+		- MIRAR BIEN COMOS SE PODRIA HACER MEJOR
 	 	
 	 	
 	 	/**********************************************/

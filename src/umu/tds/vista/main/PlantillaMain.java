@@ -333,8 +333,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				String playlist = tablaPlayList.getValueAt(row, column).toString();
 				if (auxiliar == 0)
 					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
-				if (auxiliar == 1)
+				if (auxiliar == 1) {
+					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
 					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+				}
 
 			}
 		});
@@ -505,16 +507,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.INSTANCIA.getCancionesSeleccionadas());
 
 			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
-			tablaPlayList.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int row = tablaPlayList.getSelectedRow();
-					int column = tablaPlayList.getSelectedColumn();
-
-					String playlist = tablaPlayList.getValueAt(row, column).toString();
-					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
-				}
-			});
 		}
 
 		if (e.getSource() == btnRecientes) {
@@ -549,18 +541,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			ventanaMisPlaylist.esconderPanel();
 
 			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
-			tablaPlayList.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int row = tablaPlayList.getSelectedRow();
-					int column = tablaPlayList.getSelectedColumn();
-
-					String playlist = tablaPlayList.getValueAt(row, column).toString();
-					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
-					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
-				}
-			});
-
 		}
 
 		if (e.getSource() == btnUp) {

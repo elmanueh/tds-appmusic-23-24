@@ -5,7 +5,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.musica.Cancion;
 
 import java.awt.Color;
 import java.awt.BorderLayout;
@@ -56,36 +55,20 @@ public class VentanaMisPlaylist extends JPanel {
 		lblNewLabel.setVisible(true);
 		lblNewLabel.setText(Controlador.INSTANCIA.getPlaylistSeleccionada());
 
-		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
+		SwingUtilities.invokeLater(() -> {
+			int anchoTabla = tablaCanciones.getWidth();
+			int numColumnas = tablaCanciones.getColumnCount();
+			int anchoUltColumna = (int) (anchoTabla * 0.05);
+			for (int i = 0; i < numColumnas; i++) {
+				tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
+				tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
 			}
-		};
+		});
 
-		modeloFiltrado.addColumn("TITULO");
-		modeloFiltrado.addColumn("ESTILO");
-		modeloFiltrado.addColumn("INTERPRETE");
-
-		for (Cancion cancion : Controlador.INSTANCIA.getListaCancionesPlayList(playlist)) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
-			modeloFiltrado.addRow(fila);
-		}
-
-		int anchoTabla = tablaCanciones.getWidth();
-		int numColumnas = tablaCanciones.getColumnCount();
-		int anchoUltColumna = (int) (anchoTabla * 0.05);
-		for (int i = 0; i < numColumnas; i++) {
-			tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-			tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
-		}
-
-		tablaCanciones.setModel(modeloFiltrado);
+		tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(playlist));
+		
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
-
 		tablaCanciones.setAutoCreateRowSorter(true);
 
 		tablaCanciones.addMouseListener(new MouseAdapter() {

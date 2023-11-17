@@ -78,7 +78,7 @@ public enum Controlador implements CancionesListener {
 
 	// USUARIO
 	public Boolean login(String usuarioAux, String contraseñaAux) {
-		Usuario usuario = getUsuario(usuarioAux);
+		Usuario usuario = catalogoUsuarios.getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			this.usuarioActual = usuario;
 			ControladorVentanas.INSTANCIA.logInSatisfactorio();
@@ -94,18 +94,6 @@ public enum Controlador implements CancionesListener {
 		catalogoUsuarios.addUsuario(usuario);
 	}
 
-	public Usuario getUsuario(String nombre_email) {
-		return catalogoUsuarios.getUsuario(nombre_email);
-	}
-
-	public List<Usuario> getUsuarios() {
-		return catalogoUsuarios.getUsuarios();
-	}
-
-	public Usuario getUsuarioActual() {
-		return usuarioActual;
-	}
-
 	public String getNombreUsuarioActual() {
 		return usuarioActual.getNombre();
 	}
@@ -114,6 +102,7 @@ public enum Controlador implements CancionesListener {
 		return usuarioActual.isPremium();
 	}
 
+	//SOLO SE UTILIZA PARA ACTUALIZAR TABLITA, PRONTO SE PODRA QUITAR
 	public Set<PlayList> getPlayListUsuarioActual() {
 		return usuarioActual.getListaPlayList();
 	}
@@ -127,7 +116,7 @@ public enum Controlador implements CancionesListener {
 	}
 
 	public boolean existeUsuario(String nombre_email) {
-		return getUsuario(nombre_email) != null;
+		return catalogoUsuarios.getUsuario(nombre_email) != null;
 	}
 
 	public boolean isCumpleañosUsuario() {
@@ -145,14 +134,7 @@ public enum Controlador implements CancionesListener {
 			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
 		return new String("/umu/tds/vista/imagenes/usuario.png");
 	}
-
-	// CANCION
-	public void registrarCancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
-		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interprete);
-		adaptadorCancion.registrarCancion(cancion);
-		catalogoCanciones.addCancion(cancion);
-	}
-
+	
 	public boolean existePlayList(String titulo) {
 		for (PlayList p : usuarioActual.getListaPlayList()) {
 			if (p.getNombre().equals(titulo))
@@ -161,10 +143,7 @@ public enum Controlador implements CancionesListener {
 		return false;
 	}
 
-	public List<Cancion> getCanciones() {
-		return catalogoCanciones.getCanciones();
-	}
-
+	// CANCION
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
 			boolean favorito) {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
@@ -200,46 +179,7 @@ public enum Controlador implements CancionesListener {
 		estilos.addFirst("");
 		return estilos;
 	}
-
-	// PLAYLIST
-	// NO SE UTILIZA -> IMPLEMENTADO EN crearPlaylist linea 563 aprox
-	public void crearPlayList(String s, DefaultTableModel modelo) {
-		PlayList p = new PlayList(s);
-		int filasTotal = modelo.getRowCount();
-
-		for (int fila = 0; fila < filasTotal; fila++) {
-			if ((Boolean) modelo.getValueAt(fila, 3)) {
-				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
-				p.addCancion(cancion);
-			}
-		}
-
-		adaptadorPlayList.registrarPlayList(p);
-		usuarioActual.addPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-	}
-
-	// NO SE UTILIZA -> IMPLEMENTADO EN crearPlaylist linea 563 aprox
-	public void anadirCancionesAPlayList(String s, DefaultTableModel modelo) {
-
-		PlayList p = usuarioActual.getPlayList(s);
-		int filasTotal = modelo.getRowCount();
-
-		for (int fila = 0; fila < filasTotal; fila++) {
-			if ((Boolean) modelo.getValueAt(fila, 3)) {
-				Cancion cancion = catalogoCanciones.getCancion((String) modelo.getValueAt(fila, 0));
-				p.addCancion(cancion);
-			}
-		}
-		adaptadorPlayList.modificarPlayList(p);
-		usuarioActual.addPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-	}
-
-	public Set<Cancion> getListaCancionesPlayList(String text) {
-		return getPlayList(text).getListaCanciones();
-	}
-
+	
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
 
@@ -250,26 +190,15 @@ public enum Controlador implements CancionesListener {
 		// Obtener las 10 canciones más reproducidas
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
-
-	public Set<Cancion> getCancionesRecientes() {
-		return usuarioActual.getPlaylistRecientes().getListaCanciones();
-	}
-
-	public void crearPlayList(String text) {
-		PlayList p = new PlayList(text);
-		p.addAllCanciones(cancionesSeleccionadas);
-
-		adaptadorPlayList.registrarPlayList(p);
-		usuarioActual.addPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-	}
-
-	public void anadirCancionesSelecAPL(String text) {
+	
+	// PLAYLIST
+	public void añadirCancionesSeleccionadasAPlaylist(String text) {
 		PlayList p = usuarioActual.getPlayList(text);
+		usuarioActual.removePlayList(p);
 		for (Cancion c : cancionesSeleccionadas)
 			if (!p.consultarCancion(c.getTitulo()))
 				p.addCancion(c);
-
+		
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
@@ -286,42 +215,6 @@ public enum Controlador implements CancionesListener {
 			playlist2[i] = playlist.get(i);
 		}
 		return playlist2;
-	}
-
-	public PlayList getPlayList(String s) {
-		return usuarioActual.getPlayList(s);
-	}
-
-	public boolean eliminarPlayList(String text) {
-		PlayList p = usuarioActual.getPlayList(text);
-		if (p == null)
-			return false;
-		usuarioActual.removePlayList(p);
-		adaptadorPlayList.borrarPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-		return true;
-	}
-
-	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
-		PlayList p = usuarioActual.getPlayList(text);
-		if (p == null)
-			return false;
-		usuarioActual.removePlayList(p);
-
-		int filasTotal = modelo.getRowCount();
-
-		for (int fila = 0; fila < filasTotal; fila++) {
-			if ((Boolean) modelo.getValueAt(fila, 3)) {
-				Cancion cancion = p.getCancion((String) modelo.getValueAt(fila, 0));
-				p.removeCancion(cancion);
-			}
-		}
-
-		usuarioActual.addPlayList(p);
-
-		adaptadorPlayList.modificarPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-		return true;
 	}
 
 	// PREMIUM
@@ -370,7 +263,7 @@ public enum Controlador implements CancionesListener {
 		};
 
 		modeloTabla.addColumn("");
-		for (PlayList p : getPlayListUsuarioActual()) {
+		for (PlayList p : usuarioActual.getListaPlayList()) {
 			Object[] playlist = { p.getNombre() };
 			modeloTabla.addRow(playlist);
 		}
@@ -392,7 +285,6 @@ public enum Controlador implements CancionesListener {
 			File selectedFile = fileChooser.getSelectedFile();
 			CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile.getAbsolutePath());
 		}
-
 	}
 
 	@Override
@@ -521,7 +413,7 @@ public enum Controlador implements CancionesListener {
 	}
 
 	/*
-	 * TABLA CANCIONES RECIENTES
+	 * MANEJO TABLA VENTANA RECIENTES
 	 */
 	public TableModel ponerTablaCancionesRecientes() {
 		DefaultTableModel modelo = new DefaultTableModel() {
@@ -546,7 +438,7 @@ public enum Controlador implements CancionesListener {
 	}
 
 	/*
-	 * TABLA CANCIONES MAS REPRODUCIDAS
+	 * MANEJO TABLA VENTANA MAS REPRODUCIDAS
 	 */
 	public TableModel ponerTablaTop10() {
 		DefaultTableModel modelo = new DefaultTableModel() {
@@ -571,7 +463,7 @@ public enum Controlador implements CancionesListener {
 	}
 
 	/*
-	 * TABLA CANCIONES FILTRADAS
+	 * MANEJO TABLA VENTANA BUSCAR
 	 */
 	public TableModel getTablaFiltrado(String tituloFiltrado, String interpreteFiltrado, String estiloFiltrado,
 			boolean favorito) {
@@ -605,9 +497,6 @@ public enum Controlador implements CancionesListener {
 		return modeloFiltrado;
 	}
 
-	/*
-	 * CREAR PLAYLIST
-	 */
 	public void crearPlaylist(String playlist, TableModel tableModel) {
 		if (!(playlist == null) && !(playlist.equals(""))) {
 			PlayList p;
@@ -632,5 +521,111 @@ public enum Controlador implements CancionesListener {
 			usuarioActual.addPlayList(p);
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
+	}
+	
+	/*
+	 * MANEJO TABLA VENTANA MIS PLAYLIST
+	 */
+	public TableModel ponerTablaPlaylist(String playlist) {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		modelo.addColumn("TITULO");
+		modelo.addColumn("ESTILO");
+		modelo.addColumn("INTERPRETE");
+
+		for (Cancion cancion : usuarioActual.getPlayList(playlist).getListaCanciones()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete() };
+			modelo.addRow(fila);
+		}
+		return modelo;
+	}
+
+	/*
+	 * MANEJO TABLA VENTANA GESTIONAR PLAYLIST
+	 */
+	public TableModel ponerTablaPlaylist(String playlist, boolean b) {
+		if (b)
+			añadirCancionesSeleccionadasAPlaylist(playlist);
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if (column < 3)
+					return false;
+				return true;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if (columnIndex == 3)
+					return Boolean.class;
+				return super.getColumnClass(columnIndex);
+			}
+		};
+
+		modelo.addColumn("TITULO");
+		modelo.addColumn("ESTILO");
+		modelo.addColumn("INTERPRETE");
+		modelo.addColumn("");
+		
+		for (Cancion c : usuarioActual.getPlayList(playlist).getListaCanciones()) {
+			Object[] fila = { c.getTitulo(), c.getEstiloMusical(), c.getInterprete(), false };
+			modelo.addRow(fila);
+		}
+		return modelo;
+	}
+
+	public TableModel crearPlaylist(String playlist) {
+		if (!existePlayList(playlist)) { //Si no existe se crea
+			PlayList p = new PlayList(playlist);
+			adaptadorPlayList.registrarPlayList(p);
+			usuarioActual.addPlayList(p);
+		}
+		// luego se llama al metodo de arriba que lo que hace es añadir a la playlist las canciones
+		return ponerTablaPlaylist(playlist, true);
+	}
+	
+	public TableModel eliminarPlayList(String text, TableModel tableModel) {
+		PlayList p = usuarioActual.getPlayList(text);
+		if (p == null)
+			return null;
+		
+		usuarioActual.removePlayList(p);
+		adaptadorPlayList.borrarPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		
+		DefaultTableModel modelo = (DefaultTableModel) tableModel;
+		modelo.setRowCount(0);
+		return modelo;
+	}
+	
+	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
+		PlayList p = usuarioActual.getPlayList(text);
+		if (p == null)
+			return false;
+		usuarioActual.removePlayList(p);
+
+		int filasTotal = modelo.getRowCount();
+
+		for (int fila = 0; fila < filasTotal; fila++) {
+			if ((Boolean) modelo.getValueAt(fila, 3)) {
+				Cancion cancion = p.getCancion((String) modelo.getValueAt(fila, 0));
+				p.removeCancion(cancion);
+			}
+		}
+
+		usuarioActual.addPlayList(p);
+
+		adaptadorPlayList.modificarPlayList(p);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		return true;
 	}
 }
