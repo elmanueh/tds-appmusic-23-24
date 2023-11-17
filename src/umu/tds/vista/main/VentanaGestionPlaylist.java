@@ -17,8 +17,6 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;

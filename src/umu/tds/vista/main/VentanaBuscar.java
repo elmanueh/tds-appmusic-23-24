@@ -19,7 +19,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
-import java.awt.GridLayout;
 
 public class VentanaBuscar extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;

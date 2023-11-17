@@ -11,6 +11,7 @@ public abstract class FactoriaDAO {
 	}
 
 	// METODOS
+	@SuppressWarnings("deprecation")
 	public static FactoriaDAO getInstancia(String tipo) throws DAOException {
 		if (unicaInstancia == null)
 			try {

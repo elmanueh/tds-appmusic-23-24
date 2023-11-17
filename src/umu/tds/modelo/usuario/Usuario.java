@@ -3,7 +3,6 @@ package umu.tds.modelo.usuario;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;

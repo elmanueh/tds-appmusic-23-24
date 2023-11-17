@@ -7,6 +7,7 @@ import javax.swing.border.TitledBorder;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.ControladorVentanas;
+import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import java.awt.BorderLayout;
@@ -28,8 +29,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.awt.event.ActionEvent;
 
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -38,6 +37,7 @@ import java.awt.CardLayout;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.event.ChangeEvent;
 
 public class PlantillaMain extends JFrame implements ActionListener {
@@ -50,8 +50,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private VentanaMasReproducidas ventanaMasReproducidas;
 	private VentanaGenerarPDF ventanaGenerarPDF;
 	private VentanaMisPlaylist ventanaMisPlaylist;
-	private JButton btnNewButton;
-	private JLabel lblNewLabel_1;
 	private JPanel p_menuBotonesPremium;
 	private JLabel mensajeBienvenida;
 	private JButton btnPremium;
@@ -316,7 +314,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		scrollPane.setBorder(new TitledBorder(UIManager.getBorder("Button.border"), "Playlist", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
 		p_playlist.add(scrollPane, BorderLayout.CENTER);
-		
+
 		tablaPlayList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -328,7 +326,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
 				if (auxiliar == 1)
 					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
-					
+
 			}
 		});
 
@@ -487,9 +485,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			ventanaBuscar.esconderPanel();
 		}
 
-		if (e.getSource() == botonGestionPlaylist) {
+		if (e.getSource() == btnGestionPlaylist) {
 			auxiliar = 0;
-			p_listas.setVisible(true);
+			p_playlist.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
@@ -532,9 +530,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			card.show(p_cardLayout, "ventanaGenerarPDF");
 		}
 
-		if (e.getSource() == botonMisPlaylist) {
+		if (e.getSource() == btnMisPlaylist) {
 			auxiliar = 1;
-			p_listas.setVisible(true);
+			p_playlist.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMisPlaylist");
@@ -582,11 +580,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 	}
-	
+
 	public void actualizarListPlaylist() {
 		DefaultTableModel modelo = (DefaultTableModel) tablaPlayList.getModel();
 		modelo.setRowCount(0);
-		
+
 		modelo.addColumn("");
 		for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
 			Object[] playlist = { p.getNombre() };
