@@ -2,7 +2,7 @@ package umu.tds.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 
 import beans.Entidad;
@@ -64,7 +64,7 @@ public enum AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 
 	public PlayList recuperarPlayList(int codigo) {
 		Entidad ePlayList;
-		HashSet<Cancion> canciones = new HashSet<Cancion>();
+		LinkedHashSet<Cancion> canciones = new LinkedHashSet<Cancion>();
 		String nombre;
 
 		ePlayList = servPersistencia.recuperarEntidad(codigo);
@@ -86,8 +86,8 @@ public enum AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		return codigosCanciones.trim();
 	}
 
-	private HashSet<Cancion> obtenerCancionesDesdeCodigos(String canciones) {
-		HashSet<Cancion> listaCanciones = new HashSet<Cancion>();
+	private LinkedHashSet<Cancion> obtenerCancionesDesdeCodigos(String canciones) {
+		LinkedHashSet<Cancion> listaCanciones = new LinkedHashSet<Cancion>();
 		StringTokenizer strTok = new StringTokenizer(canciones, " ");
 
 		while (strTok.hasMoreTokens()) {

@@ -286,7 +286,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 				public void mouseClicked(MouseEvent e) {
 					String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel())
 							.getValueAt(tablaCanciones.getSelectedRow(), 0);
-					Controlador.INSTANCIA.setCancionActual(titulo);
+					Controlador.INSTANCIA.setCancionSeleccionada(titulo);
 
 					@SuppressWarnings("unchecked")
 					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones

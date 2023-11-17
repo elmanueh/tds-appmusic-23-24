@@ -1,8 +1,8 @@
 package umu.tds.modelo.usuario;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
@@ -16,14 +16,14 @@ public class Usuario {
 
 	// ATRIBUTOS
 	public static final double TARIFA_PREMIUM = 10;
-	public static final int MAX = 5;
+	public static final int TAMAÑO_PLAYLIST_RECIENTES = 5;
 
 	private final String nombre;
 	private final String email;
 	private final Date fecha;
 	private final String contraseña;
-	private final HashSet<PlayList> listaPlayList;
-	private final LinkedList<Cancion> listaCancionesRecientes;
+	private final LinkedHashSet<PlayList> listaPlayList;
+	private PlayList playlistRecientes;
 	private boolean premium;
 	private int code;
 	private double cuota;
@@ -37,8 +37,8 @@ public class Usuario {
 		this.code = 0;
 		this.cuota = 0;
 
-		this.listaPlayList = new HashSet<PlayList>();
-		this.listaCancionesRecientes = new LinkedList<Cancion>();
+		this.listaPlayList = new LinkedHashSet<PlayList>();
+		this.playlistRecientes = new PlayList("cancionesRecientes");
 
 		this.premium = false;
 	}
@@ -64,8 +64,8 @@ public class Usuario {
 		return new HashSet<PlayList>(listaPlayList);
 	}
 
-	public ArrayList<Cancion> getListaCancionesRecientes() {
-		return new ArrayList<Cancion>(listaCancionesRecientes);
+	public PlayList getPlaylistRecientes() {
+		return playlistRecientes;
 	}
 
 	public boolean isPremium() {
@@ -110,21 +110,20 @@ public class Usuario {
 	}
 
 	public void addCancionReciente(Cancion cancion) {
-		ArrayList<Cancion> listaRecienteActualizado = new ArrayList<Cancion>();
-		listaRecienteActualizado.add(cancion);
-		for (Cancion c: listaCancionesRecientes) {
-			if (!cancion.getTitulo().equals(c.getTitulo()))
-				listaRecienteActualizado.add(c);
+
+		LinkedList<Cancion> canciones = new LinkedList<>(playlistRecientes.getListaCanciones());
+		canciones.remove(cancion);
+		canciones.addFirst(cancion);
+
+		if (canciones.size() > TAMAÑO_PLAYLIST_RECIENTES) {
+			canciones.removeLast();
 		}
-		
-		if (listaRecienteActualizado.size() > MAX) {
-			listaRecienteActualizado.remove(MAX);
-		}
-		listaCancionesRecientes.clear();
-		listaCancionesRecientes.addAll(listaRecienteActualizado);
+
+		playlistRecientes = new PlayList("cancionesRecientes");
+		playlistRecientes.addAllCanciones(new LinkedHashSet<Cancion>(canciones));
 	}
 
-	public PlayList crearPlayList(String nombre, HashSet<Cancion> canciones) {
+	public PlayList crearPlayList(String nombre, LinkedHashSet<Cancion> canciones) {
 		PlayList playlist = new PlayList(nombre);
 		playlist.addAllCanciones(canciones);
 		this.addPlayList(playlist);
@@ -138,7 +137,7 @@ public class Usuario {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contraseña, email, fecha, listaCancionesRecientes, listaPlayList, nombre, premium);
+		return Objects.hash(contraseña, email, fecha, playlistRecientes, listaPlayList, nombre, premium);
 	}
 
 	@Override
@@ -151,8 +150,7 @@ public class Usuario {
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(contraseña, other.contraseña) && Objects.equals(email, other.email)
-				&& Objects.equals(fecha, other.fecha)
-				&& Objects.equals(listaCancionesRecientes, other.listaCancionesRecientes)
+				&& Objects.equals(fecha, other.fecha) && Objects.equals(playlistRecientes, other.playlistRecientes)
 				&& Objects.equals(listaPlayList, other.listaPlayList) && Objects.equals(nombre, other.nombre)
 				&& premium == other.premium;
 	}

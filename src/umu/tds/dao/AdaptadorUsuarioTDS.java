@@ -45,7 +45,7 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			adaptadorPL.registrarPlayList(pl);
 
 		AdaptadorCancionTDS adaptadorCanciones = AdaptadorCancionTDS.INSTANCIA;
-		for (Cancion ca : usuario.getListaCancionesRecientes())
+		for (Cancion ca : usuario.getPlaylistRecientes().getListaCanciones())
 			adaptadorCanciones.registrarCancion(ca);
 
 		eUsuario = new Entidad();
@@ -54,7 +54,7 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 				new Propiedad("nombre", usuario.getNombre()), new Propiedad("contraseña", usuario.getContraseña()),
 				new Propiedad("fecha", dateFormat.format(usuario.getFecha())),
 				new Propiedad("listaPlayList", obtenerCodigosPlayLists(usuario.getListaPlayList())),
-				new Propiedad("listaCancionesRecientes", obtenerCodigosCanciones(usuario.getListaCancionesRecientes())),
+				new Propiedad("playlistRecientes", obtenerCodigosCanciones(usuario.getPlaylistRecientes())),
 				new Propiedad("cuota", String.valueOf(usuario.getCuota())),
 				new Propiedad("esPremium", String.valueOf(usuario.isPremium())))));
 
@@ -79,8 +79,8 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			} else if (prop.getNombre().equals("listaPlayList")) {
 				String playlists = obtenerCodigosPlayLists(usuario.getListaPlayList());
 				prop.setValor(playlists);
-			} else if (prop.getNombre().equals("listaCancionesRecientes")) {
-				String canciones = obtenerCodigosCanciones(usuario.getListaCancionesRecientes());
+			} else if (prop.getNombre().equals("playlistRecientes")) {
+				String canciones = obtenerCodigosCanciones(usuario.getPlaylistRecientes());
 				prop.setValor(canciones);
 			} else if (prop.getNombre().equals("cuota")) {
 				prop.setValor(String.valueOf(usuario.getCuota()));
@@ -126,7 +126,7 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 			usuario.addPlayList(pl);
 
 		cancionesRecientes = obtenerCancionesDesdeCodigos(
-				servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaCancionesRecientes"));
+				servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlistRecientes"));
 		for (Cancion c : cancionesRecientes)
 			usuario.addCancionReciente(c);
 
@@ -163,9 +163,9 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		return listaVentas;
 	}
 
-	private String obtenerCodigosCanciones(Collection<Cancion> collection) {
+	private String obtenerCodigosCanciones(PlayList playlist) {
 		String aux = "";
-		for (Cancion c : collection) {
+		for (Cancion c : playlist.getListaCanciones()) {
 			aux += c.getCodigo() + " ";
 		}
 		return aux.trim();
