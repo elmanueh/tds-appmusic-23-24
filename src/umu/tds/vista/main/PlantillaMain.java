@@ -471,6 +471,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaRecientes");
+			ventanaRecientes.configuracionTabla();
 		}
 
 		if (e.getSource() == botonMasReproducidas) {
@@ -478,6 +479,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMasReproducidas");
+			ventanaMasReproducidas.configuracionTabla();
 		}
 
 		if (e.getSource() == botonGenerarPDF) {

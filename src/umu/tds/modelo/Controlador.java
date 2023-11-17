@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
@@ -228,21 +229,21 @@ public enum Controlador implements CancionesListener {
 	public HashSet<Cancion> getListaCancionesPlayList(String text) {
 		return getPlayList(text).getListaCanciones();
 	}
-	
+
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
-		
-        Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
-        
-        Collections.sort(listaTOP10, comparadorReproducciones.reversed());
 
-        // Obtener las 10 canciones más reproducidas
-        return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
+		Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
+
+		Collections.sort(listaTOP10, comparadorReproducciones.reversed());
+
+		// Obtener las 10 canciones más reproducidas
+		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
-	
+
 	public ArrayList<Cancion> getCancionesRecientes() {
 		return usuarioActual.getListaCancionesRecientes();
-		
+
 	}
 
 	public void crearPlayList(String text) {
@@ -373,12 +374,54 @@ public enum Controlador implements CancionesListener {
 		catalogoCanciones.addCancion(c);
 		usuarioActual.addCancionReciente(c);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		
+
 		Reproductor.INSTANCIA.playCancion(c.getRutaFichero());
 	}
 
 	public void pause() {
 		Reproductor.INSTANCIA.pause();
 
+	}
+
+	public TableModel ponerTablaCancionesRecientes() {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Interprete");
+		modelo.addColumn("Número Reproducciones");
+	
+		for (Cancion cancion : usuarioActual.getListaCancionesRecientes()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+		return modelo;
+	}
+
+	public TableModel ponerTablaTop10() {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Interprete");
+		modelo.addColumn("Número Reproducciones");
+		
+		for (Cancion cancion : getCancionesMasReproducidas()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+		return modelo;
 	}
 }

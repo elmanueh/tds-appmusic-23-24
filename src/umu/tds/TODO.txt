@@ -2,19 +2,12 @@
 		/**********************************************/
 	 					COSAS POR HACER
 	 	/**********************************************/			
-	 					
-	    		// PLANTILLA-MAIN
-		- BARRA NEGRA CABEZERA	
-	 
-	 			// PANEL-MIS-PLAYLIST
-	 	- QUE NO SE MUEVAN LAS COLUMNAS EN LA TABLA
 	 	
 	 			// REPRODUCIR CANCION
 	 	- PARCHEAR QUE SI HACES PLAY DESPUES DE PAUSE, NO AUMENTE EL NUMERO DE REP
 	 	
 	 			// GENERALES
 	 	- ERORR JAVAFX  (arreglado se supone)
-	 	- HACER VENTANAS RESTANTES
 	 	- HACER BIEN LA REPRODUCCION DE CANCIONES | AÑADIENDO TB BOTON PARAR
 	 			
 	 			// OPCIONAL
