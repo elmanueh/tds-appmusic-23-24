@@ -39,6 +39,9 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.event.ChangeEvent;
+import pulsador.Luz;
+import pulsador.IEncendidoListener;
+import java.util.EventObject;
 
 public class PlantillaMain extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -64,15 +67,15 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnMasReproducidas;
 	private JButton btnGenerarPDF;
 	private JButton btnMisPlaylist;
-	private JButton btnUp;
 	private JButton btnShuffle;
 	private JButton btnPrevious;
 	private JButton btnPlayPause;
 	private JButton btnNext;
 	private JButton btnSecuential;
+	private Luz luz;
 
 	private int auxiliar;
-
+	
 	// METODOS
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -163,15 +166,22 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbl_p_botonConfiguracion.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_p_botonConfiguracion.columnWidths = new int[] { 0, 15, 100, 15, 100, 0 };
 		p_botonConfiguracion.setLayout(gbl_p_botonConfiguracion);
-
-		btnUp = new JButton("UP");
-		btnUp.setFont(new Font("Tahoma", Font.BOLD, 12));
-		GridBagConstraints gbc_btnUp = new GridBagConstraints();
-		gbc_btnUp.fill = GridBagConstraints.BOTH;
-		gbc_btnUp.insets = new Insets(0, 0, 0, 5);
-		gbc_btnUp.gridx = 0;
-		gbc_btnUp.gridy = 0;
-		p_botonConfiguracion.add(btnUp, gbc_btnUp);
+		
+		luz = new Luz();
+		
+		luz.addEncendidoListener(new IEncendidoListener() {
+			public void enteradoCambioEncendido(EventObject arg0) {
+				Controlador.INSTANCIA.cargarCanciones();
+				ventanaBuscar.actualizarEstilos();
+			}
+		});
+		
+		GridBagConstraints gbc_luz = new GridBagConstraints();
+		gbc_luz.fill = GridBagConstraints.HORIZONTAL;
+		gbc_luz.insets = new Insets(0, 0, 0, 5);
+		gbc_luz.gridx = 0;
+		gbc_luz.gridy = 0;
+		p_botonConfiguracion.add(luz, gbc_luz);
 
 		btnPremium = new JButton("Premium");
 		btnPremium.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -412,11 +422,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		JSlider sliderVolumen = new JSlider();
 		sliderVolumen.setValue(25);
 		sliderVolumen.setMaximum(50);
+		
 		sliderVolumen.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				Controlador.INSTANCIA.volumen(sliderVolumen.getValue());
 			}
 		});
+		
 		sliderVolumen.setPreferredSize(new Dimension(20, 50));
 		sliderVolumen.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_sliderVolumen = new GridBagConstraints();
@@ -463,16 +475,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnMasReproducidas.addActionListener(this);
 		btnGenerarPDF.addActionListener(this);
 		btnMisPlaylist.addActionListener(this);
-		btnUp.addActionListener(this);
 
 		btnShuffle.addActionListener(this);
 		btnPrevious.addActionListener(this);
 		btnPlayPause.addActionListener(this);
 		btnNext.addActionListener(this);
 		btnSecuential.addActionListener(this);
-
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -543,11 +553,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
 		}
 
-		if (e.getSource() == btnUp) {
-			Controlador.INSTANCIA.cargarCanciones();
-			ventanaBuscar.actualizarEstilos();
-		}
-
 		// MULTIMEDEA
 		if (e.getSource() == btnShuffle) {
 
@@ -568,7 +573,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnSecuential) {
 
 		}
-
 	}
 
 	public void actualizarListPlaylist() {
