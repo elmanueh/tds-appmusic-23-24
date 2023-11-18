@@ -76,7 +76,7 @@ public class VentanaRecientes extends JPanel {
 		gbl_panel.rowHeights = new int[] { 15, 0, 10 };
 		panel.setLayout(gbl_panel);
 
-		JLabel lblNewLabel = new JLabel("LISTA CANCIONES RECIENTES");
+		JLabel lblNewLabel = new JLabel("5 CANCIONES RECIENTES");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);

@@ -7,7 +7,6 @@ import javax.swing.border.TitledBorder;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.ControladorVentanas;
-import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import java.awt.BorderLayout;
@@ -37,7 +36,6 @@ import java.awt.CardLayout;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
 import pulsador.IEncendidoListener;
@@ -73,8 +71,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnNext;
 	private JButton btnSecuential;
 	private Luz luz;
-
-	private int auxiliar;
 	
 	// METODOS
 	private void inicializar() {
@@ -341,11 +337,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				int column = tablaPlayList.getSelectedColumn();
 
 				String playlist = tablaPlayList.getValueAt(row, column).toString();
-				if (auxiliar == 0)
+				switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+				case "VentanaGestionPlaylist":
 					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
-				if (auxiliar == 1) {
+					break;
+				case "VentanaMisPlaylist":
 					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
 					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+					break;
 				}
 
 			}
@@ -508,7 +507,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnGestionPlaylist) {
-			auxiliar = 0;
 			p_playlist.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
@@ -543,7 +541,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnMisPlaylist) {
-			auxiliar = 1;
 			p_playlist.setVisible(true);
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
@@ -576,14 +573,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	}
 
 	public void actualizarListPlaylist() {
-		DefaultTableModel modelo = (DefaultTableModel) tablaPlayList.getModel();
-		modelo.setRowCount(0);
-
-		modelo.addColumn("");
-		for (PlayList p : Controlador.INSTANCIA.getPlayListUsuarioActual()) {
-			Object[] playlist = { p.getNombre() };
-			modelo.addRow(playlist);
-		}
+		tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
 	}
 
 }
