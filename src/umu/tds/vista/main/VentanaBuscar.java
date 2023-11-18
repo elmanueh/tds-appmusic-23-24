@@ -52,6 +52,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	}
 
 	public void actualizarEstilos() {
+		comboBoxEstilo.removeAllItems();
 		for (String s : Controlador.INSTANCIA.getEstilos())
 			comboBoxEstilo.addItem(s);
 	}
