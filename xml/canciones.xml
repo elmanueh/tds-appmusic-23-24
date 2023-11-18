@@ -3,71 +3,160 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
 	xs:schemaLocation="http://www.tds.es/canciones canciones.xsd">
 
-	<cancion titulo="La Vie en rose">
-		<URL><![CDATA[https://ia801605.us.archive.org/16/items/78_la-vie-en-rose-slow-chante_edith-piaf-louiguy-edith-piaf-chansons-parisiennes-guy_gbia0000684a/La%20Vie%20En%20Rose%20%28Slow%20Chante%29%20-%20Edith%20Piaf-restored.mp3]]></URL>
-		<estilo>Cabaret</estilo>
-		<interprete>Edith Piaf</interprete>
+	<!-- REGGAETON -->
+	<cancion titulo="Arena y Sal">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/Arena%20y%20Sal.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Anuel AA, Quevedo, Maluma Feat. DJ Luian, Mambo Kingz</interprete>
 	</cancion>
 
-	<cancion titulo="In the Court of the Crimson King">
-		<URL><![CDATA[https://ia800102.us.archive.org/7/items/cd_in-the-court-of-the-crimson-king_king-crimson/disc1/05.%20King%20Crimson%20-%20The%20Court%20of%20the%20Crimson%20King%20%28including%20The%20Return%20of%20the%20Fire%20Witch%20and%20The%20Dance%20of%20the%20Puppets%29_sample.mp3]]></URL>
-		<estilo>Rock-sinfonico</estilo>
-		<interprete>King Crimson </interprete>
+	<cancion titulo="BABY HELLO">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/BABY%20HELLO.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Rauw Alejandro, Bizarrap</interprete>
 	</cancion>
 
-	<cancion titulo="La Cumparsita">
-		<URL><![CDATA[https://ia801609.us.archive.org/14/items/78_la-cumparsita_pietro-g.h.-matos-rodriguez_gbia0001088b/La%20Cumparsita%20-%20Pietro%20-%20G.H.%20Matos%20Rodriguez-restored.mp3]]></URL>
-		<estilo>Tango</estilo>
-		<interprete>Pietro</interprete>
+	<cancion titulo="COCO LOCO">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/COCO%20LOCO.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Maluma</interprete>
 	</cancion>
 
-	<cancion titulo="El Mambo">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/El%20Mambo%20-%20Kiko%20Rivera.mp3]]></URL>
-		<estilo>Urbano Latino</estilo>
-		<interprete>Kiko Rivera</interprete>
-	</cancion>
-
-	<cancion titulo="Mal De Amores">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Juan%20Magan%20-%20Mal%20De%20Amores.mp3]]></URL>
-		<estilo>Pop</estilo>
-		<interprete>Juan Magan</interprete>
-	</cancion>
-
-	<cancion titulo="Himno">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20Espa%c3%83%c2%b1a.mp3]]></URL>
-		<estilo>Himno</estilo>
-		<interprete>Anonimo</interprete>
-	</cancion>
-
-	<cancion titulo="Ferxxo 151">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Icon%20-%20Ferxxo%20151.mp3]]></URL>
-		<estilo>Urbano Latino</estilo>
-		<interprete>Feid,Icon</interprete>
-	</cancion>
-
-	<cancion titulo="BUBALU">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Rema%20-%20BUBALU.mp3]]></URL>
-		<estilo>Urbano Latino</estilo>
-		<interprete>Feid, Rema</interprete>
-	</cancion>
-
-	<cancion titulo="CLASSY 101">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid,%20Young%20Miko%20-%20CLASSY%20101.mp3]]></URL>
-		<estilo>Urbano Latino</estilo>
+	<cancion titulo="Classy 101">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/Classy%20101.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
 		<interprete>Feid, Young Miko</interprete>
 	</cancion>
 
-	<cancion titulo="Luces Tecno">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Feid%20-%20Luces%20De%20Tecno.mp3]]></URL>
-		<estilo>Urbano Latino</estilo>
-		<interprete>Feid</interprete>
+	<cancion titulo="Columbia">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/Columbia.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Quevedo</interprete>
 	</cancion>
 
-	<cancion titulo="Himno Region de Murcia (Parranda)">
-		<URL><![CDATA[http://143.47.53.235/tds/canciones/Himno%20de%20la%20Regi%c3%83%c2%b3n%20de%20Murcia.mp3]]></URL>
-		<estilo>Himno</estilo>
-		<interprete>Anonimo</interprete>
+	<cancion titulo="El Cielo">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/El%20Cielo.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Sky Rompiendo, Feid, Myke Towers</interprete>
+	</cancion>
+
+	<cancion titulo="El Merengue">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/El%20Merengue.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Marshmello, Manuel Turizo</interprete>
+	</cancion>
+
+	<cancion titulo="HIBIKI">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/HIBIKI.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>BAD BUNNY, MORA</interprete>
+	</cancion>
+
+	<cancion titulo="Los Del Espacio">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/Los%20del%20Espacio.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>LIT killah, Duki, Emilia, Tiago PZK, FMK, Rusherking, Maria
+			Becerra, Big One</interprete>
+	</cancion>
+
+	<cancion titulo="OA">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/reggaeton/OA.mp3]]></URL>
+		<estilo>Reggaeton</estilo>
+		<interprete>Anuel AA, Quevedo, Maluma Feat. DJ Luian, Mambo Kingz</interprete>
 	</cancion>
 
 
+	<!-- ROCK -->
+	<cancion titulo="Back In Black">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Back%20In%20Black.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>AC/DC</interprete>
+	</cancion>
+	
+	<cancion titulo="Bring Me To Life">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Bring%20Me%20To%20Life.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>Evanescence</interprete>
+	</cancion>
+	
+	<cancion titulo="Californication">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Californication.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>Red Hot Chili Peppers</interprete>
+	</cancion>
+	
+	<cancion titulo="Chop Suey!">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Chop%20Suey!.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>System Of A Down</interprete>
+	</cancion>
+	
+	<cancion titulo="Numb">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Numb.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>Linkin Park</interprete>
+	</cancion>
+	
+	<cancion titulo="Seven Nation Army">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Seven%20Nation%20Army.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>The White Stripes</interprete>
+	</cancion>
+	
+	<cancion titulo="Smells Like Teen Spirit">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Smells%20Like%20Teen%20Spirit.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>Nirvana</interprete>
+	</cancion>
+	
+	<cancion titulo="Sweet Child O' Mine">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/rock/Sweet%20Child%20O'%20Mine.mp3]]></URL>
+		<estilo>Rock</estilo>
+		<interprete>Guns N' Roses</interprete>
+	</cancion>
+	
+	
+	<!-- POP -->
+	<cancion titulo="As It Was">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/As%20It%20Was.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Harry Styles</interprete>
+	</cancion>
+	
+	<cancion titulo="El Nano">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/El%20Nano.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Melendi</interprete>
+	</cancion>
+	
+	<cancion titulo="Flowers">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/Flowers.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Miley Cyrus</interprete>
+	</cancion>
+	
+	<cancion titulo="Perfect">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/Perfect.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Ed Sheeran</interprete>
+	</cancion>
+	
+	<cancion titulo="Save Your Tears">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/Save%20Your%20Tears.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>The Weeknd</interprete>
+	</cancion>
+	
+	<cancion titulo="Shape of You">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/Shape%20of%20You.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Ed Sheeran</interprete>
+	</cancion>
+	
+	<cancion titulo="Viva La Vida">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/pop/Viva%20La%20Vida.mp3]]></URL>
+		<estilo>Pop</estilo>
+		<interprete>Coldplay</interprete>
+	</cancion>
+	
 </canciones>
