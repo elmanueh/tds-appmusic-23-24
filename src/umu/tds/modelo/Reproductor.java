@@ -39,7 +39,6 @@ public enum Reproductor {
 		return reproduciendo;
 	}
 
-	@SuppressWarnings("deprecation")
 	public void playCancion(String urlNueva) {
 		if (url.equals(urlNueva) && reproduciendo) {
 			pauseCancion();

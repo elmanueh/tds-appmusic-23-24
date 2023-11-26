@@ -96,56 +96,45 @@ public enum Controlador implements CancionesListener {
 		catalogoUsuarios.addUsuario(usuario);
 	}
 
-	public String getNombreUsuarioActual() {
-		return usuarioActual.getNombre();
-	}
-
-	public boolean isUsuarioActualPremium() {
-		return usuarioActual.isPremium();
-	}
-
-	//SOLO SE UTILIZA PARA ACTUALIZAR TABLITA, PRONTO SE PODRA QUITAR
-	public Set<PlayList> getPlayListUsuarioActual() {
-		return usuarioActual.getListaPlayList();
-	}
-
-	public double getCuotaUsuarioActual() {
-		return usuarioActual.getCuota();
-	}
-	
-	public String getPlaylistSeleccionada() {
-		return playlistSeleccionada;
-	}
-
 	public boolean existeUsuario(String nombre_email) {
 		return catalogoUsuarios.getUsuario(nombre_email) != null;
 	}
 
-	public boolean isCumpleañosUsuario() {
-		Date fechaNacimiento = usuarioActual.getFecha();
-		Date fechaActual = new Date();
-		SimpleDateFormat formatoDiaMes = new SimpleDateFormat("dd-MM");
-
-		if (formatoDiaMes.format(fechaActual).equals(formatoDiaMes.format(fechaNacimiento)))
-			return true;
-		return false;
-	}
-
-	public String getIconoUsuario() {
-		if (usuarioActual.isPremium())
-			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
-		return new String("/umu/tds/vista/imagenes/usuario.png");
-	}
-	
-	public boolean existePlayList(String titulo) {
-		for (PlayList p : usuarioActual.getListaPlayList()) {
-			if (p.getNombre().equals(titulo))
-				return true;
-		}
-		return false;
+	public Usuario getUsuarioActual() {
+		return usuarioActual;
 	}
 
 	// CANCION
+	
+	@Override
+	public void enteradoNuevasCanciones(EventObject e) {
+		CancionesEvent evento = (CancionesEvent) e;
+		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
+
+		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
+			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), new EstiloMusical(c.getEstilo()),
+					new Interprete(c.getInterprete()));
+			adaptadorCancion.registrarCancion(cancion);
+			catalogoCanciones.addCancion(cancion);
+		}
+	}
+	
+	public void cargarCanciones() {
+		String path = System.getProperty("user.dir") + File.separator + "xml";
+		File inicio = new File(path);
+		JFileChooser fileChooser = new JFileChooser(inicio);
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
+		fileChooser.setFileFilter(filter);
+
+		int result = fileChooser.showOpenDialog(null);
+
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile.getAbsolutePath());
+		}
+	}
+	
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
 			boolean favorito) {
 		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
@@ -177,11 +166,12 @@ public enum Controlador implements CancionesListener {
 
 	public LinkedList<String> getEstilos() {
 		LinkedList<String> estilos = (LinkedList<String>) catalogoCanciones.getCanciones().stream()
-				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted().collect(Collectors.toCollection(LinkedList::new));
+				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted()
+				.collect(Collectors.toCollection(LinkedList::new));
 		estilos.addFirst("");
 		return estilos;
 	}
-	
+
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
 
@@ -192,15 +182,27 @@ public enum Controlador implements CancionesListener {
 		// Obtener las 10 canciones más reproducidas
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
-	
+
 	// PLAYLIST
+	public String getPlaylistSeleccionada() {
+		return playlistSeleccionada;
+	}
+
+	public boolean existePlayList(String titulo) {
+		for (PlayList p : usuarioActual.getListaPlayList()) {
+			if (p.getNombre().equals(titulo))
+				return true;
+		}
+		return false;
+	}
+
 	public void añadirCancionesSeleccionadasAPlaylist(String text) {
 		PlayList p = usuarioActual.getPlayList(text);
 		usuarioActual.removePlayList(p);
 		for (Cancion c : cancionesSeleccionadas)
 			if (!p.consultarCancion(c.getTitulo()))
 				p.addCancion(c);
-		
+
 		adaptadorPlayList.modificarPlayList(p);
 		usuarioActual.addPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
@@ -220,10 +222,6 @@ public enum Controlador implements CancionesListener {
 	}
 
 	// PREMIUM
-	public Descuento aplicarDescuento(String codigo) {
-		return usuarioActual.aplicarDescuento(codigo);
-	}
-
 	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
 		usuarioActual.setCuota(precio);
@@ -270,35 +268,6 @@ public enum Controlador implements CancionesListener {
 			modeloTabla.addRow(playlist);
 		}
 		return modeloTabla;
-	}
-
-	// CARGADOR DE CANCIONES
-	public void cargarCanciones() {
-		String path = System.getProperty("user.dir") + File.separator + "xml";
-		File inicio = new File(path);
-		JFileChooser fileChooser = new JFileChooser(inicio);
-
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
-		fileChooser.setFileFilter(filter);
-
-		int result = fileChooser.showOpenDialog(null);
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile.getAbsolutePath());
-		}
-	}
-
-	@Override
-	public void enteradoNuevasCanciones(EventObject e) {
-		CancionesEvent evento = (CancionesEvent) e;
-		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
-
-		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
-			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), new EstiloMusical(c.getEstilo()), new Interprete(c.getInterprete()));
-			adaptadorCancion.registrarCancion(cancion);
-			catalogoCanciones.addCancion(cancion);
-		}
 	}
 
 	/*
@@ -433,8 +402,8 @@ public enum Controlador implements CancionesListener {
 		modelo.addColumn("Número Reproducciones");
 
 		for (Cancion cancion : usuarioActual.getPlaylistRecientes().getListaCanciones()) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(), cancion.getInterprete().getInterprete(),
-					cancion.getNumReproducciones() };
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), cancion.getNumReproducciones() };
 			modelo.addRow(fila);
 		}
 		return modelo;
@@ -458,8 +427,8 @@ public enum Controlador implements CancionesListener {
 		modelo.addColumn("Número Reproducciones");
 
 		for (Cancion cancion : getCancionesMasReproducidas()) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(), cancion.getInterprete().getInterprete(),
-					cancion.getNumReproducciones() };
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), cancion.getNumReproducciones() };
 			modelo.addRow(fila);
 		}
 		return modelo;
@@ -494,7 +463,8 @@ public enum Controlador implements CancionesListener {
 		modeloFiltrado.addColumn("");
 
 		for (Cancion cancion : getCancionesFiltradas(tituloFiltrado, interpreteFiltrado, estiloFiltrado, favorito)) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(), cancion.getInterprete().getInterprete(), false };
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), false };
 			modeloFiltrado.addRow(fila);
 		}
 		return modeloFiltrado;
@@ -525,7 +495,7 @@ public enum Controlador implements CancionesListener {
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
 	}
-	
+
 	/*
 	 * MANEJO TABLA VENTANA MIS PLAYLIST
 	 */
@@ -544,7 +514,8 @@ public enum Controlador implements CancionesListener {
 		modelo.addColumn("INTERPRETE");
 
 		for (Cancion cancion : usuarioActual.getPlayList(playlist).getListaCanciones()) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(), cancion.getInterprete().getInterprete() };
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete() };
 			modelo.addRow(fila);
 		}
 		return modelo;
@@ -578,38 +549,40 @@ public enum Controlador implements CancionesListener {
 		modelo.addColumn("ESTILO");
 		modelo.addColumn("INTERPRETE");
 		modelo.addColumn("");
-		
+
 		for (Cancion c : usuarioActual.getPlayList(playlist).getListaCanciones()) {
-			Object[] fila = { c.getTitulo(), c.getEstiloMusical().getEstilo(), c.getInterprete().getInterprete(), false };
+			Object[] fila = { c.getTitulo(), c.getEstiloMusical().getEstilo(), c.getInterprete().getInterprete(),
+					false };
 			modelo.addRow(fila);
 		}
 		return modelo;
 	}
 
 	public TableModel crearPlaylist(String playlist) {
-		if (!existePlayList(playlist)) { //Si no existe se crea
+		if (!existePlayList(playlist)) { // Si no existe se crea
 			PlayList p = new PlayList(playlist);
 			adaptadorPlayList.registrarPlayList(p);
 			usuarioActual.addPlayList(p);
 		}
-		// luego se llama al metodo de arriba que lo que hace es añadir a la playlist las canciones
+		// luego se llama al metodo de arriba que lo que hace es añadir a la playlist
+		// las canciones
 		return ponerTablaPlaylist(playlist, true);
 	}
-	
+
 	public TableModel eliminarPlayList(String text, TableModel tableModel) {
 		PlayList p = usuarioActual.getPlayList(text);
 		if (p == null)
 			return null;
-		
+
 		usuarioActual.removePlayList(p);
 		adaptadorPlayList.borrarPlayList(p);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		
+
 		DefaultTableModel modelo = (DefaultTableModel) tableModel;
 		modelo.setRowCount(0);
 		return modelo;
 	}
-	
+
 	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
 		PlayList p = usuarioActual.getPlayList(text);
 		if (p == null)

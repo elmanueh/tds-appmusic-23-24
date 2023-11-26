@@ -112,7 +112,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_Premium.add(lblNewLabel_2, gbc_lblNewLabel_2);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de " + Controlador.INSTANCIA.getCuotaUsuarioActual() + "€");
+		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de " + Controlador.INSTANCIA.getUsuarioActual().getCuota() + "€");
 		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_1_1.gridx = 0;
@@ -127,7 +127,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbc_btnDarDeBaja.gridy = 4;
 		panel_Premium.add(botonDarDeBaja, gbc_btnDarDeBaja);
 
-		boolean premium = Controlador.INSTANCIA.isUsuarioActualPremium();
+		boolean premium = Controlador.INSTANCIA.getUsuarioActual().isPremium();
 		if (premium) {
 			((CardLayout) getContentPane().getLayout()).show(getContentPane(), "panel_Premium");
 		} else {
@@ -145,7 +145,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonPremium) {
-			Descuento d = Controlador.INSTANCIA.aplicarDescuento(codigo.getText());
+			Descuento d = Controlador.INSTANCIA.getUsuarioActual().aplicarDescuento(codigo.getText());
 
 			String mensaje;
 			switch (d.tipoDescuento()) {

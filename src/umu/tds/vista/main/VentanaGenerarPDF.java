@@ -14,7 +14,6 @@ import umu.tds.modelo.musica.PlayList;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
-import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Font;
@@ -81,7 +80,7 @@ public class VentanaGenerarPDF extends JPanel {
     	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.pdf)", "pdf");
 		fileChooser.setFileFilter(filter);
 		
-		String defaultFileName = Controlador.INSTANCIA.getNombreUsuarioActual() + ".pdf";
+		String defaultFileName = Controlador.INSTANCIA.getUsuarioActual().getNombre() + ".pdf";
         File defaultFile = new File(defaultFileName);
         fileChooser.setSelectedFile(defaultFile);
 
@@ -111,9 +110,9 @@ public class VentanaGenerarPDF extends JPanel {
         Document documento = new Document();
 		PdfWriter.getInstance(documento, archivo);
 		documento.open();
-		documento.add(new Paragraph("LISTADO DE PLAYLIST DEL USUARIO: " + Controlador.INSTANCIA.getNombreUsuarioActual()));
+		documento.add(new Paragraph("LISTADO DE PLAYLIST DEL USUARIO: " + Controlador.INSTANCIA.getUsuarioActual().getNombre()));
 		documento.add(new Paragraph());
-		for (PlayList p: Controlador.INSTANCIA.getPlayListUsuarioActual()) {
+		for (PlayList p: Controlador.INSTANCIA.getUsuarioActual().getListaPlayList()) {
 			documento.add(new Paragraph(" "));
 			documento.add(new Paragraph("Playlist " + p.getNombre()));
 			for (Cancion c: p.getListaCanciones()) {

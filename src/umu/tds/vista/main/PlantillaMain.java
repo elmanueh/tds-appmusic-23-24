@@ -100,7 +100,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	public void estadoPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
 		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
 	}
 
 	public void estadoReproduciendo(String reproduciendo) {
@@ -151,7 +151,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		cumpleaños.setIcon(
 				new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/torta-cumpleanos.png")));
 		p_iconoTitulo.add(cumpleaños);
-		if (Controlador.INSTANCIA.isCumpleañosUsuario())
+		if (Controlador.INSTANCIA.getUsuarioActual().isCumpleaños())
 			cumpleaños.setVisible(true);
 
 		JPanel p_cabezeraBotones = new JPanel();
@@ -170,7 +170,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_botonConfiguracion.setLayout(gbl_p_botonConfiguracion);
 		
 		luz = new Luz();
-		
 		luz.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
 				Controlador.INSTANCIA.cargarCanciones();
@@ -209,11 +208,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_2.gridy = 0;
 		p_botonConfiguracion.add(horizontalStrut_2, gbc_horizontalStrut_2);
 
-		mensajeBienvenida = new JLabel("Bienvenido, " + Controlador.INSTANCIA.getNombreUsuarioActual());
+		mensajeBienvenida = new JLabel("Bienvenido, " + Controlador.INSTANCIA.getUsuarioActual().getNombre());
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
 
 		p_cabezeraBotones.add(mensajeBienvenida, BorderLayout.CENTER);
 
@@ -268,7 +267,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		p_menuBotonesPremium = new JPanel();
 		p_menuBotonesPremium.setOpaque(false);
-		p_menuBotonesPremium.setVisible(Controlador.INSTANCIA.isUsuarioActualPremium());
+		p_menuBotonesPremium.setVisible(Controlador.INSTANCIA.getUsuarioActual().isPremium());
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
 		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
 		gbc_p_menuBotonesPremium.fill = GridBagConstraints.BOTH;
@@ -336,7 +335,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				TitledBorder.TOP, null, null));
 		p_playlist.add(scrollPane, BorderLayout.CENTER);
 
-		tablaPlayList.addMouseListener(new MouseAdapter() {
+		tablaPlayList.addMouseListener(new MouseAdapter() {	// TODO arreglarlo
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = tablaPlayList.getSelectedRow();
@@ -478,7 +477,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		sliderVolumen.setValue(25);
 		sliderVolumen.setMaximum(50);
 		
-		sliderVolumen.addChangeListener(new ChangeListener() {
+		sliderVolumen.addChangeListener(new ChangeListener() {	// TODO arreglar
 			public void stateChanged(ChangeEvent e) {
 				Controlador.INSTANCIA.volumen(sliderVolumen.getValue());
 			}
