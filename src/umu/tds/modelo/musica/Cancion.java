@@ -7,13 +7,13 @@ public class Cancion {
 	// ATRIBUTOS
 	private String titulo;
 	private String rutaFichero;
-	private String estiloMusical;
-	private String interprete;
+	private EstiloMusical estiloMusical;
+	private Interprete interprete;
 	private int numReproducciones;
 	private int codigo;
 
 	// CONSTRUCTOR
-	public Cancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
+	public Cancion(String titulo, String rutaFichero, EstiloMusical estiloMusical, Interprete interprete) {
 		this.titulo = titulo;
 		this.rutaFichero = rutaFichero;
 		this.interprete = interprete;
@@ -39,11 +39,11 @@ public class Cancion {
 		this.numReproducciones = numReproducciones;
 	}
 
-	public String getInterprete() {
+	public Interprete getInterprete() {
 		return interprete;
 	}
 
-	public String getEstiloMusical() {
+	public EstiloMusical getEstiloMusical() {
 		return estiloMusical;
 	}
 

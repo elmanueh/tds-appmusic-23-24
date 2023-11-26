@@ -10,6 +10,8 @@ import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
 import umu.tds.modelo.musica.Cancion;
+import umu.tds.modelo.musica.EstiloMusical;
+import umu.tds.modelo.musica.Interprete;
 
 public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	INSTANCIA;
@@ -35,8 +37,8 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		eCancion.setPropiedades(new ArrayList<Propiedad>(Arrays.asList(new Propiedad("titulo", cancion.getTitulo()),
 				new Propiedad("rutaFichero", cancion.getRutaFichero()),
 				new Propiedad("numeroRep", String.valueOf(cancion.getNumReproducciones())),
-				new Propiedad("estiloMusical", cancion.getEstiloMusical()),
-				new Propiedad("interprete", cancion.getInterprete()))));
+				new Propiedad("estiloMusical", cancion.getEstiloMusical().getEstilo()),
+				new Propiedad("interprete", cancion.getInterprete().getInterprete()))));
 
 		eCancion = servPersistencia.registrarEntidad(eCancion);
 		cancion.setCodigo(eCancion.getId());
@@ -58,7 +60,7 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		interprete = servPersistencia.recuperarPropiedadEntidad(eCancion, "interprete");
 		numRep = Integer.valueOf(servPersistencia.recuperarPropiedadEntidad(eCancion, "numeroRep"));
 
-		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interprete);
+		Cancion cancion = new Cancion(titulo, rutaFichero, new EstiloMusical(estiloMusical), new Interprete(interprete));
 		cancion.setCodigo(codigo);
 		cancion.setNumReproducciones(numRep);
 
@@ -87,9 +89,9 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 			} else if (prop.getNombre().equals("rutaFichero")) {
 				prop.setValor(cancion.getRutaFichero());
 			} else if (prop.getNombre().equals("estiloMusical")) {
-				prop.setValor(cancion.getEstiloMusical());
+				prop.setValor(cancion.getEstiloMusical().getEstilo());
 			} else if (prop.getNombre().equals("interprete")) {
-				prop.setValor(cancion.getInterprete());
+				prop.setValor(cancion.getInterprete().getInterprete());
 			} else if (prop.getNombre().equals("numeroRep")) {
 				prop.setValor(String.valueOf(cancion.getNumReproducciones()));
 			}
