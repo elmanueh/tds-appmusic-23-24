@@ -71,6 +71,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnNext;
 	private JButton btnSecuential;
 	private Luz luz;
+	private JPanel p_cancionActual;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lblNewLabel_2;
+	private Component horizontalStrut_6;
+	private Component horizontalStrut_7;
 	
 	// METODOS
 	private void inicializar() {
@@ -360,8 +366,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		GridBagLayout gbl_p_botonesMultimedia = new GridBagLayout();
 		gbl_p_botonesMultimedia.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_p_botonesMultimedia.rowHeights = new int[] { 20, 0, 10, 0, 10 };
-		gbl_p_botonesMultimedia.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 10, 0, 10, 0, 10, 0, 10, 0, 15, 0 };
+		gbl_p_botonesMultimedia.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0 };
+		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 15, 0, 0, 0, 0 };
 		p_botonesMultimedia.setLayout(gbl_p_botonesMultimedia);
 
 		btnShuffle = new JButton("");
@@ -369,7 +375,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnShuffle.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
 		GridBagConstraints gbc_btnShuffle = new GridBagConstraints();
 		gbc_btnShuffle.insets = new Insets(0, 0, 5, 5);
-		gbc_btnShuffle.gridx = 0;
+		gbc_btnShuffle.gridx = 1;
 		gbc_btnShuffle.gridy = 1;
 		p_botonesMultimedia.add(btnShuffle, gbc_btnShuffle);
 
@@ -378,7 +384,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnPrevious.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/paso-atras.png")));
 		GridBagConstraints gbc_btnPrevious = new GridBagConstraints();
 		gbc_btnPrevious.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPrevious.gridx = 2;
+		gbc_btnPrevious.gridx = 3;
 		gbc_btnPrevious.gridy = 1;
 		p_botonesMultimedia.add(btnPrevious, gbc_btnPrevious);
 
@@ -387,7 +393,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
 		GridBagConstraints gbc_btnPlayPause = new GridBagConstraints();
 		gbc_btnPlayPause.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPlayPause.gridx = 4;
+		gbc_btnPlayPause.gridx = 5;
 		gbc_btnPlayPause.gridy = 1;
 		p_botonesMultimedia.add(btnPlayPause, gbc_btnPlayPause);
 
@@ -396,7 +402,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnNext.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/un-paso-adelante.png")));
 		GridBagConstraints gbc_btnNext = new GridBagConstraints();
 		gbc_btnNext.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNext.gridx = 6;
+		gbc_btnNext.gridx = 7;
 		gbc_btnNext.gridy = 1;
 		p_botonesMultimedia.add(btnNext, gbc_btnNext);
 
@@ -405,16 +411,64 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
 		GridBagConstraints gbc_btnSecuential = new GridBagConstraints();
 		gbc_btnSecuential.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSecuential.gridx = 8;
+		gbc_btnSecuential.gridx = 9;
 		gbc_btnSecuential.gridy = 1;
 		p_botonesMultimedia.add(btnSecuential, gbc_btnSecuential);
+		
+		p_cancionActual = new JPanel();
+		GridBagConstraints gbc_p_cancionActual = new GridBagConstraints();
+		gbc_p_cancionActual.fill = GridBagConstraints.BOTH;
+		gbc_p_cancionActual.gridheight = 3;
+		gbc_p_cancionActual.insets = new Insets(0, 0, 5, 5);
+		gbc_p_cancionActual.gridx = 13;
+		gbc_p_cancionActual.gridy = 1;
+		p_botonesMultimedia.add(p_cancionActual, gbc_p_cancionActual);
+		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
+		p_cancionActual.setLayout(gbl_p_cancionActual);
+		
+		horizontalStrut_7 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
+		gbc_horizontalStrut_7.insets = new Insets(0, 0, 5, 5);
+		gbc_horizontalStrut_7.gridx = 0;
+		gbc_horizontalStrut_7.gridy = 0;
+		p_cancionActual.add(horizontalStrut_7, gbc_horizontalStrut_7);
+		
+		lblNewLabel_2 = new JLabel("CANCION ACTUAL");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 15));
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 1;
+		gbc_lblNewLabel_2.gridy = 0;
+		p_cancionActual.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		horizontalStrut_6 = Box.createHorizontalStrut(20);
+		GridBagConstraints gbc_horizontalStrut_6 = new GridBagConstraints();
+		gbc_horizontalStrut_6.insets = new Insets(0, 0, 5, 0);
+		gbc_horizontalStrut_6.gridx = 2;
+		gbc_horizontalStrut_6.gridy = 0;
+		p_cancionActual.add(horizontalStrut_6, gbc_horizontalStrut_6);
+		
+		lblNewLabel = new JLabel("Playlist: XXX");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 1;
+		p_cancionActual.add(lblNewLabel, gbc_lblNewLabel);
+		
+		lblNewLabel_1 = new JLabel("Cancion: XXX");
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 2;
+		p_cancionActual.add(lblNewLabel_1, gbc_lblNewLabel_1);
+
 
 		JSlider sliderCancion = new JSlider();
 		GridBagConstraints gbc_sliderCancion = new GridBagConstraints();
 		gbc_sliderCancion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sliderCancion.gridwidth = 9;
 		gbc_sliderCancion.insets = new Insets(0, 0, 5, 5);
-		gbc_sliderCancion.gridx = 0;
+		gbc_sliderCancion.gridx = 1;
 		gbc_sliderCancion.gridy = 3;
 		p_botonesMultimedia.add(sliderCancion, gbc_sliderCancion);
 
@@ -431,10 +485,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		sliderVolumen.setPreferredSize(new Dimension(20, 50));
 		sliderVolumen.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_sliderVolumen = new GridBagConstraints();
-		gbc_sliderVolumen.insets = new Insets(0, 0, 5, 0);
+		gbc_sliderVolumen.insets = new Insets(0, 0, 5, 5);
 		gbc_sliderVolumen.fill = GridBagConstraints.VERTICAL;
 		gbc_sliderVolumen.gridheight = 3;
-		gbc_sliderVolumen.gridx = 10;
+		gbc_sliderVolumen.gridx = 11;
 		gbc_sliderVolumen.gridy = 1;
 		p_botonesMultimedia.add(sliderVolumen, gbc_sliderVolumen);
 
