@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.Cancion;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,12 +30,30 @@ public class VentanaMasReproducidas extends JPanel {
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 		tablaCanciones.setAutoCreateRowSorter(true);
 
-		tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaTop10());
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
 
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Interprete");
+		modelo.addColumn("Número Reproducciones");
+
+		for (Cancion cancion : Controlador.INSTANCIA.getCancionesMasReproducidas()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+
+		tablaCanciones.setModel(modelo);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-		tablaCanciones.getColumnModel().getColumn(tablaCanciones.getColumnCount()-1).setCellRenderer(centerRenderer);
+		tablaCanciones.getColumnModel().getColumn(tablaCanciones.getColumnCount() - 1).setCellRenderer(centerRenderer);
 
 		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override

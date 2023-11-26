@@ -112,6 +112,14 @@ public class Usuario {
 	public void addPlayList(PlayList p) {
 		listaPlayList.add(p);
 	}
+	
+	public boolean existePlayList(String titulo) {
+		for (PlayList p : listaPlayList) {
+			if (p.getNombre().equals(titulo))
+				return true;
+		}
+		return false;
+	}
 
 	public PlayList getPlayList(String nombre) {
 		for (PlayList p : listaPlayList) {
