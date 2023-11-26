@@ -337,6 +337,7 @@ public enum Controlador implements CancionesListener {
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 			}
 		}
+		ControladorVentanas.INSTANCIA.ponerCancionActual(playlistReproducciendo, cancionReproducciendo);
 	}
 
 	public void siguienteCancion() {

@@ -72,8 +72,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnSecuential;
 	private Luz luz;
 	private JPanel p_cancionActual;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
+	private JLabel playlistActual;
+	private JLabel cancionActual;
 	private JLabel lblNewLabel_2;
 	private Component horizontalStrut_6;
 	private Component horizontalStrut_7;
@@ -426,6 +426,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
 		p_cancionActual.setLayout(gbl_p_cancionActual);
 		
+		p_cancionActual.setVisible(false);
+		
 		horizontalStrut_7 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
 		gbc_horizontalStrut_7.insets = new Insets(0, 0, 5, 5);
@@ -448,19 +450,19 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_6.gridy = 0;
 		p_cancionActual.add(horizontalStrut_6, gbc_horizontalStrut_6);
 		
-		lblNewLabel = new JLabel("Playlist: XXX");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		p_cancionActual.add(lblNewLabel, gbc_lblNewLabel);
+		playlistActual = new JLabel("");
+		GridBagConstraints gbc_playlistActual = new GridBagConstraints();
+		gbc_playlistActual.insets = new Insets(0, 0, 5, 5);
+		gbc_playlistActual.gridx = 1;
+		gbc_playlistActual.gridy = 1;
+		p_cancionActual.add(playlistActual, gbc_playlistActual);
 		
-		lblNewLabel_1 = new JLabel("Cancion: XXX");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 2;
-		p_cancionActual.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		cancionActual = new JLabel("");
+		GridBagConstraints gbc_cancionActual = new GridBagConstraints();
+		gbc_cancionActual.insets = new Insets(0, 0, 0, 5);
+		gbc_cancionActual.gridx = 1;
+		gbc_cancionActual.gridy = 2;
+		p_cancionActual.add(cancionActual, gbc_cancionActual);
 
 
 		JSlider sliderCancion = new JSlider();
@@ -628,6 +630,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 	public void actualizarListPlaylist() {
 		tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
+	}
+
+	public void ponerCancionActual(String playlist, String cancion) {
+		cancionActual.setText("Cancion: " + cancion);
+		playlistActual.setText("Playlist: " + playlist);
+		p_cancionActual.setVisible(true);
 	}
 
 }

@@ -78,4 +78,9 @@ public enum ControladorVentanas {
 		return plantillaMain.ventanaActual();
 	}
 
+	public void ponerCancionActual(String playlist, String cancion) {
+		plantillaMain.ponerCancionActual(playlist, cancion);
+		
+	}
+
 }
