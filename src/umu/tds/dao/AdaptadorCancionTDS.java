@@ -10,8 +10,6 @@ import tds.driver.ServicioPersistencia;
 import beans.Entidad;
 import beans.Propiedad;
 import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.EstiloMusical;
-import umu.tds.modelo.musica.Interprete;
 
 public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 	INSTANCIA;
@@ -60,7 +58,7 @@ public enum AdaptadorCancionTDS implements IAdaptadorCancionDAO {
 		interprete = servPersistencia.recuperarPropiedadEntidad(eCancion, "interprete");
 		numRep = Integer.valueOf(servPersistencia.recuperarPropiedadEntidad(eCancion, "numeroRep"));
 
-		Cancion cancion = new Cancion(titulo, rutaFichero, new EstiloMusical(estiloMusical), new Interprete(interprete));
+		Cancion cancion = new Cancion(titulo, rutaFichero, estiloMusical, interprete);
 		cancion.setCodigo(codigo);
 		cancion.setNumReproducciones(numRep);
 

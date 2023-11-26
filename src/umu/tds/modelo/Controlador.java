@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Comparator;
 
 import javax.swing.JFileChooser;
@@ -24,8 +25,6 @@ import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CatalogoCanciones;
-import umu.tds.modelo.musica.EstiloMusical;
-import umu.tds.modelo.musica.Interprete;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
@@ -148,35 +147,28 @@ public enum Controlador implements CancionesListener {
 	// CANCION
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
 			boolean favorito) {
-		LinkedList<Cancion> canciones = new LinkedList<Cancion>();
-		if (favorito) {
-			if (estilo.equals(""))
-				usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream())
-						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-						.filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-						.forEach(canciones::add);
-			else
-				usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream())
-						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-						.filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-						.filter(c -> c.getEstiloMusical().getEstilo().equals(estilo)).forEach(canciones::add);
-		} else {
-			if (estilo.equals(""))
-				catalogoCanciones.getCanciones().stream()
-						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-						.filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-						.forEach(canciones::add);
-			else
-				catalogoCanciones.getCanciones().stream()
-						.filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
-						.filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
-						.filter(c -> c.getEstiloMusical().getEstilo().equals(estilo)).forEach(canciones::add);
-		}
-		return canciones;
+		LinkedList<Cancion> canciones = new LinkedList<>();
+
+	    Stream<Cancion> cancionStream;
+
+	    if (favorito) {
+	        cancionStream = usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream());
+	    } else {
+	        cancionStream = catalogoCanciones.getCanciones().stream();
+	    }
+
+	    canciones = cancionStream
+	            .filter(c -> c.getTitulo().toLowerCase().contains(titulo.toLowerCase()))
+	            .filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
+	            .filter(c -> estilo.isEmpty() || c.getEstiloMusical().getEstilo().equals(estilo))
+	            .collect(Collectors.toCollection(LinkedList::new));
+
+	    return canciones;
 	}
 
+	//QUIZAS SI LA LSITA DE ESTILOS EN CANCION FUERA PUBLICA SE PODRIA LLAMAR AQUI, seria mas rapido
 	public LinkedList<String> getEstilos() {
-		LinkedList<String> estilos = (LinkedList<String>) catalogoCanciones.getCanciones().stream()
+		LinkedList<String> estilos = catalogoCanciones.getCanciones().stream()
 				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted().collect(Collectors.toCollection(LinkedList::new));
 		estilos.addFirst("");
 		return estilos;
@@ -184,6 +176,10 @@ public enum Controlador implements CancionesListener {
 	
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
+		
+		listaTOP10 = listaTOP10.stream()
+	            .filter(c -> c.getNumReproducciones() > 0)
+	            .collect(Collectors.toList());
 
 		Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
 
@@ -295,7 +291,7 @@ public enum Controlador implements CancionesListener {
 		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
 
 		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
-			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), new EstiloMusical(c.getEstilo()), new Interprete(c.getInterprete()));
+			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), c.getEstilo(), c.getInterprete());
 			adaptadorCancion.registrarCancion(cancion);
 			catalogoCanciones.addCancion(cancion);
 		}

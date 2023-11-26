@@ -1,5 +1,7 @@
 package umu.tds.modelo.musica;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Cancion {
@@ -13,14 +15,17 @@ public class Cancion {
 	private int codigo;
 
 	// CONSTRUCTOR
-	public Cancion(String titulo, String rutaFichero, EstiloMusical estiloMusical, Interprete interprete) {
+	public Cancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
 		this.titulo = titulo;
 		this.rutaFichero = rutaFichero;
-		this.interprete = interprete;
-		this.estiloMusical = estiloMusical;
+		this.interprete = obtenerOCrearInterprete(interprete);
+		this.estiloMusical = obtenerOCrearEstilo(estiloMusical);
 		this.numReproducciones = 0;
 		this.codigo = 0;
 	}
+
+	private static List<Interprete> registroInterpretes = new ArrayList<>();
+	private static List<EstiloMusical> registroEstilo = new ArrayList<>();
 
 	// GETTERS AND SETTERS
 	public String getTitulo() {
@@ -58,6 +63,28 @@ public class Cancion {
 	// METODOS
 	public void addReproducciones() {
 		numReproducciones++;
+	}
+	
+	private Interprete obtenerOCrearInterprete(String inter) {
+		for (Interprete i: registroInterpretes) {
+			if (i.getInterprete().equals(inter))
+				return i;
+		}
+		
+		Interprete interprete = new Interprete(inter);
+		registroInterpretes.add(interprete);
+		return interprete;
+	}
+	
+	private EstiloMusical obtenerOCrearEstilo(String estilo) {
+		for (EstiloMusical e: registroEstilo) {
+			if (e.getEstilo().equals(estilo))
+				return e;
+		}
+		
+		EstiloMusical estiloMusical = new EstiloMusical(estilo);
+		registroEstilo.add(estiloMusical);
+		return estiloMusical;
 	}
 
 	@Override
