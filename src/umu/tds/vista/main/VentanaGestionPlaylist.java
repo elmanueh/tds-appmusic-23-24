@@ -381,7 +381,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		modeloFiltrado.addColumn("");
 
 		for (Cancion cancion : set) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical(), cancion.getInterprete(), false };
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(), cancion.getInterprete().getInterprete(), false };
 			modeloFiltrado.addRow(fila);
 		}
 

@@ -34,9 +34,7 @@ public class VentanaMasReproducidas extends JPanel {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-		for (int i = 0; i < tablaCanciones.getColumnCount(); i++) {
-			tablaCanciones.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
+		tablaCanciones.getColumnModel().getColumn(tablaCanciones.getColumnCount()-1).setCellRenderer(centerRenderer);
 
 		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override
