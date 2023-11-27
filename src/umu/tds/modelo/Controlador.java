@@ -130,12 +130,19 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
+	// TIPOS LISTAS CANCIONES + ESTILOS
+	public LinkedList<String> getEstilos() { // TODO
+		LinkedList<String> estilos = catalogoCanciones.getCanciones().stream()
+				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted()
+				.collect(Collectors.toCollection(LinkedList::new));
+		estilos.addFirst("");
+		return estilos;
+	}
+
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
 			boolean favorito) {
 		LinkedList<Cancion> canciones = new LinkedList<>();
-
 		Stream<Cancion> cancionStream;
-
 		if (favorito) {
 			cancionStream = usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream());
 		} else {
@@ -146,30 +153,13 @@ public enum Controlador implements CancionesListener {
 				.filter(c -> c.getInterprete().getInterprete().toLowerCase().contains(interprete.toLowerCase()))
 				.filter(c -> estilo.isEmpty() || c.getEstiloMusical().getEstilo().equals(estilo))
 				.collect(Collectors.toCollection(LinkedList::new));
-
 		return canciones;
-	}
-
-	// QUIZAS SI LA LSITA DE ESTILOS EN CANCION FUERA PUBLICA SE PODRIA LLAMAR AQUI,
-	// seria mas rapido
-	public LinkedList<String> getEstilos() {
-		LinkedList<String> estilos = catalogoCanciones.getCanciones().stream()
-				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted()
-				.collect(Collectors.toCollection(LinkedList::new));
-		estilos.addFirst("");
-		return estilos;
 	}
 
 	public List<Cancion> getCancionesMasReproducidas() {
 		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
-
-		listaTOP10 = listaTOP10.stream().filter(c -> c.getNumReproducciones() > 0).collect(Collectors.toList());
-
-		Comparator<Cancion> comparadorReproducciones = Comparator.comparingInt(Cancion::getNumReproducciones);
-
-		Collections.sort(listaTOP10, comparadorReproducciones.reversed());
-
-		// Obtener las 10 canciones más reproducidas
+		listaTOP10 = listaTOP10.stream().filter(c -> c.getNumReproducciones() > 0)
+				.sorted(Comparator.comparingInt(Cancion::getNumReproducciones).reversed()).collect(Collectors.toList());
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
 
@@ -211,9 +201,7 @@ public enum Controlador implements CancionesListener {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
-	/*
-	 * TABLA SELECCIONADOS
-	 */
+	// VENTANA BUSCAR
 	public void setTablaSeleccionados(DefaultTableModel modelo) {
 		cancionesSeleccionadas = new LinkedHashSet<Cancion>();
 		int filasTotal = modelo.getRowCount();
@@ -228,28 +216,6 @@ public enum Controlador implements CancionesListener {
 
 	public LinkedHashSet<Cancion> getCancionesSeleccionadas() {
 		return cancionesSeleccionadas;
-	}
-
-	/*
-	 * Tablita playlist
-	 */
-
-	public DefaultTableModel getTablaPlaylist() {
-		DefaultTableModel modeloTabla = new DefaultTableModel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-
-		modeloTabla.addColumn("");
-		for (PlayList p : usuarioActual.getListaPlayList()) {
-			Object[] playlist = { p.getNombre() };
-			modeloTabla.addRow(playlist);
-		}
-		return modeloTabla;
 	}
 
 	public void reproducirCancion() {
@@ -338,7 +304,6 @@ public enum Controlador implements CancionesListener {
 		} else {
 			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
 
-
 			Cancion cancion = plActual.getCancionEnPosicion(posicion);
 			if (cancion == null) {
 				Reproductor.INSTANCIA.stopCancion();
@@ -362,42 +327,6 @@ public enum Controlador implements CancionesListener {
 
 	public void volumen(int volumen) {
 		Reproductor.INSTANCIA.establecerVolumen(volumen);
-	}
-
-	/*
-	 * MANEJO TABLA VENTANA BUSCAR
-	 */
-	public TableModel getTablaFiltrado(String tituloFiltrado, String interpreteFiltrado, String estiloFiltrado,
-			boolean favorito) {
-		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if (column < 3)
-					return false;
-				return true;
-			}
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if (columnIndex == 3)
-					return Boolean.class;
-				return super.getColumnClass(columnIndex);
-			}
-		};
-
-		modeloFiltrado.addColumn("Título");
-		modeloFiltrado.addColumn("Estilo");
-		modeloFiltrado.addColumn("Interprete");
-		modeloFiltrado.addColumn("");
-
-		for (Cancion cancion : getCancionesFiltradas(tituloFiltrado, interpreteFiltrado, estiloFiltrado, favorito)) {
-			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
-					cancion.getInterprete().getInterprete(), false };
-			modeloFiltrado.addRow(fila);
-		}
-		return modeloFiltrado;
 	}
 
 	public void crearPlaylist(String playlist, TableModel tableModel) {

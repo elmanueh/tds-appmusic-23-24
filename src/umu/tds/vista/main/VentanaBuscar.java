@@ -2,9 +2,11 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.Cancion;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,7 +49,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		comboBoxEstilo.setSelectedIndex(0);
 	}
 
-	public void guardarSeleecionados() {
+	public void guardarSeleccionados() {
 		Controlador.INSTANCIA.setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
 	}
 
@@ -57,12 +59,67 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			comboBoxEstilo.addItem(s);
 	}
 
+	public void configuracionTabla(String tituloFiltrado, String interpreteFiltrado, String estiloFiltrado,
+			boolean favorito) {
+		tablaCanciones.getTableHeader().setReorderingAllowed(false);
+
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				if (column < 3)
+					return false;
+				return true;
+			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				if (columnIndex == 3)
+					return Boolean.class;
+				return super.getColumnClass(columnIndex);
+			}
+		};
+
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Intérprete");
+		modelo.addColumn("");
+
+		for (Cancion cancion : Controlador.INSTANCIA.getCancionesFiltradas(tituloFiltrado, interpreteFiltrado,
+				estiloFiltrado, favorito)) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), false };
+			modelo.addRow(fila);
+		}
+
+		tablaCanciones.setModel(modelo);
+		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
+
+		TableColumnModel columnModel = tablaCanciones.getColumnModel();
+		for (int columnIndex = 0; columnIndex < columnModel.getColumnCount(); columnIndex++) {
+			int anchoMaximo = 0;
+
+			for (int rowIndex = 0; rowIndex < tablaCanciones.getRowCount(); rowIndex++) {
+				TableCellRenderer cellRenderer = tablaCanciones.getCellRenderer(rowIndex, columnIndex);
+				Object valorCelda = tablaCanciones.getValueAt(rowIndex, columnIndex);
+				Component componenteCelda = cellRenderer.getTableCellRendererComponent(tablaCanciones, valorCelda,
+						false, false, rowIndex, columnIndex);
+				anchoMaximo = Math.max(anchoMaximo, componenteCelda.getPreferredSize().width);
+
+			}
+			columnModel.getColumn(columnIndex).setPreferredWidth(anchoMaximo);
+			columnModel.getColumn(columnIndex).setResizable(false);
+		}
+	}
+
 	// CONSTRUCTOR
 	public VentanaBuscar() {
 		setLayout(new BorderLayout(0, 0));
 
 		panelBuscar = new JPanel();
-		panelBuscar.setBorder(new TitledBorder(UIManager.getBorder("Button.border"), "Buscar", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelBuscar.setBorder(new TitledBorder(UIManager.getBorder("Button.border"), "Buscar", TitledBorder.LEADING,
+				TitledBorder.TOP, null, null));
 		add(panelBuscar, BorderLayout.NORTH);
 		GridBagLayout gbl_panelBuscar = new GridBagLayout();
 		gbl_panelBuscar.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -173,9 +230,6 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		panelTabla.setLayout(new BorderLayout(0, 0));
 
 		tablaCanciones = new JTable();
-		tablaCanciones.setAutoscrolls(false);
-		tablaCanciones.setFillsViewportHeight(true);
-
 		scrollPane = new JScrollPane(tablaCanciones);
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
 
@@ -210,9 +264,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		gbc_botonCancelar.gridy = 1;
 		panelBotonera.add(botonCancelar, gbc_botonCancelar);
 
-		/*
-		 * MANEJADORES BOTONES
-		 */
+		// MANEJADORES DE BOTONES
 		botonBuscar.addActionListener(this);
 		botonCancelar.addActionListener(this);
 		botonAñadirPlaylist.addActionListener(this);
@@ -229,41 +281,14 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			String interpreteFiltrado = txtInterprete.getText();
 			String estiloFiltrado = (String) comboBoxEstilo.getSelectedItem();
 			boolean favorito = CheckBoxFavoritos.isSelected();
-			
-			tablaCanciones.setModel(Controlador.INSTANCIA.getTablaFiltrado(tituloFiltrado, interpreteFiltrado, estiloFiltrado, favorito));
-			
-			SwingUtilities.invokeLater(() -> {
-				int anchoTabla = tablaCanciones.getWidth();
-				int numColumnas = tablaCanciones.getColumnCount();
-				int anchoUltColumna = (int) (anchoTabla * 0.05);
-				for (int i = 0; i < numColumnas; i++) {
-					tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-					if (i != numColumnas - 1)
-						tablaCanciones.getColumnModel().getColumn(i)
-								.setPreferredWidth((anchoTabla - anchoUltColumna) / (numColumnas - 1));
 
-					else
-						tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
-				}
-			});
-
-			tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
-			tablaCanciones.getTableHeader().setReorderingAllowed(false);
-
-			tablaCanciones.setAutoCreateRowSorter(true);
-
+			configuracionTabla(tituloFiltrado, interpreteFiltrado, estiloFiltrado, favorito);
 			tablaCanciones.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel())
 							.getValueAt(tablaCanciones.getSelectedRow(), 0);
 					Controlador.INSTANCIA.setCancionSeleccionada(titulo);
-
-					@SuppressWarnings("unchecked")
-					TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
-							.getRowSorter();
-					sorter.sort();
-
 				}
 			});
 		}
@@ -275,7 +300,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			panelTabla.setVisible(false);
 			panelBotonera.setVisible(false);
 		}
-		if (e.getSource() == botonAñadirPlaylist) {
+		if (e.getSource() == botonAñadirPlaylist) { // TODO
 			String playlist;
 			Object[] opciones = { "Sí", "No" };
 			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?",
