@@ -283,15 +283,19 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 					opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
 				playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
-				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
 			} else {
 				JComboBox<String> playlistComboBox = new JComboBox<>();
 				playlistComboBox.setModel(new DefaultComboBoxModel<String>(Controlador.INSTANCIA.getPlayLists()));
 				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
 						JOptionPane.INFORMATION_MESSAGE);
 				playlist = (String) playlistComboBox.getSelectedItem();
-				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
 			}
+			if (playlist.length()<=25)
+				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
+			else
+				JOptionPane.showMessageDialog(null, "Disculpa, el nombre (" + playlist + ") es muy largo.\n"
+						+ "Máximo 25 carácteres.",
+						"Nombre Playlist demasiado largo", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }

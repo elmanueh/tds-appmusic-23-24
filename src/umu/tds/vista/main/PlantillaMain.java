@@ -77,6 +77,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JLabel lblNewLabel_2;
 	private Component horizontalStrut_6;
 	private Component horizontalStrut_7;
+	JSlider sliderCancion;
 	
 	// METODOS
 	private void inicializar() {
@@ -426,7 +427,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
 		p_cancionActual.setLayout(gbl_p_cancionActual);
 		
-		p_cancionActual.setVisible(false);
 		
 		horizontalStrut_7 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
@@ -456,16 +456,17 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_playlistActual.gridx = 1;
 		gbc_playlistActual.gridy = 1;
 		p_cancionActual.add(playlistActual, gbc_playlistActual);
-		
+		playlistActual.setText("Playlist: NO SELECCIONADO");
+
 		cancionActual = new JLabel("");
 		GridBagConstraints gbc_cancionActual = new GridBagConstraints();
 		gbc_cancionActual.insets = new Insets(0, 0, 0, 5);
 		gbc_cancionActual.gridx = 1;
 		gbc_cancionActual.gridy = 2;
 		p_cancionActual.add(cancionActual, gbc_cancionActual);
+		cancionActual.setText("Cancion: NO SELECCIONADO");
 
-
-		JSlider sliderCancion = new JSlider();
+		sliderCancion = new JSlider();
 		GridBagConstraints gbc_sliderCancion = new GridBagConstraints();
 		gbc_sliderCancion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sliderCancion.gridwidth = 9;
@@ -635,7 +636,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	public void ponerCancionActual(String playlist, String cancion) {
 		cancionActual.setText("Cancion: " + cancion);
 		playlistActual.setText("Playlist: " + playlist);
-		p_cancionActual.setVisible(true);
 	}
 
 }
