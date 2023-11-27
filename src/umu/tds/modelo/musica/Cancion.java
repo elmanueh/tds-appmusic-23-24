@@ -64,24 +64,24 @@ public class Cancion {
 	public void addReproducciones() {
 		numReproducciones++;
 	}
-	
+
 	private Interprete obtenerOCrearInterprete(String inter) {
-		for (Interprete i: registroInterpretes) {
+		for (Interprete i : registroInterpretes) {
 			if (i.getInterprete().equals(inter))
 				return i;
 		}
-		
+
 		Interprete interprete = new Interprete(inter);
 		registroInterpretes.add(interprete);
 		return interprete;
 	}
-	
+
 	private EstiloMusical obtenerOCrearEstilo(String estilo) {
-		for (EstiloMusical e: registroEstilo) {
+		for (EstiloMusical e : registroEstilo) {
 			if (e.getEstilo().equals(estilo))
 				return e;
 		}
-		
+
 		EstiloMusical estiloMusical = new EstiloMusical(estilo);
 		registroEstilo.add(estiloMusical);
 		return estiloMusical;
@@ -89,7 +89,7 @@ public class Cancion {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, estiloMusical, interprete, numReproducciones, rutaFichero, titulo);
+		return Objects.hash(codigo, estiloMusical, interprete, rutaFichero, titulo);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class Cancion {
 			return false;
 		Cancion other = (Cancion) obj;
 		return codigo == other.codigo && Objects.equals(estiloMusical, other.estiloMusical)
-				&& Objects.equals(interprete, other.interprete) && numReproducciones == other.numReproducciones
-				&& Objects.equals(rutaFichero, other.rutaFichero) && Objects.equals(titulo, other.titulo);
+				&& Objects.equals(interprete, other.interprete) && Objects.equals(rutaFichero, other.rutaFichero)
+				&& Objects.equals(titulo, other.titulo);
 	}
 }
