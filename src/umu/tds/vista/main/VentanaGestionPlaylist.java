@@ -2,11 +2,11 @@ package umu.tds.vista.main;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.musica.Cancion;
 
 import java.awt.BorderLayout;
@@ -18,7 +18,6 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
@@ -46,11 +45,18 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	private Component verticalStrut_1;
 
 	// METODOS
-	public void ponerPlayListEnTabla(Set<Cancion> set) {
+
+	public void reiniciar() {
+		configuracionTabla();
+		txtTitulo.setText("");
+	}
+
+	public void configuracionTabla() {
 		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
+		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
-		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
+		DefaultTableModel modelo = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,38 +74,35 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			}
 		};
 
-		modeloFiltrado.addColumn("TITULO");
-		modeloFiltrado.addColumn("ESTILO");
-		modeloFiltrado.addColumn("INTERPRETE");
-		modeloFiltrado.addColumn("");
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Intérprete");
+		modelo.addColumn("");
 
-		for (Cancion cancion : set) {
+		for (Cancion cancion : Controlador.INSTANCIA.getCancionesSeleccionadas()) {
 			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
 					cancion.getInterprete().getInterprete(), false };
-			modeloFiltrado.addRow(fila);
+			modelo.addRow(fila);
 		}
 
-		ajustarTamañoTabla();
-
-		tablaCanciones.setModel(modeloFiltrado);
+		tablaCanciones.setModel(modelo);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
-		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
-		tablaCanciones.setAutoCreateRowSorter(true);
+		TableColumnModel columnModel = tablaCanciones.getColumnModel();
+		for (int columnIndex = 0; columnIndex < columnModel.getColumnCount(); columnIndex++) {
+			int anchoMaximo = 0;
 
-		tablaCanciones.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				@SuppressWarnings("unchecked")
-				TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
-						.getRowSorter();
-				sorter.sort();
+			for (int rowIndex = 0; rowIndex < tablaCanciones.getRowCount(); rowIndex++) {
+				TableCellRenderer cellRenderer = tablaCanciones.getCellRenderer(rowIndex, columnIndex);
+				Object valorCelda = tablaCanciones.getValueAt(rowIndex, columnIndex);
+				Component componenteCelda = cellRenderer.getTableCellRendererComponent(tablaCanciones, valorCelda,
+						false, false, rowIndex, columnIndex);
+				anchoMaximo = Math.max(anchoMaximo, componenteCelda.getPreferredSize().width);
+
 			}
-		});
-	}
-
-	public void vaciarCampos() {
-		txtTitulo.setText("");
+			columnModel.getColumn(columnIndex).setPreferredWidth(anchoMaximo);
+			columnModel.getColumn(columnIndex).setResizable(false);
+		}
 	}
 
 	public void ponerPlayListEnTabla(String playlist) {
@@ -117,24 +120,6 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(playlist, false));
 		}
 
-		ajustarTamañoTabla();
-	}
-
-	private void ajustarTamañoTabla() {
-		SwingUtilities.invokeLater(() -> {
-			int anchoTabla = tablaCanciones.getWidth();
-			int numColumnas = tablaCanciones.getColumnCount();
-			int anchoUltColumna = (int) (anchoTabla * 0.05);
-			for (int i = 0; i < numColumnas; i++) {
-				tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-				if (i != numColumnas - 1)
-					tablaCanciones.getColumnModel().getColumn(i)
-							.setPreferredWidth((anchoTabla - anchoUltColumna) / (numColumnas - 1));
-
-				else
-					tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
-			}
-		});
 	}
 
 	// CONSTRUCTOR
@@ -210,15 +195,8 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		panelTabla.setLayout(new BorderLayout(0, 0));
 
 		tablaCanciones = new JTable();
-		tablaCanciones.setAutoscrolls(false);
-		tablaCanciones.setFillsViewportHeight(true);
 		scrollPane = new JScrollPane(tablaCanciones);
 		panelTabla.add(scrollPane, BorderLayout.CENTER);
-
-		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
-		tablaCanciones.getTableHeader().setReorderingAllowed(false);
-
-		tablaCanciones.setAutoCreateRowSorter(true);
 
 		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override
@@ -361,7 +339,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 		Component verticalStrut_3 = Box.createVerticalStrut(20);
 		panelBotonera.add(verticalStrut_3, BorderLayout.NORTH);
-
+		configuracionTabla();
 		/*
 		 * MANEJADORES BOTONES
 		 */
@@ -384,8 +362,14 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 						"¿Quieres crear la playlist " + txtTitulo.getText() + "?", "Eleccion de playList",
 						JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
 				if (respuesta == JOptionPane.YES_OPTION) {
-					tablaCanciones.setModel(Controlador.INSTANCIA.crearPlaylist(txtTitulo.getText()));
-					ajustarTamañoTabla();
+					DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
+					modelo.setRowCount(0);
+					for (Cancion cancion : Controlador.INSTANCIA.crearPlaylist(txtTitulo.getText())
+							.getListaCanciones()) {
+						Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+								cancion.getInterprete().getInterprete(), false };
+						modelo.addRow(fila);
+					}
 				}
 			}
 		}
@@ -396,18 +380,10 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 					"¿Quieres eliminar la playlist " + txtTitulo.getText() + "?", "Eliminar de playList",
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
-				TableModel modelo = Controlador.INSTANCIA.eliminarPlayList(txtTitulo.getText(),
-						tablaCanciones.getModel());
-				if (modelo != null) {
-					txtTitulo.setText("");
-					tablaCanciones.setModel(modelo);
-					JOptionPane.showMessageDialog(null, "La playlist " + txtTitulo.getText() + " se ha eliminado.",
-							"Exito borrar playlist", JOptionPane.CANCEL_OPTION);
-				} else {
-					JOptionPane.showMessageDialog(null,
-							"La playlist " + txtTitulo.getText() + " no existe.\n No puede ser borrada.",
-							"Error borrar playlist", JOptionPane.CANCEL_OPTION);
-				}
+				Controlador.INSTANCIA.eliminarPlayList(txtTitulo.getText());
+				DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
+				modelo.setRowCount(0);
+				txtTitulo.setText("");
 			}
 		}
 
@@ -418,13 +394,13 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 					"Eliminar canciones de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
 					opciones, opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
-				boolean b = Controlador.INSTANCIA.eliminarCancionDePlayList(txtTitulo.getText(),
+				boolean b = Controlador.INSTANCIA.eliminarCancionDePlayList(txtTitulo.getText(), // TODO
 						(DefaultTableModel) tablaCanciones.getModel());
 				if (b) {
 					JOptionPane.showMessageDialog(null,
 							"Canciones de la playlist " + txtTitulo.getText() + " se han eliminado.",
 							"Error borrar cancion", JOptionPane.CANCEL_OPTION);
-					tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(txtTitulo.getText(), false));
+					tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(txtTitulo.getText(), false)); // TODO
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"La playlist " + txtTitulo.getText() + " no existe.\n No puede eliminar canciones.",
