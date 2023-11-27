@@ -1,5 +1,6 @@
 package umu.tds.modelo.usuario;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -93,8 +94,31 @@ public class Usuario {
 	}
 
 	// METODOS
+	public boolean isCumpleaños() {
+		Date fechaActual = new Date();
+		SimpleDateFormat formatoDiaMes = new SimpleDateFormat("dd-MM");
+
+		if (formatoDiaMes.format(fechaActual).equals(formatoDiaMes.format(fecha)))
+			return true;
+		return false;
+	}
+	
+	public String getIconoUsuario() {
+		if (isPremium())
+			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
+		return new String("/umu/tds/vista/imagenes/usuario.png");
+	}
+	
 	public void addPlayList(PlayList p) {
 		listaPlayList.add(p);
+	}
+	
+	public boolean existePlayList(String titulo) {
+		for (PlayList p : listaPlayList) {
+			if (p.getNombre().equals(titulo))
+				return true;
+		}
+		return false;
 	}
 
 	public PlayList getPlayList(String nombre) {

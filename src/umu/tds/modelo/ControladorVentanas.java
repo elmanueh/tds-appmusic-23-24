@@ -69,10 +69,6 @@ public enum ControladorVentanas {
 	public void estadoReproductor(String estadoReproductor) {
 		plantillaMain.estadoReproduciendo(estadoReproductor);
 	}
-
-	public void actualizarListaPlayList() {
-		plantillaMain.actualizarListPlaylist();
-	}
 	
 	public String getVentanaActual() {
 		return plantillaMain.ventanaActual();

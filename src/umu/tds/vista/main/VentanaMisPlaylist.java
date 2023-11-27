@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
+import umu.tds.modelo.musica.Cancion;
 
 import java.awt.Color;
 import java.awt.BorderLayout;
@@ -65,8 +66,27 @@ public class VentanaMisPlaylist extends JPanel {
 			}
 		});
 
-		tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(playlist));
-		
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		modelo.addColumn("TITULO");
+		modelo.addColumn("ESTILO");
+		modelo.addColumn("INTERPRETE");
+
+		for (Cancion cancion : Controlador.INSTANCIA.getUsuarioActual().getPlayList(playlist).getListaCanciones()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete() };
+			modelo.addRow(fila);
+		}
+
+		tablaCanciones.setModel(modelo);
+
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 		tablaCanciones.setAutoCreateRowSorter(true);

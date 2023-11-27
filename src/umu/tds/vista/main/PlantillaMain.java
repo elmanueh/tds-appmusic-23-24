@@ -7,6 +7,7 @@ import javax.swing.border.TitledBorder;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.ControladorVentanas;
+import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import java.awt.BorderLayout;
@@ -37,6 +38,7 @@ import java.awt.CardLayout;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
 import pulsador.IEncendidoListener;
@@ -103,8 +105,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 	public void estadoPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
-		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+		mensajeBienvenida.setIcon(new ImageIcon(
+				PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
 	}
 
 	public void estadoReproduciendo(String reproduciendo) {
@@ -117,6 +119,25 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				return comp.getClass().getSimpleName();
 		}
 		return null;
+	}
+
+	public void configuracionTabla() {
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		modelo.addColumn("");
+		for (PlayList playlist : Controlador.INSTANCIA.getUsuarioActual().getListaPlayList()) {
+			Object[] playlistNombre = { playlist.getNombre() };
+			modelo.addRow(playlistNombre);
+		}
+
+		tablaPlayList.setModel(modelo);
 	}
 
 	// CONSTRUCTOR
@@ -155,7 +176,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		cumpleaños.setIcon(
 				new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/torta-cumpleanos.png")));
 		p_iconoTitulo.add(cumpleaños);
-		if (Controlador.INSTANCIA.isCumpleañosUsuario())
+		if (Controlador.INSTANCIA.getUsuarioActual().isCumpleaños())
 			cumpleaños.setVisible(true);
 
 		JPanel p_cabezeraBotones = new JPanel();
@@ -172,16 +193,15 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbl_p_botonConfiguracion.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_p_botonConfiguracion.columnWidths = new int[] { 0, 15, 100, 15, 100, 0 };
 		p_botonConfiguracion.setLayout(gbl_p_botonConfiguracion);
-		
+
 		luz = new Luz();
-		
 		luz.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
 				Controlador.INSTANCIA.cargarCanciones();
 				ventanaBuscar.actualizarEstilos();
 			}
 		});
-		
+
 		GridBagConstraints gbc_luz = new GridBagConstraints();
 		gbc_luz.fill = GridBagConstraints.HORIZONTAL;
 		gbc_luz.insets = new Insets(0, 0, 0, 5);
@@ -213,11 +233,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_2.gridy = 0;
 		p_botonConfiguracion.add(horizontalStrut_2, gbc_horizontalStrut_2);
 
-		mensajeBienvenida = new JLabel("Bienvenido, " + Controlador.INSTANCIA.getNombreUsuarioActual());
+		mensajeBienvenida = new JLabel("Bienvenido, " + Controlador.INSTANCIA.getUsuarioActual().getNombre());
 		mensajeBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
 		mensajeBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		mensajeBienvenida
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getIconoUsuario())));
+		mensajeBienvenida.setIcon(new ImageIcon(
+				PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
 
 		p_cabezeraBotones.add(mensajeBienvenida, BorderLayout.CENTER);
 
@@ -272,7 +292,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		p_menuBotonesPremium = new JPanel();
 		p_menuBotonesPremium.setOpaque(false);
-		p_menuBotonesPremium.setVisible(Controlador.INSTANCIA.isUsuarioActualPremium());
+		p_menuBotonesPremium.setVisible(Controlador.INSTANCIA.getUsuarioActual().isPremium());
 		GridBagConstraints gbc_p_menuBotonesPremium = new GridBagConstraints();
 		gbc_p_menuBotonesPremium.insets = new Insets(0, 0, 5, 5);
 		gbc_p_menuBotonesPremium.fill = GridBagConstraints.BOTH;
@@ -340,26 +360,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				TitledBorder.TOP, null, null));
 		p_playlist.add(scrollPane, BorderLayout.CENTER);
 
-		tablaPlayList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int row = tablaPlayList.getSelectedRow();
-				int column = tablaPlayList.getSelectedColumn();
-
-				String playlist = tablaPlayList.getValueAt(row, column).toString();
-				switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
-				case "VentanaGestionPlaylist":
-					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
-					break;
-				case "VentanaMisPlaylist":
-					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
-					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
-					break;
-				}
-
-			}
-		});
-
 		JPanel p_contenido2 = new JPanel();
 		p_contenido.add(p_contenido2, BorderLayout.CENTER);
 		p_contenido2.setLayout(new BorderLayout(0, 0));
@@ -370,7 +370,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		GridBagLayout gbl_p_botonesMultimedia = new GridBagLayout();
 		gbl_p_botonesMultimedia.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_p_botonesMultimedia.rowHeights = new int[] { 20, 0, 10, 0, 10 };
-		gbl_p_botonesMultimedia.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0 };
+		gbl_p_botonesMultimedia.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, 1.0, 0.0, 0.0 };
 		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 15, 0, 0, 0, 0 };
 		p_botonesMultimedia.setLayout(gbl_p_botonesMultimedia);
 
@@ -418,7 +419,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_btnSecuential.gridx = 9;
 		gbc_btnSecuential.gridy = 1;
 		p_botonesMultimedia.add(btnSecuential, gbc_btnSecuential);
-		
+
 		p_cancionActual = new JPanel();
 		GridBagConstraints gbc_p_cancionActual = new GridBagConstraints();
 		gbc_p_cancionActual.fill = GridBagConstraints.BOTH;
@@ -437,7 +438,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_7.gridx = 0;
 		gbc_horizontalStrut_7.gridy = 0;
 		p_cancionActual.add(horizontalStrut_7, gbc_horizontalStrut_7);
-		
+
 		lblNewLabel_2 = new JLabel("CANCION ACTUAL");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 15));
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
@@ -445,14 +446,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_lblNewLabel_2.gridx = 1;
 		gbc_lblNewLabel_2.gridy = 0;
 		p_cancionActual.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
+
 		horizontalStrut_6 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_6 = new GridBagConstraints();
 		gbc_horizontalStrut_6.insets = new Insets(0, 0, 5, 0);
 		gbc_horizontalStrut_6.gridx = 2;
 		gbc_horizontalStrut_6.gridy = 0;
 		p_cancionActual.add(horizontalStrut_6, gbc_horizontalStrut_6);
-		
+
 		playlistActual = new JLabel("");
 		GridBagConstraints gbc_playlistActual = new GridBagConstraints();
 		gbc_playlistActual.insets = new Insets(0, 0, 5, 5);
@@ -483,13 +484,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		JSlider sliderVolumen = new JSlider();
 		sliderVolumen.setValue(25);
 		sliderVolumen.setMaximum(50);
-		
-		sliderVolumen.addChangeListener(new ChangeListener() {
+
+		sliderVolumen.addChangeListener(new ChangeListener() { // TODO arreglar
 			public void stateChanged(ChangeEvent e) {
 				Controlador.INSTANCIA.volumen(sliderVolumen.getValue());
 			}
 		});
-		
+
 		sliderVolumen.setPreferredSize(new Dimension(20, 50));
 		sliderVolumen.setOrientation(SwingConstants.VERTICAL);
 		GridBagConstraints gbc_sliderVolumen = new GridBagConstraints();
@@ -526,6 +527,27 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(15);
 		p_border.add(horizontalStrut_3);
+		
+		configuracionTabla();
+		tablaPlayList.addMouseListener(new MouseAdapter() { // TODO arreglarlo
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tablaPlayList.getSelectedRow();
+				int column = tablaPlayList.getSelectedColumn();
+
+				String playlist = tablaPlayList.getValueAt(row, column).toString();
+				switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+				case "VentanaGestionPlaylist":
+					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
+					break;
+				case "VentanaMisPlaylist":
+					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
+					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+					break;
+				}
+
+			}
+		});
 
 		// MANEJADORES
 		btnPremium.addActionListener(this);
@@ -543,13 +565,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnNext.addActionListener(this);
 		btnSecuential.addActionListener(this);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		// TODO pensarlo de otra forma
 		if (ventanaBuscar.isVisible() && e.getSource() != btnPremium && e.getSource() != btnLogOut) {
-			ventanaBuscar.guardarSeleecionados();
+			ventanaBuscar.guardarSeleccionados();
 		}
 
 		if (e.getSource() == btnPremium) {
@@ -575,8 +597,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
 			ventanaGestionPlaylist.vaciarCampos();
 			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.INSTANCIA.getCancionesSeleccionadas());
-
-			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
+			configuracionTabla();
 		}
 
 		if (e.getSource() == btnRecientes) {
@@ -608,8 +629,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMisPlaylist");
 			ventanaMisPlaylist.esconderPanel();
-
-			tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
+			configuracionTabla();
 		}
 
 		// MULTIMEDEA
@@ -632,10 +652,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnSecuential) {
 
 		}
-	}
-
-	public void actualizarListPlaylist() {
-		tablaPlayList.setModel(Controlador.INSTANCIA.getTablaPlaylist());
 	}
 
 	public void ponerCancionActual(String playlist, String cancion) {

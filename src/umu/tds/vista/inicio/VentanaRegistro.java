@@ -281,13 +281,6 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		WindowRegister_1.add(textoContraseña, gbc_textoContraseña);
 		
 		mostrarContraseña = new JCheckBox("Mostrar Contraseña");
-
-		mostrarContraseña.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textoContraseña.setEchoChar(mostrarContraseña.isSelected() ? '\0' : '*');
-            }
-        });
         
 		GridBagConstraints gbc_mostrarContraseña = new GridBagConstraints();
 		gbc_mostrarContraseña.insets = new Insets(0, 0, 5, 5);
@@ -677,6 +670,8 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 		botonSiguiente2.addActionListener(this);
 		botonAtras2.addActionListener(this);
 		botonRegistrar.addActionListener(this);
+		mostrarContraseña.addActionListener(this);
+		
 	}
 
 	@Override
@@ -755,6 +750,11 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 					JOptionPane.INFORMATION_MESSAGE);
 			ControladorVentanas.INSTANCIA.logInSatisfactorio();
 		}
+		
+		if (e.getSource() == mostrarContraseña) {
+			textoContraseña.setEchoChar(mostrarContraseña.isSelected() ? '\0' : '*');
+		}
+
 	}
 
 }

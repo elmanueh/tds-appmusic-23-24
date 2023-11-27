@@ -1,18 +1,18 @@
 package umu.tds.vista.main;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import umu.tds.modelo.Controlador;
-
+import umu.tds.modelo.musica.Cancion;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 
@@ -24,43 +24,48 @@ public class VentanaMasReproducidas extends JPanel {
 
 	// METODOS
 	public void configuracionTabla() {
-		tablaCanciones.setAutoscrolls(false);
-		tablaCanciones.setFillsViewportHeight(true);
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
-		tablaCanciones.setAutoCreateRowSorter(true);
 
-		tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaTop10());
+		DefaultTableModel modelo = new DefaultTableModel() {
+			private static final long serialVersionUID = 1L;
 
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-		tablaCanciones.getColumnModel().getColumn(tablaCanciones.getColumnCount()-1).setCellRenderer(centerRenderer);
-
-		tablaCanciones.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel())
-						.getValueAt(tablaCanciones.getSelectedRow(), 0);
-				Controlador.INSTANCIA.setCancionSeleccionada(titulo);
-
-				@SuppressWarnings("unchecked")
-				TableRowSorter<DefaultTableModel> sorter = (TableRowSorter<DefaultTableModel>) tablaCanciones
-						.getRowSorter();
-				sorter.sort();
+			public boolean isCellEditable(int row, int column) {
+				return false;
 			}
-		});
+		};
 
-		SwingUtilities.invokeLater(() -> {
-			int anchoTabla = tablaCanciones.getWidth();
-			int numColumnas = tablaCanciones.getColumnCount();
-			int anchoUltColumna = (int) (anchoTabla * 0.05);
-			for (int i = 0; i < numColumnas; i++) {
-				tablaCanciones.getColumnModel().getColumn(i).setResizable(false);
-				tablaCanciones.getColumnModel().getColumn(i).setPreferredWidth(anchoUltColumna);
-			}
-		});
+		modelo.addColumn("Título");
+		modelo.addColumn("Estilo");
+		modelo.addColumn("Intérprete");
+		modelo.addColumn("Reproducciones");
 
+		for (Cancion cancion : Controlador.INSTANCIA.getCancionesMasReproducidas()) {
+			Object[] fila = { cancion.getTitulo(), cancion.getEstiloMusical().getEstilo(),
+					cancion.getInterprete().getInterprete(), cancion.getNumReproducciones() };
+			modelo.addRow(fila);
+		}
+
+		tablaCanciones.setModel(modelo);
 		tablaCanciones.setBackground(new Color(0x0D, 0x20, 0x39));
+
+		TableColumnModel columnModel = tablaCanciones.getColumnModel();
+
+		for (int columnIndex = 0; columnIndex < columnModel.getColumnCount(); columnIndex++) {
+			int anchoMaximo = 0;
+
+			for (int rowIndex = 0; rowIndex < tablaCanciones.getRowCount(); rowIndex++) {
+				TableCellRenderer cellRenderer = tablaCanciones.getCellRenderer(rowIndex, columnIndex);
+				Object valorCelda = tablaCanciones.getValueAt(rowIndex, columnIndex);
+				Component componenteCelda = cellRenderer.getTableCellRendererComponent(tablaCanciones, valorCelda,
+						false, false, rowIndex, columnIndex);
+				anchoMaximo = Math.max(anchoMaximo, componenteCelda.getPreferredSize().width);
+			}
+
+			columnModel.getColumn(columnIndex).setPreferredWidth(anchoMaximo);
+			columnModel.getColumn(columnIndex).setResizable(false);
+		}
+
 	}
 
 	// CONSTRUCTOR
@@ -82,12 +87,18 @@ public class VentanaMasReproducidas extends JPanel {
 		gbc_lblNewLabel.gridy = 1;
 		panel.add(lblNewLabel, gbc_lblNewLabel);
 
-		JScrollPane scrollPane = new JScrollPane();
+		tablaCanciones = new JTable();
+		JScrollPane scrollPane = new JScrollPane(tablaCanciones);
 		add(scrollPane, BorderLayout.CENTER);
 
-		tablaCanciones = new JTable();
 		configuracionTabla();
-
-		scrollPane.setViewportView(tablaCanciones);
+		tablaCanciones.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String titulo = (String) ((DefaultTableModel) tablaCanciones.getModel())
+						.getValueAt(tablaCanciones.getSelectedRow(), 0);
+				Controlador.INSTANCIA.setCancionSeleccionada(titulo);
+			}
+		});
 	}
 }
