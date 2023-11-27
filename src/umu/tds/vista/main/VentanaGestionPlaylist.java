@@ -6,7 +6,6 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.musica.Cancion;
 
 import java.awt.BorderLayout;
@@ -41,7 +40,6 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 	// METODOS
 	public void ponerPlayListEnTabla(Set<Cancion> set) {
-		panelBotonera.setVisible(true);
 		panelTabla.setVisible(true);
 
 		DefaultTableModel modeloFiltrado = new DefaultTableModel() {
