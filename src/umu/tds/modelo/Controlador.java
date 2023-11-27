@@ -337,7 +337,8 @@ public enum Controlador implements CancionesListener {
 			ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 		} else {
 			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
-			posicion--;
+
+
 			Cancion cancion = plActual.getCancionEnPosicion(posicion);
 			if (cancion == null) {
 				Reproductor.INSTANCIA.stopCancion();
