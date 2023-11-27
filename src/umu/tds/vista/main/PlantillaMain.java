@@ -30,6 +30,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import java.awt.CardLayout;
@@ -40,6 +41,7 @@ import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
 import pulsador.IEncendidoListener;
 import java.util.EventObject;
+import java.util.concurrent.TimeUnit;
 
 public class PlantillaMain extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -78,6 +80,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private Component horizontalStrut_6;
 	private Component horizontalStrut_7;
 	JSlider sliderCancion;
+	Timer timer;
 	
 	// METODOS
 	private void inicializar() {
@@ -467,6 +470,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		cancionActual.setText("Cancion: NO SELECCIONADO");
 
 		sliderCancion = new JSlider();
+		sliderCancion.setValue(0);
+		sliderCancion.setEnabled(false);
 		GridBagConstraints gbc_sliderCancion = new GridBagConstraints();
 		gbc_sliderCancion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sliderCancion.gridwidth = 9;
@@ -638,4 +643,29 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		playlistActual.setText("Playlist: " + playlist);
 	}
 
+	public void obtenerDuracionCancion(double duracionCancion) {
+		sliderCancion.setValue(0);
+		sliderCancion.setMaximum((int) duracionCancion);
+		System.out.println((int) duracionCancion);
+		
+		timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarSlider();
+            }
+        });
+		timer.start();
+	}
+	
+	private void actualizarSlider() {
+        sliderCancion.setValue(sliderCancion.getValue()+1);
+    }
+	
+	public void pararSlider() {
+		timer.stop();
+	}
+	
+	public void seguirSlider() {
+		timer.start();
+	}
 }

@@ -109,4 +109,8 @@ public enum Reproductor {
 			mediaPlayer.setVolume(this.volumen);
 		}
 	}
+
+	public double getDuracionCancion() {
+		return mediaPlayer.getMedia().getDuration().toSeconds();
+	}
 }
