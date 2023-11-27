@@ -234,6 +234,7 @@ public enum Controlador implements CancionesListener {
 				usuarioActual.addCancionReciente(cancion);
 				adaptadorUsuario.modificarUsuario(usuarioActual);
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoParar);
+				ControladorVentanas.INSTANCIA.estadoJSlider(Reproductor.INSTANCIA.getDuracionCancion());
 			} else {
 				ControladorVentanas.INSTANCIA.estadoReproductor(iconoReproducir);
 			}

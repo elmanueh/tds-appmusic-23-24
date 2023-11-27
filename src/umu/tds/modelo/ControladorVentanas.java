@@ -79,4 +79,9 @@ public enum ControladorVentanas {
 		
 	}
 
+	void estadoJSlider(double duracionCancion) {
+		plantillaMain.obtenerDuracionCancion(duracionCancion);
+		
+	}
+
 }

@@ -31,6 +31,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 
 import java.awt.CardLayout;
@@ -42,6 +43,7 @@ import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
 import pulsador.IEncendidoListener;
 import java.util.EventObject;
+import java.util.concurrent.TimeUnit;
 
 public class PlantillaMain extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -79,7 +81,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JLabel lblNewLabel_2;
 	private Component horizontalStrut_6;
 	private Component horizontalStrut_7;
-
+	JSlider sliderCancion;
+	Timer timer;
+	
 	// METODOS
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -426,9 +430,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_botonesMultimedia.add(p_cancionActual, gbc_p_cancionActual);
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
 		p_cancionActual.setLayout(gbl_p_cancionActual);
-
-		p_cancionActual.setVisible(false);
-
+		
+		
 		horizontalStrut_7 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
 		gbc_horizontalStrut_7.insets = new Insets(0, 0, 5, 5);
@@ -457,6 +460,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_playlistActual.gridx = 1;
 		gbc_playlistActual.gridy = 1;
 		p_cancionActual.add(playlistActual, gbc_playlistActual);
+		playlistActual.setText("Playlist: NO SELECCIONADO");
 
 		cancionActual = new JLabel("");
 		GridBagConstraints gbc_cancionActual = new GridBagConstraints();
@@ -464,8 +468,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_cancionActual.gridx = 1;
 		gbc_cancionActual.gridy = 2;
 		p_cancionActual.add(cancionActual, gbc_cancionActual);
+		cancionActual.setText("Cancion: NO SELECCIONADO");
 
-		JSlider sliderCancion = new JSlider();
+		sliderCancion = new JSlider();
+		sliderCancion.setValue(0);
+		sliderCancion.setEnabled(false);
 		GridBagConstraints gbc_sliderCancion = new GridBagConstraints();
 		gbc_sliderCancion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sliderCancion.gridwidth = 9;
@@ -651,7 +658,31 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	public void ponerCancionActual(String playlist, String cancion) {
 		cancionActual.setText("Cancion: " + cancion);
 		playlistActual.setText("Playlist: " + playlist);
-		p_cancionActual.setVisible(true);
 	}
 
+	public void obtenerDuracionCancion(double duracionCancion) {
+		sliderCancion.setValue(0);
+		sliderCancion.setMaximum((int) duracionCancion);
+		System.out.println((int) duracionCancion);
+		
+		timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarSlider();
+            }
+        });
+		timer.start();
+	}
+	
+	private void actualizarSlider() {
+        sliderCancion.setValue(sliderCancion.getValue()+1);
+    }
+	
+	public void pararSlider() {
+		timer.stop();
+	}
+	
+	public void seguirSlider() {
+		timer.start();
+	}
 }
