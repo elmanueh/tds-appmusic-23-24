@@ -1,6 +1,6 @@
 package umu.tds.modelo.musica;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,8 +24,8 @@ public class Cancion {
 		this.codigo = 0;
 	}
 
-	private static List<Interprete> registroInterpretes = new ArrayList<>();
-	private static List<EstiloMusical> registroEstilo = new ArrayList<>();
+	private static List<Interprete> registroInterpretes = new LinkedList<>();
+	private static List<EstiloMusical> registroEstilo = new LinkedList<>();
 
 	// GETTERS AND SETTERS
 	public String getTitulo() {
@@ -58,6 +58,10 @@ public class Cancion {
 
 	public void setCodigo(int id) {
 		this.codigo = id;
+	}
+
+	public static LinkedList<EstiloMusical> getRegistroEstilo() {
+		return new LinkedList<>(registroEstilo);
 	}
 
 	// METODOS

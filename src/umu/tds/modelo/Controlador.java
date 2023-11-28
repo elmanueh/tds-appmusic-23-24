@@ -1,7 +1,6 @@
 package umu.tds.modelo;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Date;
 import java.util.EventObject;
 import java.util.LinkedHashSet;
@@ -23,6 +22,7 @@ import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CatalogoCanciones;
+import umu.tds.modelo.musica.EstiloMusical;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
@@ -130,13 +130,12 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
-	// TIPOS LISTAS CANCIONES + ESTILOS
-	public LinkedList<String> getEstilos() { // TODO
-		LinkedList<String> estilos = catalogoCanciones.getCanciones().stream()
-				.map(cancion -> cancion.getEstiloMusical().getEstilo()).distinct().sorted()
-				.collect(Collectors.toCollection(LinkedList::new));
-		estilos.addFirst("");
-		return estilos;
+	public LinkedList<String> getEstilos() {
+		LinkedList<String> nombresEstilos = Cancion.getRegistroEstilo().stream()
+                .map(EstiloMusical::getEstilo)
+                .collect(Collectors.toCollection(LinkedList::new));
+		nombresEstilos.addFirst("");
+		return nombresEstilos;
 	}
 
 	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
