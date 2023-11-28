@@ -83,7 +83,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private Component horizontalStrut_7;
 	JSlider sliderCancion;
 	Timer timer;
-	
+
 	// METODOS
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
@@ -101,6 +101,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		ventanaMasReproducidas = new VentanaMasReproducidas();
 		ventanaGenerarPDF = new VentanaGenerarPDF();
 		ventanaMisPlaylist = new VentanaMisPlaylist();
+	}
+
+	public void reiniciar() {
+		configuracionTabla();
 	}
 
 	public void estadoPremium(boolean premium) {
@@ -430,8 +434,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_botonesMultimedia.add(p_cancionActual, gbc_p_cancionActual);
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
 		p_cancionActual.setLayout(gbl_p_cancionActual);
-		
-		
+
 		horizontalStrut_7 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_7 = new GridBagConstraints();
 		gbc_horizontalStrut_7.insets = new Insets(0, 0, 5, 5);
@@ -527,25 +530,24 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		Component horizontalStrut_3 = Box.createHorizontalStrut(15);
 		p_border.add(horizontalStrut_3);
-		
+
 		configuracionTabla();
 		tablaPlayList.addMouseListener(new MouseAdapter() { // TODO arreglarlo
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = tablaPlayList.getSelectedRow();
 				int column = tablaPlayList.getSelectedColumn();
-
 				String playlist = tablaPlayList.getValueAt(row, column).toString();
-				switch (ControladorVentanas.INSTANCIA.getVentanaActual()) {
+				Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
+				
+				switch(ventanaActual()) {
 				case "VentanaGestionPlaylist":
-					ventanaGestionPlaylist.ponerPlayListEnTabla(playlist);
+					ventanaGestionPlaylist.cargarVentana(playlist);
 					break;
 				case "VentanaMisPlaylist":
-					Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
-					ventanaMisPlaylist.ponerPlayListEnTabla(playlist);
+					// ventanaMisPlaylist.cargar
 					break;
 				}
-
 			}
 		});
 
@@ -587,7 +589,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaBuscar");
+
 			ventanaBuscar.esconderPanel();
+			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
 		if (e.getSource() == btnGestionPlaylist) {
@@ -595,10 +599,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
+
 			configuracionTabla();
-			
-			ventanaGestionPlaylist.reiniciar();
-			
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
+			Controlador.INSTANCIA.setPlayListSeleccionada("");
+			ventanaGestionPlaylist.cargarVentana(null);
 		}
 
 		if (e.getSource() == btnRecientes) {
@@ -606,7 +611,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaRecientes");
+			
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
 			ventanaRecientes.configuracionTabla();
+			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
 		if (e.getSource() == btnMasReproducidas) {
@@ -614,7 +622,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMasReproducidas");
+
 			ventanaMasReproducidas.configuracionTabla();
+			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
 		if (e.getSource() == btnGenerarPDF) {
@@ -629,8 +639,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMisPlaylist");
+
 			ventanaMisPlaylist.esconderPanel();
 			configuracionTabla();
+			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
 		// MULTIMEDEA
@@ -664,24 +676,24 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		sliderCancion.setValue(0);
 		sliderCancion.setMaximum((int) duracionCancion);
 		System.out.println((int) duracionCancion);
-		
+
 		timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarSlider();
-            }
-        });
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actualizarSlider();
+			}
+		});
 		timer.start();
 	}
-	
+
 	private void actualizarSlider() {
-        sliderCancion.setValue(sliderCancion.getValue()+1);
-    }
-	
+		sliderCancion.setValue(sliderCancion.getValue() + 1);
+	}
+
 	public void pararSlider() {
 		timer.stop();
 	}
-	
+
 	public void seguirSlider() {
 		timer.start();
 	}

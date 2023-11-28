@@ -44,6 +44,7 @@ public enum Controlador implements CancionesListener {
 	private String playlistSeleccionada, playlistReproducciendo;
 	private LinkedHashSet<Cancion> cancionesSeleccionadas = new LinkedHashSet<>();
 	private PlayList playlistMasReproducidas;
+	private String ventanaActual;
 
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
 	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
@@ -389,7 +390,7 @@ public enum Controlador implements CancionesListener {
 		playlist.addAllCanciones(cancionesSeleccionadas);
 		adaptadorPlayList.modificarPlayList(playlist);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-
+		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 		return playlist;
 	}
 
@@ -400,27 +401,25 @@ public enum Controlador implements CancionesListener {
 			adaptadorPlayList.borrarPlayList(playlist);
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
+		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
+	}
+	
+	public PlayList consultarPlaylist(String playlistNombre) {
+		return usuarioActual.getPlayList(playlistNombre);
 	}
 
-	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) { // TODO
-		PlayList p = usuarioActual.getPlayList(text);
-		if (p == null)
-			return false;
-		usuarioActual.removePlayList(p);
-
-		int filasTotal = modelo.getRowCount();
-
-		for (int fila = 0; fila < filasTotal; fila++) {
-			if ((Boolean) modelo.getValueAt(fila, 3)) {
-				Cancion cancion = p.getCancion((String) modelo.getValueAt(fila, 0));
-				p.removeCancion(cancion);
-			}
-		}
-
-		usuarioActual.addPlayList(p);
-
-		adaptadorPlayList.modificarPlayList(p);
+	public PlayList eliminarCancionDePlayList(String playlistNombre, String cancionNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist == null)
+			return null;
+		Cancion cancion = playlist.getCancion(cancionNombre);
+		playlist.removeCancion(cancion);
+		adaptadorPlayList.modificarPlayList(playlist);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		return true;
+		return playlist;
+	}
+	
+	public void setVentanaActual(String ventanaActual) {
+		this.ventanaActual = ventanaActual;
 	}
 }
