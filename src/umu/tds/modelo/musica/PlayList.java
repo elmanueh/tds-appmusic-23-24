@@ -90,7 +90,7 @@ public class PlayList {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, listaCanciones, nombre);
+		return Objects.hash(codigo, /* listaCanciones, */ nombre);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class PlayList {
 		if (getClass() != obj.getClass())
 			return false;
 		PlayList other = (PlayList) obj;
-		return codigo == other.codigo && Objects.equals(listaCanciones, other.listaCanciones)
+		return codigo == other.codigo /* && Objects.equals(listaCanciones, other.listaCanciones) */
 				&& Objects.equals(nombre, other.nombre);
 	}
 

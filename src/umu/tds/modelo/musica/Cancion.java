@@ -109,4 +109,5 @@ public class Cancion {
 				&& Objects.equals(interprete, other.interprete) && Objects.equals(rutaFichero, other.rutaFichero)
 				&& Objects.equals(titulo, other.titulo);
 	}
+
 }

@@ -167,19 +167,6 @@ public enum Controlador implements CancionesListener {
 		return playlistSeleccionada;
 	}
 
-	public String[] getPlayLists() { // TODO esta en usuario pero la otra devuelve objetos Playlist
-		LinkedList<String> playlist = new LinkedList<String>();
-		playlist.add("");
-		for (PlayList p : usuarioActual.getListaPlayList()) {
-			playlist.add(p.getNombre());
-		}
-		String[] playlist2 = new String[playlist.size()];
-		for (int i = 0; i < playlist2.length; i++) {
-			playlist2[i] = playlist.get(i);
-		}
-		return playlist2;
-	}
-
 	// PREMIUM
 	public void configuracionPremium(boolean premium, double precio) {
 		usuarioActual.setPremium(premium);
@@ -344,6 +331,7 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
+	// PLAYLIST
 	public PlayList crearPlaylist(String playlistNombre) {
 		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
 		if (playlist == null) {
@@ -354,6 +342,8 @@ public enum Controlador implements CancionesListener {
 		playlist.addAllCanciones(cancionesSeleccionadas);
 		adaptadorPlayList.modificarPlayList(playlist);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+		cancionesSeleccionadas.clear();
+		System.out.println(cancionesSeleccionadas);
 		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 		return playlist;
 	}
@@ -365,7 +355,6 @@ public enum Controlador implements CancionesListener {
 			adaptadorPlayList.borrarPlayList(playlist);
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
-
 		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 	}
 

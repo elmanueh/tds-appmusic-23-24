@@ -2,7 +2,6 @@ package umu.tds.modelo.usuario;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -62,7 +61,7 @@ public class Usuario {
 	}
 
 	public Set<PlayList> getListaPlayList() {
-		return new HashSet<PlayList>(listaPlayList);
+		return new LinkedHashSet<PlayList>(listaPlayList);
 	}
 
 	public PlayList getPlaylistRecientes() {
@@ -102,17 +101,17 @@ public class Usuario {
 			return true;
 		return false;
 	}
-	
+
 	public String getIconoUsuario() {
 		if (isPremium())
 			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
 		return new String("/umu/tds/vista/imagenes/usuario.png");
 	}
-	
+
 	public void addPlayList(PlayList p) {
 		listaPlayList.add(p);
 	}
-	
+
 	public boolean existePlayList(String titulo) {
 		for (PlayList p : listaPlayList) {
 			if (p.getNombre().equals(titulo))
@@ -132,7 +131,6 @@ public class Usuario {
 	public void removePlayList(PlayList p) {
 		System.out.println(listaPlayList.contains(p));
 		listaPlayList.remove(p);
-		System.out.println(listaPlayList.contains(p));
 	}
 
 	public void addCancionReciente(Cancion cancion) {
