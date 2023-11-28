@@ -116,7 +116,7 @@ public class VentanaGenerarPDF extends JPanel {
 			documento.add(new Paragraph(" "));
 			documento.add(new Paragraph("Playlist " + p.getNombre()));
 			for (Cancion c: p.getListaCanciones()) {
-				documento.add(new Paragraph("Titulo: " + c.getTitulo() + ", Interprete: " + c.getInterprete() + ", Estilo: " + c.getEstiloMusical()));
+				documento.add(new Paragraph("Titulo: " + c.getTitulo() + ", Interprete: " + c.getInterprete().getInterprete() + ", Estilo: " + c.getEstiloMusical().getEstilo()));
 			}
 		}
 		documento.close();
