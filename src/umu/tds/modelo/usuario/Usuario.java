@@ -130,7 +130,9 @@ public class Usuario {
 	}
 
 	public void removePlayList(PlayList p) {
+		System.out.println(listaPlayList.contains(p));
 		listaPlayList.remove(p);
+		System.out.println(listaPlayList.contains(p));
 	}
 
 	public void addCancionReciente(Cancion cancion) {

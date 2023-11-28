@@ -41,14 +41,23 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 
 	// METODOS
 	public void cargarVentana(String playlistNombre) {
-		
-		if (Controlador.INSTANCIA.getCancionesSeleccionadas().size() > 0 && !Controlador.INSTANCIA.getPlaylistSeleccionada().equals("")) {
-			configuracionTabla(playlistNombre);
+		if (playlistNombre != null) {
+			if (Controlador.INSTANCIA.getCancionesSeleccionadas().size() > 0) {
+				Object[] opciones = { "Sí", "No" };
+				int respuesta = JOptionPane.showOptionDialog(null,
+						"¿Quieres añadir las canciones seleccionadas a la playlist " + playlistNombre + "?"
+								+ "\n Después podrás editar la playlist ",
+						"Editar Playlist", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
+						opciones[0]);
+				if (respuesta == JOptionPane.YES_OPTION) {
+					Controlador.INSTANCIA.crearPlaylist(playlistNombre);
+				}
+			}
+			txtTitulo.setText(playlistNombre);
+		} else {
+			txtTitulo.setText("");
 		}
-		
-		
-		// añado seleccionadas o no
-		txtTitulo.setText("");
+		configuracionTabla(playlistNombre);
 	}
 
 	public void configuracionTabla(String playlistNombre) {
@@ -78,7 +87,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		modelo.addColumn("Intérprete");
 		modelo.addColumn("");
 
-		PlayList playlist = Controlador.INSTANCIA.consultarPlaylist(playlistNombre);
+		PlayList playlist = Controlador.INSTANCIA.getUsuarioActual().getPlayList(playlistNombre);
 		LinkedHashSet<Cancion> listaCanciones;
 		if (playlist == null) {
 			listaCanciones = Controlador.INSTANCIA.getCancionesSeleccionadas();
@@ -109,26 +118,6 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			}
 			columnModel.getColumn(columnIndex).setPreferredWidth(anchoMaximo);
 			columnModel.getColumn(columnIndex).setResizable(false);
-		}
-	}
-
-	public void ponerPlayListEnTabla(String playlist) {
-		if (Controlador.INSTANCIA.getCancionesSeleccionadas().size() > 0) {
-			Object[] opciones = { "Sí", "No" };
-			int respuesta = JOptionPane.showOptionDialog(null,
-					"¿Quieres añadir las canciones seleccionadas a la playlist " + playlist + "?"
-							+ "\n Después podrás editar la playlist ",
-					"Editar Playlist", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
-					opciones[0]);
-			if (respuesta == JOptionPane.YES_OPTION) {
-				txtTitulo.setText(playlist);
-				tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(playlist, true));
-			} else if (respuesta == JOptionPane.NO_OPTION) {
-				txtTitulo.setText(playlist);
-				tablaCanciones.setModel(Controlador.INSTANCIA.ponerTablaPlaylist(playlist, false));
-			}
-		} else {
-			
 		}
 	}
 

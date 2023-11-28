@@ -132,9 +132,8 @@ public enum Controlador implements CancionesListener {
 	}
 
 	public LinkedList<String> getEstilos() {
-		LinkedList<String> nombresEstilos = Cancion.getRegistroEstilo().stream()
-                .map(EstiloMusical::getEstilo)
-                .collect(Collectors.toCollection(LinkedList::new));
+		LinkedList<String> nombresEstilos = Cancion.getRegistroEstilo().stream().map(EstiloMusical::getEstilo)
+				.collect(Collectors.toCollection(LinkedList::new));
 		nombresEstilos.addFirst("");
 		return nombresEstilos;
 	}
@@ -345,41 +344,6 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
-	/*
-	 * MANEJO TABLA VENTANA GESTIONAR PLAYLIST
-	 */
-	public TableModel ponerTablaPlaylist(String playlist, boolean b) { // TODO
-		DefaultTableModel modelo = new DefaultTableModel() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				if (column < 3)
-					return false;
-				return true;
-			}
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if (columnIndex == 3)
-					return Boolean.class;
-				return super.getColumnClass(columnIndex);
-			}
-		};
-
-		modelo.addColumn("TITULO");
-		modelo.addColumn("ESTILO");
-		modelo.addColumn("INTERPRETE");
-		modelo.addColumn("");
-
-		for (Cancion c : usuarioActual.getPlayList(playlist).getListaCanciones()) {
-			Object[] fila = { c.getTitulo(), c.getEstiloMusical().getEstilo(), c.getInterprete().getInterprete(),
-					false };
-			modelo.addRow(fila);
-		}
-		return modelo;
-	}
-
 	public PlayList crearPlaylist(String playlistNombre) {
 		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
 		if (playlist == null) {
@@ -401,11 +365,8 @@ public enum Controlador implements CancionesListener {
 			adaptadorPlayList.borrarPlayList(playlist);
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
+
 		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
-	}
-	
-	public PlayList consultarPlaylist(String playlistNombre) {
-		return usuarioActual.getPlayList(playlistNombre);
 	}
 
 	public PlayList eliminarCancionDePlayList(String playlistNombre, String cancionNombre) {
@@ -418,7 +379,7 @@ public enum Controlador implements CancionesListener {
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return playlist;
 	}
-	
+
 	public void setVentanaActual(String ventanaActual) {
 		this.ventanaActual = ventanaActual;
 	}
