@@ -110,6 +110,9 @@ public enum Reproductor {
 	}
 
 	public double getDuracionCancion() {
+		if (mediaPlayer == null)
+			return 1;
+		System.out.println((int) mediaPlayer.getMedia().getDuration().toSeconds());
 		return mediaPlayer.getMedia().getDuration().toSeconds();
 	}
 }

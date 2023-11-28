@@ -65,26 +65,9 @@ public enum ControladorVentanas {
 		Controlador.INSTANCIA.configuracionPremium(b, precio);
 		plantillaMain.estadoPremium(b);
 	}
-	
-	public void estadoReproductor(String estadoReproductor) {
-		plantillaMain.estadoReproduciendo(estadoReproductor);
-	}
-	
-	public String getVentanaActual() {
-		return plantillaMain.ventanaActual();
-	}
 
-	public void ponerCancionActual(String playlist, String cancion) {
-		plantillaMain.ponerCancionActual(playlist, cancion);
-		
-	}
-
-	void estadoJSlider(double duracionCancion) {
-		plantillaMain.obtenerDuracionCancion(duracionCancion);
-	}
-	
 	void reiniciarPlantillaMain() {
-		plantillaMain.reiniciar();
+		plantillaMain.cargarVentana();
 	}
 
 }

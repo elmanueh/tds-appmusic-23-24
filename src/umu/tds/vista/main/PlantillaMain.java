@@ -43,7 +43,6 @@ import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
 import pulsador.IEncendidoListener;
 import java.util.EventObject;
-import java.util.concurrent.TimeUnit;
 
 public class PlantillaMain extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
@@ -103,7 +102,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		ventanaMisPlaylist = new VentanaMisPlaylist();
 	}
 
-	public void reiniciar() {
+	public void cargarVentana() {
 		configuracionTabla();
 	}
 
@@ -457,6 +456,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_horizontalStrut_6.gridy = 0;
 		p_cancionActual.add(horizontalStrut_6, gbc_horizontalStrut_6);
 
+		sliderCancion = new JSlider();
 		playlistActual = new JLabel("");
 		GridBagConstraints gbc_playlistActual = new GridBagConstraints();
 		gbc_playlistActual.insets = new Insets(0, 0, 5, 5);
@@ -473,7 +473,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_cancionActual.add(cancionActual, gbc_cancionActual);
 		cancionActual.setText("Cancion: NO SELECCIONADO");
 
-		sliderCancion = new JSlider();
 		sliderCancion.setValue(0);
 		sliderCancion.setEnabled(false);
 		GridBagConstraints gbc_sliderCancion = new GridBagConstraints();
@@ -488,7 +487,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		sliderVolumen.setValue(25);
 		sliderVolumen.setMaximum(50);
 
-		sliderVolumen.addChangeListener(new ChangeListener() { // TODO arreglar
+		sliderVolumen.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				Controlador.INSTANCIA.volumen(sliderVolumen.getValue());
 			}
@@ -532,20 +531,20 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		p_border.add(horizontalStrut_3);
 
 		configuracionTabla();
-		tablaPlayList.addMouseListener(new MouseAdapter() { // TODO arreglarlo
+		tablaPlayList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = tablaPlayList.getSelectedRow();
 				int column = tablaPlayList.getSelectedColumn();
 				String playlist = tablaPlayList.getValueAt(row, column).toString();
 				Controlador.INSTANCIA.setPlayListSeleccionada(playlist);
-				
-				switch(ventanaActual()) {
+
+				switch (ventanaActual()) {
 				case "VentanaGestionPlaylist":
 					ventanaGestionPlaylist.cargarVentana(playlist);
 					break;
 				case "VentanaMisPlaylist":
-					// ventanaMisPlaylist.cargar
+					ventanaMisPlaylist.cargarVentana(playlist);
 					break;
 				}
 			}
@@ -571,7 +570,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		// TODO pensarlo de otra forma
 		if (ventanaBuscar.isVisible() && e.getSource() != btnPremium && e.getSource() != btnLogOut) {
 			ventanaBuscar.guardarSeleccionados();
 		}
@@ -590,7 +588,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaBuscar");
 
-			ventanaBuscar.esconderPanel();
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
+			ventanaBuscar.cargarVentana();
 			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
@@ -611,7 +610,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaRecientes");
-			
+
 			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
 			ventanaRecientes.configuracionTabla();
 			Controlador.INSTANCIA.setPlayListSeleccionada("");
@@ -623,6 +622,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMasReproducidas");
 
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
 			ventanaMasReproducidas.configuracionTabla();
 			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
@@ -632,6 +632,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGenerarPDF");
+
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
 		}
 
 		if (e.getSource() == btnMisPlaylist) {
@@ -640,61 +642,67 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaMisPlaylist");
 
-			ventanaMisPlaylist.esconderPanel();
+			Controlador.INSTANCIA.setVentanaActual(ventanaActual());
+			ventanaMisPlaylist.cargarVentana(null);
 			configuracionTabla();
 			Controlador.INSTANCIA.setPlayListSeleccionada("");
 		}
 
 		// MULTIMEDEA
 		if (e.getSource() == btnShuffle) {
-
+			actualizarReproductor();
 		}
 
 		if (e.getSource() == btnPrevious) {
 			Controlador.INSTANCIA.anteriorCancion();
+			actualizarReproductor();
 		}
 
 		if (e.getSource() == btnPlayPause) {
 			Controlador.INSTANCIA.reproducirCancion();
+			actualizarReproductor();
 		}
 
 		if (e.getSource() == btnNext) {
 			Controlador.INSTANCIA.siguienteCancion();
+			actualizarReproductor();
 		}
 
 		if (e.getSource() == btnSecuential) {
-
+			actualizarReproductor();
 		}
 	}
 
-	public void ponerCancionActual(String playlist, String cancion) {
-		cancionActual.setText("Cancion: " + cancion);
-		playlistActual.setText("Playlist: " + playlist);
+	private void actualizarReproductor() {
+		String cancionOld = cancionActual.getText();
+		String playlistOld = playlistActual.getText();
+		cancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
+		playlistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
+		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+		if (Controlador.INSTANCIA.getEstadoReproductor().equals("/umu/tds/vista/imagenes/pausa.png")) {
+			if (!cancionOld.equals(cancionActual.getText()) || !playlistOld.equals(playlistActual.getText())) {
+				sliderCancion.setValue(0);
+				sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
+				if (timer != null && timer.isRunning())
+					timer.stop();
+			}
+			activarSliderCancion();
+		} else {
+			timer.stop();
+		}
 	}
 
-	public void obtenerDuracionCancion(double duracionCancion) {
-		sliderCancion.setValue(0);
-		sliderCancion.setMaximum((int) duracionCancion);
-		System.out.println((int) duracionCancion);
-
+	private void activarSliderCancion() {
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				actualizarSlider();
+				sliderCancion.setValue(sliderCancion.getValue() + 1);
 			}
 		});
 		timer.start();
 	}
 
-	private void actualizarSlider() {
-		sliderCancion.setValue(sliderCancion.getValue() + 1);
-	}
-
-	public void pararSlider() {
-		timer.stop();
-	}
-
-	public void seguirSlider() {
-		timer.start();
-	}
 }

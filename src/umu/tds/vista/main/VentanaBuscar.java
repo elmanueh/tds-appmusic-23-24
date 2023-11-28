@@ -7,6 +7,7 @@ import javax.swing.table.TableColumnModel;
 
 import umu.tds.modelo.Controlador;
 import umu.tds.modelo.musica.Cancion;
+import umu.tds.modelo.musica.PlayList;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,7 +41,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	private JButton botonAñadirPlaylist;
 
 	// METODOS
-	public void esconderPanel() {
+	public void cargarVentana() {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
 
@@ -50,7 +51,12 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	}
 
 	public void guardarSeleccionados() {
-		Controlador.INSTANCIA.setTablaSeleccionados((DefaultTableModel) tablaCanciones.getModel());
+		for (int fila = 0; fila < tablaCanciones.getRowCount(); fila++) {
+			if ((Boolean) tablaCanciones.getValueAt(fila, 3) == true) {
+				Controlador.INSTANCIA.añadirCancionSeleccionada((String) tablaCanciones.getValueAt(fila, 0));
+				tablaCanciones.setValueAt(false, fila, 3);
+			}
+		}
 	}
 
 	public void actualizarEstilos() {
@@ -294,32 +300,34 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 
 		if (e.getSource() == botonCancelar) {
-			txtTitulo.setText("");
-			txtInterprete.setText("");
-			comboBoxEstilo.setSelectedIndex(0);
-			panelTabla.setVisible(false);
-			panelBotonera.setVisible(false);
+			cargarVentana();
 		}
-		if (e.getSource() == botonAñadirPlaylist) { // TODO
-			String playlist;
+
+		if (e.getSource() == botonAñadirPlaylist) {
+			String playlistNombre;
 			Object[] opciones = { "Sí", "No" };
 			int respuesta = JOptionPane.showOptionDialog(null, "¿Quieres crear una nueva PlayList?",
 					"Eleccion de playList", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones,
 					opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
-				playlist = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
+				playlistNombre = JOptionPane.showInputDialog(null, "Ingrese el nombre de la nueva playlist:");
 			} else {
 				JComboBox<String> playlistComboBox = new JComboBox<>();
-				playlistComboBox.setModel(new DefaultComboBoxModel<String>(Controlador.INSTANCIA.getPlayLists()));
+				playlistComboBox.addItem("");
+				for (PlayList playlist : Controlador.INSTANCIA.getUsuarioActual().getListaPlayList())
+					playlistComboBox.addItem(playlist.getNombre());
 				JOptionPane.showMessageDialog(null, playlistComboBox, "Playlists Disponibles",
 						JOptionPane.INFORMATION_MESSAGE);
-				playlist = (String) playlistComboBox.getSelectedItem();
+				playlistNombre = (String) playlistComboBox.getSelectedItem();
 			}
-			if (playlist.length()<=25)
-				Controlador.INSTANCIA.crearPlaylist(playlist, tablaCanciones.getModel());
+			if (playlistNombre.length() <= 25) {
+				guardarSeleccionados();
+				Controlador.INSTANCIA.crearPlaylist(playlistNombre);
+			}
+
 			else
-				JOptionPane.showMessageDialog(null, "Disculpa, el nombre (" + playlist + ") es muy largo.\n"
-						+ "Máximo 25 carácteres.",
+				JOptionPane.showMessageDialog(null,
+						"Disculpa, el nombre (" + playlistNombre + ") es muy largo.\n" + "Máximo 25 carácteres.",
 						"Nombre Playlist demasiado largo", JOptionPane.ERROR_MESSAGE);
 		}
 	}
