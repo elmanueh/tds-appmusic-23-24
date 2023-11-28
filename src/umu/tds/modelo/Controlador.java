@@ -43,7 +43,7 @@ public enum Controlador implements CancionesListener {
 	private Usuario usuarioActual;
 	private String cancionSeleccionada, cancionReproducciendo;
 	private String playlistSeleccionada, playlistReproducciendo;
-	private LinkedHashSet<Cancion> cancionesSeleccionadas;
+	private LinkedHashSet<Cancion> cancionesSeleccionadas = new LinkedHashSet<>();
 	private PlayList playlistMasReproducidas;
 
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
@@ -165,18 +165,6 @@ public enum Controlador implements CancionesListener {
 	// PLAYLIST
 	public String getPlaylistSeleccionada() {
 		return playlistSeleccionada;
-	}
-
-	public void añadirCancionesSeleccionadasAPlaylist(String text) {
-		PlayList p = usuarioActual.getPlayList(text);
-		usuarioActual.removePlayList(p);
-		for (Cancion c : cancionesSeleccionadas)
-			if (!p.consultarCancion(c.getTitulo()))
-				p.addCancion(c);
-
-		adaptadorPlayList.modificarPlayList(p);
-		usuarioActual.addPlayList(p);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	public String[] getPlayLists() { // TODO esta en usuario pero la otra devuelve objetos Playlist
@@ -329,7 +317,8 @@ public enum Controlador implements CancionesListener {
 		Reproductor.INSTANCIA.establecerVolumen(volumen);
 	}
 
-	public void crearPlaylist(String playlist, TableModel tableModel) {
+	// CACA TODO
+	public void crearPlaylist(String playlist, TableModel tableModel) { // el de buscar
 		if (!(playlist == null) && !(playlist.equals(""))) {
 			PlayList p;
 			boolean existe = usuarioActual.existePlayList(playlist);
@@ -358,9 +347,7 @@ public enum Controlador implements CancionesListener {
 	/*
 	 * MANEJO TABLA VENTANA GESTIONAR PLAYLIST
 	 */
-	public TableModel ponerTablaPlaylist(String playlist, boolean b) {
-		if (b)
-			añadirCancionesSeleccionadasAPlaylist(playlist);
+	public TableModel ponerTablaPlaylist(String playlist, boolean b) { // TODO
 		DefaultTableModel modelo = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
 
@@ -392,32 +379,30 @@ public enum Controlador implements CancionesListener {
 		return modelo;
 	}
 
-	public TableModel crearPlaylist(String playlist) {
-		if (!usuarioActual.existePlayList(playlist)) { // Si no existe se crea
-			PlayList p = new PlayList(playlist);
-			adaptadorPlayList.registrarPlayList(p);
-			usuarioActual.addPlayList(p);
+	public PlayList crearPlaylist(String playlistNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist == null) {
+			playlist = new PlayList(playlistNombre);
+			adaptadorPlayList.registrarPlayList(playlist);
+			usuarioActual.addPlayList(playlist);
 		}
-		// luego se llama al metodo de arriba que lo que hace es añadir a la playlist
-		// las canciones
-		return ponerTablaPlaylist(playlist, true);
-	}
-
-	public TableModel eliminarPlayList(String text, TableModel tableModel) {
-		PlayList p = usuarioActual.getPlayList(text);
-		if (p == null)
-			return null;
-
-		usuarioActual.removePlayList(p);
-		adaptadorPlayList.borrarPlayList(p);
+		playlist.addAllCanciones(cancionesSeleccionadas);
+		adaptadorPlayList.modificarPlayList(playlist);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 
-		DefaultTableModel modelo = (DefaultTableModel) tableModel;
-		modelo.setRowCount(0);
-		return modelo;
+		return playlist;
 	}
 
-	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) {
+	public void eliminarPlayList(String playlistNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist != null) {
+			usuarioActual.removePlayList(playlist);
+			adaptadorPlayList.borrarPlayList(playlist);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
+		}
+	}
+
+	public boolean eliminarCancionDePlayList(String text, DefaultTableModel modelo) { // TODO
 		PlayList p = usuarioActual.getPlayList(text);
 		if (p == null)
 			return false;

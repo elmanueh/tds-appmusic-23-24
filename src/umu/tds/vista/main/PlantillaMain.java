@@ -595,9 +595,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			p_cardLayout.setVisible(true);
 			CardLayout card = (CardLayout) p_cardLayout.getLayout();
 			card.show(p_cardLayout, "ventanaGestionPlaylist");
-			ventanaGestionPlaylist.vaciarCampos();
-			ventanaGestionPlaylist.ponerPlayListEnTabla(Controlador.INSTANCIA.getCancionesSeleccionadas());
 			configuracionTabla();
+			
+			ventanaGestionPlaylist.reiniciar();
+			
 		}
 
 		if (e.getSource() == btnRecientes) {
