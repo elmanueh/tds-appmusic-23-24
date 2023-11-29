@@ -38,7 +38,7 @@ public enum ControladorVentanas {
 		mostrarLoginView();
 	}
 
-	public void iniciarPremium() {
+	public void iniciarModoPremium() {
 		mostrarPremiumView();
 	}
 
@@ -60,10 +60,8 @@ public enum ControladorVentanas {
 		menuPremium.setVisible(true);
 	}
 
-	public void quitarPremium(boolean b, double precio) {
-		menuPremium.setVisible(false);
-		Controlador.INSTANCIA.configuracionPremium(b, precio);
-		plantillaMain.estadoPremium(b);
+	public void usuarioPremium(boolean estadoPremium) {
+		plantillaMain.usuarioPremium(estadoPremium);
 	}
 
 	void reiniciarPlantillaMain() {

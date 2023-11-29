@@ -13,7 +13,6 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.descuento.Descuento;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -25,19 +24,14 @@ import java.awt.Font;
 import javax.swing.JButton;
 
 public class MenuPremium extends JFrame implements ActionListener {
-
 	private static final long serialVersionUID = 1L;
-	/*
-	 * ATRIBUTOS
-	 */
-	private JTextField codigo;
+
+	// ATRIBUTOS
+	private JTextField textoCodigoDescuento;
 	private JButton botonPremium;
 	private JButton botonDarDeBaja;
 
-	/*
-	 * METODOS
-	 */
-
+	// METODOS
 	private void initialize() {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
@@ -49,6 +43,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 		getContentPane().setLayout(new CardLayout(0, 0));
 	}
 
+	// CONSTRUCTOR
 	public MenuPremium() {
 
 		initialize();
@@ -62,31 +57,31 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbl_panel_Normal.rowHeights = new int[] { 0, 20, 0, 30, 35 };
 		panel_Normal.setLayout(gbl_panel_Normal);
 
-		JLabel lblNewLabel = new JLabel("Suscríbete a Spotifoo");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.gridwidth = 2;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		panel_Normal.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel labelTitulo = new JLabel("Suscríbete a Spotifoo");
+		labelTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
+		GridBagConstraints gbc_labelTitulo = new GridBagConstraints();
+		gbc_labelTitulo.gridwidth = 2;
+		gbc_labelTitulo.insets = new Insets(0, 0, 5, 0);
+		gbc_labelTitulo.gridx = 0;
+		gbc_labelTitulo.gridy = 0;
+		panel_Normal.add(labelTitulo, gbc_labelTitulo);
 
-		JLabel lblNewLabel_1 = new JLabel("Introduzca código promocional: ");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 2;
-		panel_Normal.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel labelTexto = new JLabel("Introduzca código promocional: ");
+		GridBagConstraints gbc_labelTexto = new GridBagConstraints();
+		gbc_labelTexto.anchor = GridBagConstraints.EAST;
+		gbc_labelTexto.insets = new Insets(0, 0, 5, 5);
+		gbc_labelTexto.gridx = 0;
+		gbc_labelTexto.gridy = 2;
+		panel_Normal.add(labelTexto, gbc_labelTexto);
 
-		codigo = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.insets = new Insets(0, 0, 5, 0);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 2;
-		panel_Normal.add(codigo, gbc_textField);
-		codigo.setColumns(20);
+		textoCodigoDescuento = new JTextField();
+		GridBagConstraints gbc_textoCodigoDescuento = new GridBagConstraints();
+		gbc_textoCodigoDescuento.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textoCodigoDescuento.insets = new Insets(0, 0, 5, 0);
+		gbc_textoCodigoDescuento.gridx = 1;
+		gbc_textoCodigoDescuento.gridy = 2;
+		panel_Normal.add(textoCodigoDescuento, gbc_textoCodigoDescuento);
+		textoCodigoDescuento.setColumns(20);
 
 		botonPremium = new JButton("SUSCRIBETE");
 		botonPremium.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -104,20 +99,21 @@ public class MenuPremium extends JFrame implements ActionListener {
 		gbl_panel_Premium.rowHeights = new int[] { 0, 20, 0, 20, 35 };
 		panel_Premium.setLayout(gbl_panel_Premium);
 
-		JLabel lblNewLabel_2 = new JLabel("Suscrito a Spotifoo");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 25));
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 0;
-		panel_Premium.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		JLabel labelTitulo2 = new JLabel("Suscrito a Spotifoo");
+		labelTitulo2.setFont(new Font("Tahoma", Font.BOLD, 25));
+		GridBagConstraints gbc_labelTitulo2 = new GridBagConstraints();
+		gbc_labelTitulo2.insets = new Insets(0, 0, 5, 0);
+		gbc_labelTitulo2.gridx = 0;
+		gbc_labelTitulo2.gridy = 0;
+		panel_Premium.add(labelTitulo2, gbc_labelTitulo2);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Cuota mensual de " + Controlador.INSTANCIA.getUsuarioActual().getCuota() + "€");
-		GridBagConstraints gbc_lblNewLabel_1_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1_1.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_1_1.gridx = 0;
-		gbc_lblNewLabel_1_1.gridy = 2;
-		panel_Premium.add(lblNewLabel_1_1, gbc_lblNewLabel_1_1);
+		JLabel labelTexto2 = new JLabel(
+				"Cuota mensual de " + Controlador.INSTANCIA.getUsuarioActual().getCuota() + "€");
+		GridBagConstraints gbc_labelTexto2 = new GridBagConstraints();
+		gbc_labelTexto2.insets = new Insets(0, 0, 5, 0);
+		gbc_labelTexto2.gridx = 0;
+		gbc_labelTexto2.gridy = 2;
+		panel_Premium.add(labelTexto2, gbc_labelTexto2);
 
 		botonDarDeBaja = new JButton("DAR DE BAJA");
 		botonDarDeBaja.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -133,11 +129,8 @@ public class MenuPremium extends JFrame implements ActionListener {
 		} else {
 			((CardLayout) getContentPane().getLayout()).show(getContentPane(), "panel_Normal");
 		}
-		setVisible(true);
 
-		/*
-		 * Manejadores
-		 */
+		// MANEJADORES
 		botonPremium.addActionListener(this);
 		botonDarDeBaja.addActionListener(this);
 	}
@@ -145,7 +138,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonPremium) {
-			Descuento d = Controlador.INSTANCIA.getUsuarioActual().aplicarDescuento(codigo.getText());
+			Descuento d = Controlador.INSTANCIA.getUsuarioActual().aplicarDescuento(textoCodigoDescuento.getText());
 
 			String mensaje;
 			switch (d.tipoDescuento()) {
@@ -159,7 +152,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			}
 
 			JOptionPane.showMessageDialog(null, mensaje, "GRACIAS POR SUSCRIBIRTE", JOptionPane.PLAIN_MESSAGE);
-			ControladorVentanas.INSTANCIA.quitarPremium(true, d.Precio());
+			Controlador.INSTANCIA.usuarioEstablecerPremium(true, d.Precio());
 			dispose();
 		}
 
@@ -167,7 +160,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(null,
 					"Te esperamos de vuelta pronto\n\nPuedes disfrutar de nuestros códigos promocionales",
 					"HASTA PRONTO !!!", JOptionPane.PLAIN_MESSAGE);
-			ControladorVentanas.INSTANCIA.quitarPremium(false, 0);
+			Controlador.INSTANCIA.usuarioEstablecerPremium(false, 0);
 			dispose();
 		}
 

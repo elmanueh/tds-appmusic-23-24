@@ -6,7 +6,6 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 
 import umu.tds.modelo.Controlador;
-import umu.tds.modelo.ControladorVentanas;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -104,14 +103,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		configuracionTabla();
 	}
 
-	public void estadoPremium(boolean premium) {
+	public void usuarioPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
 		mensajeBienvenida.setIcon(new ImageIcon(
 				PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
-	}
-
-	public void estadoReproduciendo(String reproduciendo) {
-		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(reproduciendo)));
 	}
 
 	public String ventanaActual() {
@@ -561,7 +556,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnPremium) {
-			ControladorVentanas.INSTANCIA.iniciarPremium();
+			Controlador.INSTANCIA.configuracionPremium();
 		}
 
 		if (e.getSource() == btnLogOut) {

@@ -239,11 +239,15 @@ public enum Controlador implements CancionesListener {
 		return estadoReproductor;
 	}
 
-	public void configuracionPremium(boolean premium, double precio) { // TODO
-		usuarioActual.setPremium(premium);
-		usuarioActual.setCuota(precio);
+	public void configuracionPremium() {
+		ControladorVentanas.INSTANCIA.iniciarModoPremium();
+	}
 
+	public void usuarioEstablecerPremium(boolean premium, double cuota) {
+		usuarioActual.setPremium(premium);
+		usuarioActual.setCuota(cuota);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
+		ControladorVentanas.INSTANCIA.usuarioPremium(premium);
 	}
 
 	public void añadirCancionSeleccionada(String cancionNombre) {
