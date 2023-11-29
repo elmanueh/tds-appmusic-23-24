@@ -39,11 +39,8 @@ public enum Controlador implements CancionesListener {
 	private CatalogoCanciones catalogoCanciones;
 
 	private Usuario usuarioActual;
-	private String cancionSeleccionada, cancionReproducciendo;
-	private String playlistSeleccionada, playlistReproducciendo;
-	private LinkedHashSet<Cancion> cancionesSeleccionadas = new LinkedHashSet<>();
-	private PlayList playlistMasReproducidas;
-	private String ventanaActual;
+	private String cancionSeleccionada, cancionReproducciendo, playlistSeleccionada, playlistReproducciendo;
+	private LinkedHashSet<Cancion> cancionesSeleccionadas;
 	private String estadoReproductor;
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
 	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
@@ -53,6 +50,11 @@ public enum Controlador implements CancionesListener {
 		inicializarAdaptadores();
 		inicializarCatalogos();
 		CargadorCanciones.INSTANCIA.addCancionesListener(this);
+
+		cancionesSeleccionadas = new LinkedHashSet<>();
+		estadoReproductor = iconoReproducir;
+		cancionReproducciendo = "None";
+		playlistReproducciendo = "None";
 	}
 
 	// METODOS
@@ -73,11 +75,13 @@ public enum Controlador implements CancionesListener {
 		catalogoCanciones = CatalogoCanciones.INSTANCIA;
 	}
 
-	// USUARIO
+	// =======================================
+	// =============== USUARIO ===============
+	// =======================================
 	public Boolean login(String usuarioAux, String contraseñaAux) {
 		Usuario usuario = catalogoUsuarios.getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
-			this.usuarioActual = usuario;
+			usuarioActual = usuario;
 			ControladorVentanas.INSTANCIA.logInSatisfactorio();
 			return true;
 		}
@@ -99,7 +103,59 @@ public enum Controlador implements CancionesListener {
 		return usuarioActual;
 	}
 
-	// CANCION
+	public void cerrarSesion() {
+		cancionesSeleccionadas.clear();
+		cancionSeleccionada = null;
+		cancionReproducciendo = "None";
+		playlistSeleccionada = null;
+		playlistReproducciendo = "None";
+		Reproductor.INSTANCIA.stopCancion();
+		estadoReproductor = iconoReproducir;
+		ControladorVentanas.INSTANCIA.logOutSatisfactorio();
+	}
+
+	// =======================================
+	// =============== PLAYLIST ==============
+	// =======================================
+	public PlayList crearPlaylist(String playlistNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist == null) {
+			playlist = new PlayList(playlistNombre);
+			adaptadorPlayList.registrarPlayList(playlist);
+			usuarioActual.addPlayList(playlist);
+		}
+		playlist.addAllCanciones(cancionesSeleccionadas);
+		adaptadorPlayList.modificarPlayList(playlist);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		cancionesSeleccionadas.clear();
+		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
+		return playlist;
+	}
+
+	public void eliminarPlayList(String playlistNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist != null) {
+			usuarioActual.removePlayList(playlist);
+			adaptadorPlayList.borrarPlayList(playlist);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
+		}
+		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
+	}
+
+	public PlayList eliminarCancionDePlayList(String playlistNombre, String cancionNombre) {
+		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
+		if (playlist == null)
+			return null;
+		Cancion cancion = playlist.getCancion(cancionNombre);
+		playlist.removeCancion(cancion);
+		adaptadorPlayList.modificarPlayList(playlist);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
+		return playlist;
+	}
+
+	// =======================================
+	// =============== CANCION ===============
+	// =======================================
 	@Override
 	public void enteradoNuevasCanciones(EventObject e) {
 		CancionesEvent evento = (CancionesEvent) e;
@@ -159,18 +215,12 @@ public enum Controlador implements CancionesListener {
 		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
 	}
 
-	// TODO
-	public String getPlaylistSeleccionada() {
-		return playlistSeleccionada;
-	}
-
+	// =======================================
+	// ========== GETTERS Y SETTERS ==========
+	// =======================================
 	public void setPlayListSeleccionada(String playlistSeleccionada) {
 		this.playlistSeleccionada = playlistSeleccionada;
 		cancionSeleccionada = null;
-	}
-
-	public String getCancionSeleccionada() {
-		return cancionSeleccionada;
 	}
 
 	public void setCancionSeleccionada(String cancionSeleccionada) {
@@ -189,12 +239,7 @@ public enum Controlador implements CancionesListener {
 		return estadoReproductor;
 	}
 
-	public int getTiempoCancion() {
-		return (int) Reproductor.INSTANCIA.getDuracionCancion();
-	}
-
-	// PREMIUM
-	public void configuracionPremium(boolean premium, double precio) {
+	public void configuracionPremium(boolean premium, double precio) { // TODO
 		usuarioActual.setPremium(premium);
 		usuarioActual.setCuota(precio);
 
@@ -209,27 +254,16 @@ public enum Controlador implements CancionesListener {
 		return cancionesSeleccionadas;
 	}
 
+	// =======================================
+	// ============= REPRODUCTOR =============
+	// =======================================
 	public void reproducirCancion() {
-
-		switch (ventanaActual) {
-		case "VentanaBuscar":
-			break;
-		case "VentanaRecientes":
-			playlistSeleccionada = usuarioActual.getPlaylistRecientes().getNombre();
-			break;
-		case "VentanaMasReproducidas":
-			playlistMasReproducidas = new PlayList("masReproducidas");
-			playlistMasReproducidas.addAllCanciones(new LinkedHashSet<>(getCancionesMasReproducidas()));
-			playlistSeleccionada = playlistMasReproducidas.getNombre();
-			break;
-		}
-
 		if (playlistSeleccionada != null && cancionSeleccionada != null) {
 			playlistReproducciendo = playlistSeleccionada;
 			cancionReproducciendo = cancionSeleccionada;
 		}
 
-		if (cancionReproducciendo != null) {
+		if (cancionReproducciendo != "None") {
 			Reproductor.INSTANCIA.playCancion(catalogoCanciones.getCancion(cancionReproducciendo).getRutaFichero());
 			if (Reproductor.INSTANCIA.isReproduciendo()) {
 				Cancion cancion = catalogoCanciones.getCancion(cancionReproducciendo);
@@ -244,110 +278,43 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
-	public void siguienteCancion() {
-		PlayList plActual = usuarioActual.getPlayList(playlistReproducciendo);
-		switch (ventanaActual) {
-		case "VentanaBuscar":
-			break;
-		case "VentanaRecientes":
-			plActual = usuarioActual.getPlaylistRecientes();
-			break;
-		case "VentanaMasReproducidas":
-			plActual = playlistMasReproducidas;
-			break;
-		}
-
-		if (plActual == null) {
+	public boolean siguienteCancion() {
+		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
+		if (playlistActual == null)
+			return false;
+		Cancion cancionSiguiente = playlistActual.getSiguienteCancion(cancionReproducciendo);
+		if (cancionSiguiente == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			estadoReproductor = iconoReproducir;
-		} else {
-			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
-			posicion++;
-			Cancion cancion = plActual.getCancionEnPosicion(posicion);
-			if (cancion == null) {
-				Reproductor.INSTANCIA.stopCancion();
-				estadoReproductor = iconoReproducir;
-			} else {
-				setPlayListSeleccionada(playlistReproducciendo);
-				setCancionSeleccionada(cancion.getTitulo());
-				reproducirCancion();
-			}
+			return false;
 		}
+		setPlayListSeleccionada(playlistReproducciendo);
+		setCancionSeleccionada(cancionSiguiente.getTitulo());
+		reproducirCancion();
+		return true;
 	}
 
-	public void anteriorCancion() {
-		PlayList plActual = usuarioActual.getPlayList(playlistReproducciendo);
-		switch (ventanaActual) {
-		case "VentanaBuscar":
-			break;
-		case "VentanaRecientes":
-			plActual = usuarioActual.getPlaylistRecientes();
-			break;
-		case "VentanaMasReproducidas":
-			plActual = playlistMasReproducidas;
-			break;
-		}
-
-		if (plActual == null) {
+	public boolean anteriorCancion() {
+		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
+		if (playlistActual == null)
+			return false;
+		Cancion cancionAnterior = playlistActual.getAnteriorCancion(cancionReproducciendo);
+		if (cancionAnterior == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			estadoReproductor = iconoReproducir;
-		} else {
-			int posicion = plActual.getPosicionCancionEnPlaylist(cancionReproducciendo);
-
-			Cancion cancion = plActual.getCancionEnPosicion(posicion);
-			if (cancion == null) {
-				Reproductor.INSTANCIA.stopCancion();
-				estadoReproductor = iconoReproducir;
-			} else {
-				setPlayListSeleccionada(playlistReproducciendo);
-				setCancionSeleccionada(cancion.getTitulo());
-				reproducirCancion();
-			}
+			return false;
 		}
+		setPlayListSeleccionada(playlistReproducciendo);
+		setCancionSeleccionada(cancionAnterior.getTitulo());
+		reproducirCancion();
+		return true;
 	}
 
 	public void volumen(int volumen) {
 		Reproductor.INSTANCIA.establecerVolumen(volumen);
 	}
 
-	// PLAYLIST
-	public PlayList crearPlaylist(String playlistNombre) {
-		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
-		if (playlist == null) {
-			playlist = new PlayList(playlistNombre);
-			adaptadorPlayList.registrarPlayList(playlist);
-			usuarioActual.addPlayList(playlist);
-		}
-		playlist.addAllCanciones(cancionesSeleccionadas);
-		adaptadorPlayList.modificarPlayList(playlist);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-		cancionesSeleccionadas.clear();
-		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
-		return playlist;
-	}
-
-	public void eliminarPlayList(String playlistNombre) {
-		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
-		if (playlist != null) {
-			usuarioActual.removePlayList(playlist);
-			adaptadorPlayList.borrarPlayList(playlist);
-			adaptadorUsuario.modificarUsuario(usuarioActual);
-		}
-		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
-	}
-
-	public PlayList eliminarCancionDePlayList(String playlistNombre, String cancionNombre) {
-		PlayList playlist = usuarioActual.getPlayList(playlistNombre);
-		if (playlist == null)
-			return null;
-		Cancion cancion = playlist.getCancion(cancionNombre);
-		playlist.removeCancion(cancion);
-		adaptadorPlayList.modificarPlayList(playlist);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
-		return playlist;
-	}
-
-	public void setVentanaActual(String ventanaActual) {
-		this.ventanaActual = ventanaActual;
+	public int getTiempoCancion() {
+		return (int) Reproductor.INSTANCIA.getDuracionCancion();
 	}
 }

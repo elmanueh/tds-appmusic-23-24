@@ -68,6 +68,9 @@ public enum Reproductor {
 				mediaPlayer = new MediaPlayer(media);
 				mediaPlayer.setVolume(volumen);
 				url = urlNueva;
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {}
 				reproduciendo = true;
 				mediaPlayer.play();
 			} catch (MalformedURLException e1) {

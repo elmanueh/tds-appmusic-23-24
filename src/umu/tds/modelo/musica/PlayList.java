@@ -1,6 +1,7 @@
 package umu.tds.modelo.musica;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
 
@@ -67,23 +68,27 @@ public class PlayList {
 		}
 		return false;
 	}
-
-	public int getPosicionCancionEnPlaylist(String cancion) {
-		int x = 0;
-		for (Cancion c : getListaCanciones()) {
-			if (c.getTitulo().equals(cancion))
-				return x;
-			x++;
+	
+	public Cancion getSiguienteCancion(String cancionReproduciendo) {
+		boolean cancionSiguiente = false;
+		for (Cancion cancion : listaCanciones) {
+			if (cancionSiguiente)
+				return cancion;	// devuelvo la siguiente
+			if (cancion.getTitulo().equals(cancionReproduciendo))
+				cancionSiguiente = true;
 		}
-		return -1;
+		return new LinkedList<>(listaCanciones).get(0);	// devuelvo la primera de la lista
 	}
-
-	public Cancion getCancionEnPosicion(int posicion) {
-		int x = 0;
-		for (Cancion cancion : getListaCanciones()) {
-			if (x == posicion)
-				return cancion;
-			x++;
+	
+	public Cancion getAnteriorCancion(String cancionReproduciendo) {
+		Cancion cancionAnterior = null;
+		for (Cancion cancion : listaCanciones) {
+			if (cancion.getTitulo().equals(cancionReproduciendo)) {
+				if (cancionAnterior == null)
+					return new LinkedList<>(listaCanciones).get(listaCanciones.size()-1);	// devuelvo la ultima de la lista
+				return cancionAnterior;	// devuelvo la anterior
+			}
+			cancionAnterior = cancion;
 		}
 		return null;
 	}
