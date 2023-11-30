@@ -159,4 +159,11 @@
 		<interprete>Coldplay</interprete>
 	</cancion>
 	
+	<cancion titulo="CORTO">
+		<URL><![CDATA[http://143.47.53.235/tds/canciones/corto.mp3]]></URL>
+		<estilo>Corto</estilo>
+		<interprete>Julian</interprete>
+	</cancion>
+	
+	
 </canciones>

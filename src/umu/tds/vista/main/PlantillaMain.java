@@ -74,11 +74,12 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JButton btnSecuential;
 	private Luz luz;
 	private JPanel p_cancionActual;
-	private JLabel playlistActual;
-	private JLabel cancionActual;
-	private JLabel lblNewLabel_2;
+	private JLabel lblPlaylistActual;
+	private JLabel lblCancionActual;
+	private JLabel lblTituloReproduciendo;
 	private JSlider sliderCancion;
 	private Timer timer;
+	private JLabel lblModoReproduccion;
 
 	// METODOS
 	private void inicializar() {
@@ -425,34 +426,41 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_p_cancionActual.gridy = 1;
 		p_botonesMultimedia.add(p_cancionActual, gbc_p_cancionActual);
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
-		gbl_p_cancionActual.columnWeights = new double[]{0.0, 0.0, 0.0};
-		gbl_p_cancionActual.columnWidths = new int[]{20, 0, 20};
+		gbl_p_cancionActual.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_p_cancionActual.columnWidths = new int[] { 20, 0, 20 };
 		p_cancionActual.setLayout(gbl_p_cancionActual);
+		
+		lblModoReproduccion = new JLabel("Modo: LIBRE");
+		GridBagConstraints gbc_lblModoReproduccion = new GridBagConstraints();
+		gbc_lblModoReproduccion.insets = new Insets(0, 0, 5, 5);
+		gbc_lblModoReproduccion.gridx = 1;
+		gbc_lblModoReproduccion.gridy = 0;
+		p_cancionActual.add(lblModoReproduccion, gbc_lblModoReproduccion);
 
-		lblNewLabel_2 = new JLabel("REPRODUCIENDO");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 1;
-		gbc_lblNewLabel_2.gridy = 0;
-		p_cancionActual.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		lblTituloReproduciendo = new JLabel("REPRODUCIENDO");
+		lblTituloReproduciendo.setFont(new Font("Tahoma", Font.BOLD, 15));
+		GridBagConstraints gbc_lblTituloReproduciendo = new GridBagConstraints();
+		gbc_lblTituloReproduciendo.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTituloReproduciendo.gridx = 1;
+		gbc_lblTituloReproduciendo.gridy = 1;
+		p_cancionActual.add(lblTituloReproduciendo, gbc_lblTituloReproduciendo);
 
 		sliderCancion = new JSlider();
-		playlistActual = new JLabel("");
-		GridBagConstraints gbc_playlistActual = new GridBagConstraints();
-		gbc_playlistActual.insets = new Insets(0, 0, 5, 5);
-		gbc_playlistActual.gridx = 1;
-		gbc_playlistActual.gridy = 1;
-		p_cancionActual.add(playlistActual, gbc_playlistActual);
-		playlistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
+		lblPlaylistActual = new JLabel("");
+		GridBagConstraints gbc_lblPlaylistActual = new GridBagConstraints();
+		gbc_lblPlaylistActual.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlaylistActual.gridx = 1;
+		gbc_lblPlaylistActual.gridy = 2;
+		p_cancionActual.add(lblPlaylistActual, gbc_lblPlaylistActual);
+		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
 
-		cancionActual = new JLabel("");
-		GridBagConstraints gbc_cancionActual = new GridBagConstraints();
-		gbc_cancionActual.insets = new Insets(0, 0, 0, 5);
-		gbc_cancionActual.gridx = 1;
-		gbc_cancionActual.gridy = 2;
-		p_cancionActual.add(cancionActual, gbc_cancionActual);
-		cancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
+		lblCancionActual = new JLabel("");
+		GridBagConstraints gbc_lblCancionActual = new GridBagConstraints();
+		gbc_lblCancionActual.insets = new Insets(0, 0, 0, 5);
+		gbc_lblCancionActual.gridx = 1;
+		gbc_lblCancionActual.gridy = 3;
+		p_cancionActual.add(lblCancionActual, gbc_lblCancionActual);
+		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
 
 		sliderCancion.setValue(0);
 		sliderCancion.setEnabled(false);
@@ -627,7 +635,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		// MULTIMEDEA
 		if (e.getSource() == btnShuffle) {
+			if (Controlador.INSTANCIA.esModoAleatorio()) {
+				Controlador.INSTANCIA.setModoActual("libre");
+				lblModoReproduccion.setText("Modo: LIBRE");
+			}
+			else {
+			Controlador.INSTANCIA.setModoActual("aleatorio");
+			lblModoReproduccion.setText("Modo: ALEATORIO");
+			
 			// actualizarReproductor();
+			}
 		}
 
 		if (e.getSource() == btnPrevious) {
@@ -648,19 +665,27 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnSecuential) {
+			if (Controlador.INSTANCIA.esModoSecuencial()) {
+				Controlador.INSTANCIA.setModoActual("libre");
+				lblModoReproduccion.setText("Modo: LIBRE");
+			} else {
+			Controlador.INSTANCIA.setModoActual("secuencial");
+			lblModoReproduccion.setText("Modo: SECUENCIAL");
+			
 			// actualizarReproductor();
+			}
 		}
 	}
 
 	private void actualizarReproductor() {
-		String cancionOld = cancionActual.getText();
-		String playlistOld = playlistActual.getText();
-		cancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
-		playlistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
-		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
+		String cancionOld = lblCancionActual.getText();
+		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
+		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
+		btnPlayPause
+				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
 
 		if (Controlador.INSTANCIA.getEstadoReproductor().equals("/umu/tds/vista/imagenes/pausa.png")) {
-			if (!cancionOld.equals(cancionActual.getText()) || !playlistOld.equals(playlistActual.getText())) {
+			if (!cancionOld.equals(lblCancionActual.getText())) {
 				sliderCancion.setValue(0);
 				sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
 				if (timer != null && timer.isRunning())
@@ -680,6 +705,14 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				sliderCancion.setValue(sliderCancion.getValue() + 1);
 				System.out.println(sliderCancion.getValue());
+				
+				if (sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
+					timer.stop(); //PROVISIONAL
+					// seguir reproducciendo o no
+					if (Controlador.INSTANCIA.esModoLibre()) {
+						System.out.println("Cancion-Terminada");
+					}
+				}
 			}
 		});
 		timer.start();

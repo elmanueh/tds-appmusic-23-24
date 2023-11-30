@@ -44,6 +44,9 @@ public enum Controlador implements CancionesListener {
 	private String estadoReproductor;
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
 	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
+	
+	private enum modoReproduccion {LIBRE, SECUENCIAL, ALEATORIO};
+	private modoReproduccion modoActual;
 
 	// CONSTRUCTOR
 	private Controlador() {
@@ -55,6 +58,7 @@ public enum Controlador implements CancionesListener {
 		estadoReproductor = iconoReproducir;
 		cancionReproducciendo = "None";
 		playlistReproducciendo = "None";
+		this.modoActual = modoReproduccion.LIBRE;
 	}
 
 	// METODOS
@@ -321,4 +325,30 @@ public enum Controlador implements CancionesListener {
 	public int getTiempoCancion() {
 		return (int) Reproductor.INSTANCIA.getDuracionCancion();
 	}
+
+	public void setModoActual(String modo) {
+		switch (modo){
+			case "libre":
+				this.modoActual = modoReproduccion.LIBRE;
+				break;
+			case "secuencial":
+				this.modoActual = modoReproduccion.SECUENCIAL;
+				break;
+			case "aleatorio":
+				this.modoActual = modoReproduccion.ALEATORIO;
+				break;
+		}
+	}
+	
+    public boolean esModoSecuencial() {
+        return modoActual == modoReproduccion.SECUENCIAL;
+    }
+    
+    public boolean esModoAleatorio() {
+        return modoActual == modoReproduccion.ALEATORIO;
+    }
+    
+    public boolean esModoLibre() {
+        return modoActual == modoReproduccion.LIBRE;
+    }
 }

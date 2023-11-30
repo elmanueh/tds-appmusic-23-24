@@ -78,7 +78,6 @@ public enum Reproductor {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-
 		}
 	}
 
@@ -112,7 +111,7 @@ public enum Reproductor {
 		}
 	}
 
-	public double getDuracionCancion() {
+	public double getDuracionCancion() { //TODO: eliminar estar 3 lineas
 		if (mediaPlayer == null)
 			return 1;
 		System.out.println((int) mediaPlayer.getMedia().getDuration().toSeconds());
