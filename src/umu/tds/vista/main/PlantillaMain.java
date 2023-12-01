@@ -81,8 +81,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private Timer timer;
 	private JLabel lblModoReproduccion;
 	
-	private static final String modoSecuencial = "secuencial";
-	private static final String modoAleatorio = "aleatorio";
+	private static final String modoSecuencial = "ModoSecuencial";
+	private static final String modoAleatorio = "ModoAleatorio";
+	private static final String modoBucleCancion = "ModoBucleCancion";
 
 	// METODOS
 	private void inicializar() {
@@ -640,7 +641,6 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnShuffle) {
 			Controlador.INSTANCIA.setModoActual(modoAleatorio);
 			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
-			// actualizarReproductor();
 		}
 
 		if (e.getSource() == btnPrevious) {
@@ -663,7 +663,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnSecuential) {
 			Controlador.INSTANCIA.setModoActual(modoSecuencial);
 			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
-			// actualizarReproductor();
+			if (Controlador.INSTANCIA.getModoReproduccion().equals(modoBucleCancion))
+				btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/bucle-cancion.png")));
+			else
+				btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		}
 	}
 
@@ -674,7 +677,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
 
 		if (Controlador.INSTANCIA.getEstadoReproductor().equals("/umu/tds/vista/imagenes/pausa.png")) {
-			if (!cancionOld.equals(lblCancionActual.getText())) {
+			if (!cancionOld.equals(lblCancionActual.getText()) || sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
 				sliderCancion.setValue(0);
 				sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
 				if (timer != null && timer.isRunning())
@@ -694,12 +697,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				sliderCancion.setValue(sliderCancion.getValue() + 1);
 				System.out.println(sliderCancion.getValue());
-				
 				if (sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
-					timer.stop();
-					if (Controlador.INSTANCIA.siguienteCancion()) {
-						actualizarReproductor();
-					}
+					Controlador.INSTANCIA.siguienteCancion();
+					actualizarReproductor();
 				}
 			}
 		});

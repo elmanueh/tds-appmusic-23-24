@@ -3,7 +3,7 @@ package umu.tds.modelo.reproductor;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-public class ModoLibre implements ModoReproduccion{
+public class ModoLibre implements IModoReproduccion{
 
 	@Override
 	public Cancion siguienteCancion(PlayList playlistActual, String cancionActual) {

@@ -3,7 +3,7 @@ package umu.tds.modelo.reproductor;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
-public class ModoAleatorio implements ModoReproduccion {
+public class ModoAleatorio implements IModoReproduccion {
 	
 	private static final int MAX_ALEATORIO = 20;
 	
