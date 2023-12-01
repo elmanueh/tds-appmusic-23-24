@@ -1,4 +1,4 @@
-package umu.tds.modelo;
+package umu.tds.modelo.reproductor;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,7 +114,6 @@ public enum Reproductor {
 	public double getDuracionCancion() { //TODO: eliminar estar 3 lineas
 		if (mediaPlayer == null)
 			return 1;
-		System.out.println((int) mediaPlayer.getMedia().getDuration().toSeconds());
 		return mediaPlayer.getMedia().getDuration().toSeconds();
 	}
 }

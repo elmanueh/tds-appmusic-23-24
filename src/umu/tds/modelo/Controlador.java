@@ -22,6 +22,11 @@ import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.EstiloMusical;
 import umu.tds.modelo.musica.PlayList;
+import umu.tds.modelo.reproductor.ModoAleatorio;
+import umu.tds.modelo.reproductor.ModoLibre;
+import umu.tds.modelo.reproductor.ModoReproduccion;
+import umu.tds.modelo.reproductor.ModoSecuencial;
+import umu.tds.modelo.reproductor.Reproductor;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
 import umu.tds.modelo.cargador.CancionesEvent;
@@ -45,8 +50,7 @@ public enum Controlador implements CancionesListener {
 	private static final String iconoParar = "/umu/tds/vista/imagenes/pausa.png";
 	private static final String iconoReproducir = "/umu/tds/vista/imagenes/tocar.png";
 	
-	private enum modoReproduccion {LIBRE, SECUENCIAL, ALEATORIO};
-	private modoReproduccion modoActual;
+	private ModoReproduccion modoReproduccion;
 
 	// CONSTRUCTOR
 	private Controlador() {
@@ -58,7 +62,7 @@ public enum Controlador implements CancionesListener {
 		estadoReproductor = iconoReproducir;
 		cancionReproducciendo = "None";
 		playlistReproducciendo = "None";
-		this.modoActual = modoReproduccion.LIBRE;
+		modoReproduccion = new ModoLibre();
 	}
 
 	// METODOS
@@ -288,9 +292,7 @@ public enum Controlador implements CancionesListener {
 
 	public boolean siguienteCancion() {
 		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
-		if (playlistActual == null)
-			return false;
-		Cancion cancionSiguiente = playlistActual.getSiguienteCancion(cancionReproducciendo);
+		Cancion cancionSiguiente = modoReproduccion.siguienteCancion(playlistActual, cancionReproducciendo);
 		if (cancionSiguiente == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			estadoReproductor = iconoReproducir;
@@ -304,9 +306,7 @@ public enum Controlador implements CancionesListener {
 
 	public boolean anteriorCancion() {
 		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
-		if (playlistActual == null)
-			return false;
-		Cancion cancionAnterior = playlistActual.getAnteriorCancion(cancionReproducciendo);
+		Cancion cancionAnterior = modoReproduccion.anteriorCancion(playlistActual, cancionReproducciendo);
 		if (cancionAnterior == null) {
 			Reproductor.INSTANCIA.stopCancion();
 			estadoReproductor = iconoReproducir;
@@ -326,29 +326,25 @@ public enum Controlador implements CancionesListener {
 		return (int) Reproductor.INSTANCIA.getDuracionCancion();
 	}
 
-	public void setModoActual(String modo) {
-		switch (modo){
-			case "libre":
-				this.modoActual = modoReproduccion.LIBRE;
-				break;
+	public void setModoActual(String modoReproduccion) {
+		switch (modoReproduccion){
 			case "secuencial":
-				this.modoActual = modoReproduccion.SECUENCIAL;
+				if (!(this.modoReproduccion instanceof ModoSecuencial)) {
+					this.modoReproduccion = new ModoSecuencial();
+					return;
+				}
 				break;
 			case "aleatorio":
-				this.modoActual = modoReproduccion.ALEATORIO;
+				if (!(this.modoReproduccion instanceof ModoAleatorio)) {
+					this.modoReproduccion = new ModoAleatorio();
+					return;
+				}
 				break;
 		}
+		this.modoReproduccion = new ModoLibre();
 	}
 	
-    public boolean esModoSecuencial() {
-        return modoActual == modoReproduccion.SECUENCIAL;
-    }
-    
-    public boolean esModoAleatorio() {
-        return modoActual == modoReproduccion.ALEATORIO;
-    }
-    
-    public boolean esModoLibre() {
-        return modoActual == modoReproduccion.LIBRE;
-    }
+	public String getModoReproduccion() {
+		return modoReproduccion.getClass().getSimpleName();
+	}
 }

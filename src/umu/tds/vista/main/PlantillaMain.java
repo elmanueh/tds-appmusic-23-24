@@ -80,6 +80,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JSlider sliderCancion;
 	private Timer timer;
 	private JLabel lblModoReproduccion;
+	
+	private static final String modoSecuencial = "secuencial";
+	private static final String modoAleatorio = "aleatorio";
 
 	// METODOS
 	private void inicializar() {
@@ -410,7 +413,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		btnSecuential = new JButton("");
 		btnSecuential.setBorderPainted(false);
-		btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
+		btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		GridBagConstraints gbc_btnSecuential = new GridBagConstraints();
 		gbc_btnSecuential.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSecuential.gridx = 9;
@@ -635,16 +638,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		// MULTIMEDEA
 		if (e.getSource() == btnShuffle) {
-			if (Controlador.INSTANCIA.esModoAleatorio()) {
-				Controlador.INSTANCIA.setModoActual("libre");
-				lblModoReproduccion.setText("Modo: LIBRE");
-			}
-			else {
-			Controlador.INSTANCIA.setModoActual("aleatorio");
-			lblModoReproduccion.setText("Modo: ALEATORIO");
-			
+			Controlador.INSTANCIA.setModoActual(modoAleatorio);
+			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
 			// actualizarReproductor();
-			}
 		}
 
 		if (e.getSource() == btnPrevious) {
@@ -665,15 +661,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnSecuential) {
-			if (Controlador.INSTANCIA.esModoSecuencial()) {
-				Controlador.INSTANCIA.setModoActual("libre");
-				lblModoReproduccion.setText("Modo: LIBRE");
-			} else {
-			Controlador.INSTANCIA.setModoActual("secuencial");
-			lblModoReproduccion.setText("Modo: SECUENCIAL");
-			
+			Controlador.INSTANCIA.setModoActual(modoSecuencial);
+			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
 			// actualizarReproductor();
-			}
 		}
 	}
 
@@ -681,8 +671,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		String cancionOld = lblCancionActual.getText();
 		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
 		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
-		btnPlayPause
-				.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
+		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
 
 		if (Controlador.INSTANCIA.getEstadoReproductor().equals("/umu/tds/vista/imagenes/pausa.png")) {
 			if (!cancionOld.equals(lblCancionActual.getText())) {
@@ -707,10 +696,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				System.out.println(sliderCancion.getValue());
 				
 				if (sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
-					timer.stop(); //PROVISIONAL
-					// seguir reproducciendo o no
-					if (Controlador.INSTANCIA.esModoLibre()) {
-						System.out.println("Cancion-Terminada");
+					timer.stop();
+					if (Controlador.INSTANCIA.siguienteCancion()) {
+						actualizarReproductor();
 					}
 				}
 			}
