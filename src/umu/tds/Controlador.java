@@ -1,6 +1,7 @@
-package umu.tds.modelo;
+package umu.tds;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.EventObject;
 import java.util.LinkedHashSet;
@@ -12,6 +13,8 @@ import java.util.Comparator;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.itextpdf.text.DocumentException;
 
 import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
@@ -91,7 +94,6 @@ public enum Controlador implements CancionesListener {
 		Usuario usuario = catalogoUsuarios.getUsuario(usuarioAux);
 		if (usuario != null && usuario.getContraseña().equals(contraseñaAux)) {
 			usuarioActual = usuario;
-			ControladorVentanas.INSTANCIA.logInSatisfactorio();
 			return true;
 		}
 		return false;
@@ -120,7 +122,6 @@ public enum Controlador implements CancionesListener {
 		playlistReproducciendo = "None";
 		Reproductor.INSTANCIA.stopCancion();
 		estadoReproductor = iconoReproducir;
-		ControladorVentanas.INSTANCIA.logOutSatisfactorio();
 	}
 
 	// =======================================
@@ -137,7 +138,6 @@ public enum Controlador implements CancionesListener {
 		adaptadorPlayList.modificarPlayList(playlist);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
 		cancionesSeleccionadas.clear();
-		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 		return playlist;
 	}
 
@@ -148,7 +148,6 @@ public enum Controlador implements CancionesListener {
 			adaptadorPlayList.borrarPlayList(playlist);
 			adaptadorUsuario.modificarUsuario(usuarioActual);
 		}
-		ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 	}
 
 	public PlayList eliminarCancionDePlayList(String playlistNombre, String cancionNombre) {
@@ -247,16 +246,11 @@ public enum Controlador implements CancionesListener {
 	public String getEstadoReproductor() {
 		return estadoReproductor;
 	}
-
-	public void configuracionPremium() {
-		ControladorVentanas.INSTANCIA.iniciarModoPremium();
-	}
-
+	
 	public void usuarioEstablecerPremium(boolean premium, double cuota) {
 		usuarioActual.setPremium(premium);
 		usuarioActual.setCuota(cuota);
 		adaptadorUsuario.modificarUsuario(usuarioActual);
-		ControladorVentanas.INSTANCIA.usuarioPremium(premium);
 	}
 
 	public void añadirCancionSeleccionada(String cancionNombre) {
@@ -270,7 +264,7 @@ public enum Controlador implements CancionesListener {
 	// =======================================
 	// ============= REPRODUCTOR =============
 	// =======================================
-	public void reproducirCancion() {
+	public boolean reproducirCancion() {
 		if (playlistSeleccionada != null && cancionSeleccionada != null) {
 			playlistReproducciendo = playlistSeleccionada;
 			cancionReproduciendo = cancionSeleccionada;
@@ -285,10 +279,13 @@ public enum Controlador implements CancionesListener {
 				usuarioActual.addCancionReciente(cancion);
 				adaptadorUsuario.modificarUsuario(usuarioActual);
 				estadoReproductor = iconoParar;
+				return true;
 			} else {
 				estadoReproductor = iconoReproducir;
+				return false;
 			}
 		}
+		return false;
 	}
 
 	public boolean siguienteCancion() {
@@ -354,5 +351,10 @@ public enum Controlador implements CancionesListener {
 	
 	public String getModoReproduccion() {
 		return modoReproduccion.getClass().getSimpleName();
+	}
+	
+	//GENERAR PDF
+	public void generarPDF(String ruta) throws IOException, DocumentException {
+		CreadorPDF.generarPDF(getUsuarioActual(), ruta);
 	}
 }

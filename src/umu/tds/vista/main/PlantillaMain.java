@@ -5,7 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 import umu.tds.modelo.musica.PlayList;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -80,6 +81,8 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JSlider sliderCancion;
 	private Timer timer;
 	private JLabel lblModoReproduccion;
+	private JLabel tiempoActual;
+	private JLabel tiempoMaximo;
 	
 	private static final String modoSecuencial = "ModoSecuencial";
 	private static final String modoAleatorio = "ModoAleatorio";
@@ -371,9 +374,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		GridBagLayout gbl_p_botonesMultimedia = new GridBagLayout();
 		gbl_p_botonesMultimedia.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_p_botonesMultimedia.rowHeights = new int[] { 20, 0, 10, 0, 10 };
-		gbl_p_botonesMultimedia.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+		gbl_p_botonesMultimedia.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 1.0, 0.0 };
-		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 15, 0, 0, 0 };
+		gbl_p_botonesMultimedia.columnWidths = new int[] { 0, 0, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, 15, 0, 0, 0 };
 		p_botonesMultimedia.setLayout(gbl_p_botonesMultimedia);
 
 		btnShuffle = new JButton("");
@@ -381,7 +384,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnShuffle.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/barajar.png")));
 		GridBagConstraints gbc_btnShuffle = new GridBagConstraints();
 		gbc_btnShuffle.insets = new Insets(0, 0, 5, 5);
-		gbc_btnShuffle.gridx = 1;
+		gbc_btnShuffle.gridx = 2;
 		gbc_btnShuffle.gridy = 1;
 		p_botonesMultimedia.add(btnShuffle, gbc_btnShuffle);
 
@@ -390,7 +393,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnPrevious.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/paso-atras.png")));
 		GridBagConstraints gbc_btnPrevious = new GridBagConstraints();
 		gbc_btnPrevious.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPrevious.gridx = 3;
+		gbc_btnPrevious.gridx = 4;
 		gbc_btnPrevious.gridy = 1;
 		p_botonesMultimedia.add(btnPrevious, gbc_btnPrevious);
 
@@ -399,7 +402,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
 		GridBagConstraints gbc_btnPlayPause = new GridBagConstraints();
 		gbc_btnPlayPause.insets = new Insets(0, 0, 5, 5);
-		gbc_btnPlayPause.gridx = 5;
+		gbc_btnPlayPause.gridx = 6;
 		gbc_btnPlayPause.gridy = 1;
 		p_botonesMultimedia.add(btnPlayPause, gbc_btnPlayPause);
 
@@ -408,7 +411,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnNext.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/un-paso-adelante.png")));
 		GridBagConstraints gbc_btnNext = new GridBagConstraints();
 		gbc_btnNext.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNext.gridx = 7;
+		gbc_btnNext.gridx = 8;
 		gbc_btnNext.gridy = 1;
 		p_botonesMultimedia.add(btnNext, gbc_btnNext);
 
@@ -417,7 +420,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		GridBagConstraints gbc_btnSecuential = new GridBagConstraints();
 		gbc_btnSecuential.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSecuential.gridx = 9;
+		gbc_btnSecuential.gridx = 10;
 		gbc_btnSecuential.gridy = 1;
 		p_botonesMultimedia.add(btnSecuential, gbc_btnSecuential);
 
@@ -426,7 +429,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_p_cancionActual.fill = GridBagConstraints.BOTH;
 		gbc_p_cancionActual.gridheight = 3;
 		gbc_p_cancionActual.insets = new Insets(0, 0, 5, 0);
-		gbc_p_cancionActual.gridx = 13;
+		gbc_p_cancionActual.gridx = 15;
 		gbc_p_cancionActual.gridy = 1;
 		p_botonesMultimedia.add(p_cancionActual, gbc_p_cancionActual);
 		GridBagLayout gbl_p_cancionActual = new GridBagLayout();
@@ -465,6 +468,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_lblCancionActual.gridy = 3;
 		p_cancionActual.add(lblCancionActual, gbc_lblCancionActual);
 		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
+		
+		tiempoActual = new JLabel("");
+		GridBagConstraints gbc_tiempoActual = new GridBagConstraints();
+		gbc_tiempoActual.insets = new Insets(0, 0, 5, 5);
+		gbc_tiempoActual.gridx = 1;
+		gbc_tiempoActual.gridy = 3;
+		p_botonesMultimedia.add(tiempoActual, gbc_tiempoActual);
 
 		sliderCancion.setValue(0);
 		sliderCancion.setEnabled(false);
@@ -472,7 +482,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_sliderCancion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_sliderCancion.gridwidth = 9;
 		gbc_sliderCancion.insets = new Insets(0, 0, 5, 5);
-		gbc_sliderCancion.gridx = 1;
+		gbc_sliderCancion.gridx = 2;
 		gbc_sliderCancion.gridy = 3;
 		p_botonesMultimedia.add(sliderCancion, gbc_sliderCancion);
 
@@ -492,9 +502,16 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbc_sliderVolumen.insets = new Insets(0, 0, 5, 5);
 		gbc_sliderVolumen.fill = GridBagConstraints.VERTICAL;
 		gbc_sliderVolumen.gridheight = 3;
-		gbc_sliderVolumen.gridx = 11;
+		gbc_sliderVolumen.gridx = 13;
 		gbc_sliderVolumen.gridy = 1;
 		p_botonesMultimedia.add(sliderVolumen, gbc_sliderVolumen);
+		
+		tiempoMaximo = new JLabel("");
+		GridBagConstraints gbc_tiempoMaximo = new GridBagConstraints();
+		gbc_tiempoMaximo.insets = new Insets(0, 0, 5, 5);
+		gbc_tiempoMaximo.gridx = 11;
+		gbc_tiempoMaximo.gridy = 3;
+		p_botonesMultimedia.add(tiempoMaximo, gbc_tiempoMaximo);
 
 		p_cardLayout = new JPanel();
 		p_cardLayout.setVisible(false);
@@ -568,7 +585,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnPremium) {
-			Controlador.INSTANCIA.configuracionPremium();
+			ControladorVentanas.INSTANCIA.iniciarModoPremium();
 		}
 
 		if (e.getSource() == btnLogOut) {
@@ -576,6 +593,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 				timer.stop();
 			}
 			Controlador.INSTANCIA.cerrarSesion();
+			ControladorVentanas.INSTANCIA.logOutSatisfactorio();
 		}
 
 		if (e.getSource() == btnBuscar) {
@@ -641,22 +659,32 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		if (e.getSource() == btnShuffle) {
 			Controlador.INSTANCIA.setModoActual(modoAleatorio);
 			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
+			btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		}
 
 		if (e.getSource() == btnPrevious) {
-			if (Controlador.INSTANCIA.anteriorCancion()) {
-				actualizarReproductor();
+			boolean hayCancion = Controlador.INSTANCIA.anteriorCancion();
+			if (hayCancion){
+				reiniciarTimerSlider();
+				actualizarReproductor(hayCancion);
+			} else {
+				actualizarReproductor(hayCancion);
+				reiniciarTimerSlider();
 			}
 		}
 
 		if (e.getSource() == btnPlayPause) {
-			Controlador.INSTANCIA.reproducirCancion();
-			actualizarReproductor();
+			actualizarReproductor(Controlador.INSTANCIA.reproducirCancion());
 		}
 
 		if (e.getSource() == btnNext) {
-			if (Controlador.INSTANCIA.siguienteCancion()) {
-				actualizarReproductor();
+			boolean hayCancion = Controlador.INSTANCIA.siguienteCancion();
+			if (hayCancion){
+				reiniciarTimerSlider();
+				actualizarReproductor(hayCancion);
+			} else {
+				actualizarReproductor(hayCancion);
+				reiniciarTimerSlider();
 			}
 		}
 
@@ -670,40 +698,64 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 	}
 
-	private void actualizarReproductor() {
+	private void actualizarReproductor(boolean b) {
 		String cancionOld = lblCancionActual.getText();
 		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
 		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
-		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));
+		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));	// quitar getEstadoReproductor() porque tenemos el valor en "b"
 
-		if (Controlador.INSTANCIA.getEstadoReproductor().equals("/umu/tds/vista/imagenes/pausa.png")) {
-			if (!cancionOld.equals(lblCancionActual.getText()) || sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
-				sliderCancion.setValue(0);
-				sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
-				if (timer != null && timer.isRunning())
-					timer.stop();
-			}
-			activarSliderCancion();
-		} else {
-			if (timer != null && timer.isRunning()) {
+		if (timer == null) {	// si no hay nada reproduciendose
+			inicializarTimerSlider();
+		} else {	// reproduciendose
+			System.out.println(b);
+			if (b) {	// se ejecuta el boton play
+				if (!cancionOld.equals(lblCancionActual.getText())) {
+					reiniciarTimerSlider();
+					inicializarTimerSlider();
+				} else {
+					timer.start();
+				}
+				
+			} else {	// se ejecuta el boton pause
 				timer.stop();
 			}
 		}
 	}
-
-	private void activarSliderCancion() {
+	
+	private void inicializarTimerSlider() {
+		sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
+		tiempoActual.setText(sliderCancion.getValue()/60 + ":" + String.format("%02d", sliderCancion.getValue()%60));
+		int tiempoSec = Controlador.INSTANCIA.getTiempoCancion();
+		tiempoMaximo.setText(Integer.toString(tiempoSec/60) + ":" + String.format("%02d", tiempoSec%60));
+		System.out.println(Controlador.INSTANCIA.getTiempoCancion());
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sliderCancion.setValue(sliderCancion.getValue() + 1);
+				tiempoActual.setText(sliderCancion.getValue()/60 + ":" + String.format("%02d", sliderCancion.getValue()%60));
 				System.out.println(sliderCancion.getValue());
 				if (sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
-					Controlador.INSTANCIA.siguienteCancion();
-					actualizarReproductor();
+					boolean hayCancion = Controlador.INSTANCIA.siguienteCancion();
+					if (hayCancion){
+						reiniciarTimerSlider();
+						actualizarReproductor(hayCancion);
+					} else {
+						actualizarReproductor(hayCancion);
+						reiniciarTimerSlider();
+					}
 				}
 			}
 		});
 		timer.start();
+	}
+	
+	private void reiniciarTimerSlider() {
+		sliderCancion.setValue(0);
+		if (timer != null)
+			timer.stop();
+		timer = null;
+		tiempoActual.setText("");
+		tiempoMaximo.setText("");
 	}
 
 }

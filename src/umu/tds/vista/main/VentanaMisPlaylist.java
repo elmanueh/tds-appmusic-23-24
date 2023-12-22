@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
 import umu.tds.modelo.musica.Cancion;
 
 import java.awt.Color;

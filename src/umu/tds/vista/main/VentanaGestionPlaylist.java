@@ -5,7 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
@@ -51,6 +52,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 						opciones[0]);
 				if (respuesta == JOptionPane.YES_OPTION) {
 					Controlador.INSTANCIA.crearPlaylist(playlistNombre);
+					ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 				}
 			}
 			txtTitulo.setText(playlistNombre);
@@ -249,6 +251,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 								cancion.getInterprete().getInterprete(), false };
 						modelo.addRow(fila);
 					}
+					ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 				}
 			}
 		}
@@ -260,6 +263,7 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
 			if (respuesta == JOptionPane.YES_OPTION) {
 				Controlador.INSTANCIA.eliminarPlayList(txtTitulo.getText());
+				ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 				DefaultTableModel modelo = (DefaultTableModel) tablaCanciones.getModel();
 				modelo.setRowCount(0);
 				txtTitulo.setText("");

@@ -3,14 +3,7 @@ package umu.tds.vista.main;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-
-import umu.tds.modelo.Controlador;
-import umu.tds.modelo.musica.Cancion;
-import umu.tds.modelo.musica.PlayList;
+import umu.tds.Controlador;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
@@ -20,8 +13,6 @@ import java.awt.Font;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 
@@ -92,33 +83,11 @@ public class VentanaGenerarPDF extends JPanel {
             File archivo = fileChooser.getSelectedFile();
 
             // Generar el PDF con los días de la semana
-            try {
-                try {
-					generarPDF(archivo.getAbsolutePath());
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+			try {
+				Controlador.INSTANCIA.generarPDF(archivo.getAbsolutePath());
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
         }
-    }
-
-    private void generarPDF(String ruta) throws IOException, DocumentException {
-    	FileOutputStream archivo = new FileOutputStream(ruta);
-        Document documento = new Document();
-		PdfWriter.getInstance(documento, archivo);
-		documento.open();
-		documento.add(new Paragraph("LISTADO DE PLAYLIST DEL USUARIO: " + Controlador.INSTANCIA.getUsuarioActual().getNombre()));
-		documento.add(new Paragraph());
-		for (PlayList p: Controlador.INSTANCIA.getUsuarioActual().getListaPlayList()) {
-			documento.add(new Paragraph(" "));
-			documento.add(new Paragraph("Playlist " + p.getNombre()));
-			for (Cancion c: p.getListaCanciones()) {
-				documento.add(new Paragraph("Titulo: " + c.getTitulo() + ", Interprete: " + c.getInterprete().getInterprete() + ", Estilo: " + c.getEstiloMusical().getEstilo()));
-			}
-		}
-		documento.close();
     }
 }

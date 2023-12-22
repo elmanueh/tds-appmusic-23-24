@@ -12,7 +12,8 @@ import javax.swing.JOptionPane;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 import umu.tds.modelo.descuento.Descuento;
 import umu.tds.vista.inicio.PlantillaInicio;
 
@@ -153,6 +154,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 
 			JOptionPane.showMessageDialog(null, mensaje, "GRACIAS POR SUSCRIBIRTE", JOptionPane.PLAIN_MESSAGE);
 			Controlador.INSTANCIA.usuarioEstablecerPremium(true, d.Precio());
+			ControladorVentanas.INSTANCIA.usuarioPremium(true);
 			dispose();
 		}
 
@@ -161,6 +163,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 					"Te esperamos de vuelta pronto\n\nPuedes disfrutar de nuestros códigos promocionales",
 					"HASTA PRONTO !!!", JOptionPane.PLAIN_MESSAGE);
 			Controlador.INSTANCIA.usuarioEstablecerPremium(false, 0);
+			ControladorVentanas.INSTANCIA.usuarioPremium(false);
 			dispose();
 		}
 

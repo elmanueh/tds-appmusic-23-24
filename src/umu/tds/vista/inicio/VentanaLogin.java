@@ -1,7 +1,8 @@
 package umu.tds.vista.inicio;
 
 import javax.swing.*;
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -211,6 +212,8 @@ public class VentanaLogin extends JPanel implements ActionListener, MouseListene
 			if (!login) {
 				JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos.",
 						"Problema en Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
+			} else {
+				ControladorVentanas.INSTANCIA.logInSatisfactorio();
 			}
 		}
 

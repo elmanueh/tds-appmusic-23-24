@@ -5,7 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-import umu.tds.modelo.Controlador;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
@@ -323,6 +324,7 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 			if (playlistNombre.length() <= 25) {
 				guardarSeleccionados();
 				Controlador.INSTANCIA.crearPlaylist(playlistNombre);
+				ControladorVentanas.INSTANCIA.reiniciarPlantillaMain();
 			}
 
 			else

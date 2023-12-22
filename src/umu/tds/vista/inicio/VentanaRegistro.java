@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import com.toedter.calendar.JDateChooser;
 
-import umu.tds.modelo.Controlador;
-import umu.tds.modelo.ControladorVentanas;
+import umu.tds.Controlador;
+import umu.tds.ControladorVentanas;
 
 import java.awt.event.ActionListener;
 import java.util.Date;

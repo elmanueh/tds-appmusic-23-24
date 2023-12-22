@@ -1,4 +1,4 @@
-package umu.tds.modelo;
+package umu.tds;
 
 import javax.swing.UIManager;
 
@@ -64,7 +64,7 @@ public enum ControladorVentanas {
 		plantillaMain.usuarioPremium(estadoPremium);
 	}
 
-	void reiniciarPlantillaMain() {
+	public void reiniciarPlantillaMain() {
 		plantillaMain.cargarVentana();
 	}
 
