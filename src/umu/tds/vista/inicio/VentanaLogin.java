@@ -1,6 +1,8 @@
 package umu.tds.vista.inicio;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import umu.tds.Controlador;
 import umu.tds.ControladorVentanas;
 
@@ -9,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
 public class VentanaLogin extends JPanel implements ActionListener, MouseListener {
 
@@ -224,7 +227,29 @@ public class VentanaLogin extends JPanel implements ActionListener, MouseListene
 		}
 
 		if (e.getSource() == botonGitHub) {
-			JOptionPane.showMessageDialog(null, "Funcionalidad no disponible. ", "Error", JOptionPane.WARNING_MESSAGE);
+			String usuario = textoUsuario.getText();
+			Boolean login = false;
+	        
+			// Crear un objeto JFileChooser
+	    	JFileChooser fileChooser = new JFileChooser();
+	    	FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de clave GitHub", "properties");
+			fileChooser.setFileFilter(filter);
+
+	        // Mostrar el diálogo de selección de archivo
+	        int seleccion = fileChooser.showSaveDialog(null);
+
+	        if (seleccion == JFileChooser.APPROVE_OPTION) {
+	            // Obtener el archivo seleccionado
+	            File archivo = fileChooser.getSelectedFile();
+				login = Controlador.INSTANCIA.loginGitHub(usuario, archivo.getAbsolutePath());
+	        }
+			
+			if (!login) {
+				JOptionPane.showMessageDialog(null, "Fallo al iniciar sesión con GitHub",
+						"Problema en Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
+			} else {
+				ControladorVentanas.INSTANCIA.logInSatisfactorio();
+			}
 		}
 
 	}

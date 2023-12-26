@@ -21,6 +21,7 @@ import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
 import umu.tds.dao.IAdaptadorPlayListDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
+import umu.tds.github.LoginGitHub;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.CatalogoCanciones;
 import umu.tds.modelo.musica.EstiloMusical;
@@ -356,5 +357,10 @@ public enum Controlador implements CancionesListener {
 	//GENERAR PDF
 	public void generarPDF(String ruta) throws IOException, DocumentException {
 		CreadorPDF.generarPDF(getUsuarioActual(), ruta);
+	}
+
+	// LOGIN GITHUB
+	public Boolean loginGitHub(String usuario, String githubPropertiesPath) {
+		return LoginGitHub.INSTANCE.verificar(usuario, githubPropertiesPath);
 	}
 }
