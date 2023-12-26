@@ -22,6 +22,7 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -29,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -38,6 +40,7 @@ import java.awt.CardLayout;
 import javax.swing.JSlider;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.event.ChangeEvent;
 import pulsador.Luz;
@@ -201,8 +204,20 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		luz = new Luz();
 		luz.addEncendidoListener(new IEncendidoListener() {
 			public void enteradoCambioEncendido(EventObject arg0) {
-				Controlador.INSTANCIA.cargarCanciones();
-				ventanaBuscar.actualizarEstilos();
+				String path = System.getProperty("user.dir") + File.separator + "xml";
+				File inicio = new File(path);
+				JFileChooser fileChooser = new JFileChooser(inicio);
+
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
+				fileChooser.setFileFilter(filter);
+
+				int result = fileChooser.showOpenDialog(null);
+
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					Controlador.INSTANCIA.cargarCanciones(selectedFile.getAbsolutePath());
+					ventanaBuscar.actualizarEstilos();
+				}
 			}
 		});
 

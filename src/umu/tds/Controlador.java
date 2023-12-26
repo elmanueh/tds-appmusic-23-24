@@ -1,6 +1,5 @@
 package umu.tds;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.EventObject;
@@ -10,9 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Comparator;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.itextpdf.text.DocumentException;
 
@@ -99,6 +95,15 @@ public enum Controlador implements CancionesListener {
 		}
 		return false;
 	}
+	
+	public Boolean loginGitHub(String nombreUsuario, String githubPropertiesPath) {
+		if (LoginGitHub.INSTANCE.verificar(nombreUsuario, githubPropertiesPath) && existeUsuario(nombreUsuario)) {
+			usuarioActual = catalogoUsuarios.getUsuario(nombreUsuario);
+			return true;
+		}
+		else
+			return false;
+	}
 
 	public void registrarUsuario(String nombre, String email, Date fecha, String contraseña) {
 		Usuario usuario = new Usuario(nombre, email, fecha, contraseña);
@@ -113,6 +118,12 @@ public enum Controlador implements CancionesListener {
 
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
+	}
+
+	public void usuarioEstablecerPremium(boolean premium, double cuota) {
+		usuarioActual.setPremium(premium);
+		usuarioActual.setCuota(cuota);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	public void cerrarSesion() {
@@ -168,8 +179,6 @@ public enum Controlador implements CancionesListener {
 	@Override
 	public void enteradoNuevasCanciones(EventObject e) {
 		CancionesEvent evento = (CancionesEvent) e;
-		System.out.println("ME HAN LLEGADO NUEVAS CANCIONES");
-
 		for (umu.tds.componente.Cancion c : evento.getCanciones().getCancion()) {
 			Cancion cancion = new Cancion(c.getTitulo(), c.getURL(), c.getEstilo(), c.getInterprete());
 			adaptadorCancion.registrarCancion(cancion);
@@ -177,35 +186,24 @@ public enum Controlador implements CancionesListener {
 		}
 	}
 
-	public void cargarCanciones() {
-		String path = System.getProperty("user.dir") + File.separator + "xml";
-		File inicio = new File(path);
-		JFileChooser fileChooser = new JFileChooser(inicio);
-
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto (*.xml)", "xml");
-		fileChooser.setFileFilter(filter);
-
-		int result = fileChooser.showOpenDialog(null);
-
-		if (result == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile.getAbsolutePath());
-		}
+	public void cargarCanciones(String selectedFile) {
+		CargadorCanciones.INSTANCIA.setArchivoCanciones(selectedFile);
 	}
 
 	public LinkedList<String> getEstilos() {
-		LinkedList<String> nombresEstilos = Cancion.getRegistroEstilo().stream().map(EstiloMusical::getEstilo)
+		LinkedList<String> nombresEstilos = Cancion.getRegistroEstilo().stream()
+				.map(EstiloMusical::getEstilo)
 				.collect(Collectors.toCollection(LinkedList::new));
 		nombresEstilos.addFirst("");
 		return nombresEstilos;
 	}
 
-	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo,
-			boolean favorito) {
+	public LinkedList<Cancion> getCancionesFiltradas(String titulo, String interprete, String estilo, boolean favorito) {
 		LinkedList<Cancion> canciones = new LinkedList<>();
 		Stream<Cancion> cancionStream;
 		if (favorito) {
-			cancionStream = usuarioActual.getListaPlayList().stream().flatMap(pl -> pl.getListaCanciones().stream());
+			cancionStream = usuarioActual.getListaPlayList().stream()
+					.flatMap(pl -> pl.getListaCanciones().stream());
 		} else {
 			cancionStream = catalogoCanciones.getCanciones().stream();
 		}
@@ -218,10 +216,11 @@ public enum Controlador implements CancionesListener {
 	}
 
 	public List<Cancion> getCancionesMasReproducidas() {
-		List<Cancion> listaTOP10 = catalogoCanciones.getCanciones();
-		listaTOP10 = listaTOP10.stream().filter(c -> c.getNumReproducciones() > 0)
-				.sorted(Comparator.comparingInt(Cancion::getNumReproducciones).reversed()).collect(Collectors.toList());
-		return listaTOP10.subList(0, Math.min(10, listaTOP10.size()));
+		return catalogoCanciones.getCanciones().stream()
+				.filter(c -> c.getNumReproducciones() > 0)
+				.sorted(Comparator.comparingInt(Cancion::getNumReproducciones).reversed())
+				.limit(10)
+				.collect(Collectors.toList());
 	}
 
 	// =======================================
@@ -246,12 +245,6 @@ public enum Controlador implements CancionesListener {
 
 	public String getEstadoReproductor() {
 		return estadoReproductor;
-	}
-	
-	public void usuarioEstablecerPremium(boolean premium, double cuota) {
-		usuarioActual.setPremium(premium);
-		usuarioActual.setCuota(cuota);
-		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 
 	public void añadirCancionSeleccionada(String cancionNombre) {
@@ -291,7 +284,11 @@ public enum Controlador implements CancionesListener {
 
 	public boolean siguienteCancion() {
 		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
-		Cancion cancionSiguiente = modoReproduccion.siguienteCancion(playlistActual, cancionReproduciendo);
+		Cancion cancionSiguiente;
+		if (playlistActual == null)
+			cancionSiguiente = null;
+		else
+			cancionSiguiente = modoReproduccion.siguienteCancion(playlistActual, cancionReproduciendo);
 		Reproductor.INSTANCIA.stopCancion();
 		if (cancionSiguiente == null) {
 			estadoReproductor = iconoReproducir;
@@ -307,7 +304,11 @@ public enum Controlador implements CancionesListener {
 
 	public boolean anteriorCancion() {
 		PlayList playlistActual = usuarioActual.getPlayList(playlistReproducciendo);
-		Cancion cancionAnterior = modoReproduccion.anteriorCancion(playlistActual, cancionReproduciendo);
+		Cancion cancionAnterior;
+		if (playlistActual == null)
+			cancionAnterior = null;
+		else
+			cancionAnterior = modoReproduccion.anteriorCancion(playlistActual, cancionReproduciendo);
 		Reproductor.INSTANCIA.stopCancion();
 		if (cancionAnterior == null) {
 			estadoReproductor = iconoReproducir;
@@ -354,17 +355,10 @@ public enum Controlador implements CancionesListener {
 		return modoReproduccion.getClass().getSimpleName();
 	}
 	
-	//GENERAR PDF
+	// =======================================
+	// ============= GENERAR PDF =============
+	// =======================================
 	public void generarPDF(String ruta) throws IOException, DocumentException {
-		CreadorPDF.generarPDF(getUsuarioActual(), ruta);
-	}
-
-	// LOGIN GITHUB
-	public Boolean loginGitHub(String nombreUsuario, String githubPropertiesPath) {
-		boolean login = LoginGitHub.INSTANCE.verificar(nombreUsuario, githubPropertiesPath);
-		if (login && existeUsuario(nombreUsuario)) {
-			this.usuarioActual = catalogoUsuarios.getUsuario(nombreUsuario);
-		}
-		return login;
+		CreadorPDF.generarPDF(usuarioActual, ruta);
 	}
 }

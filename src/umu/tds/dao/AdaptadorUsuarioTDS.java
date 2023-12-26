@@ -111,7 +111,7 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "email");
+		contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, "contraseña");
 		cuota = Double.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "cuota"));
 		premium = Boolean.valueOf(servPersistencia.recuperarPropiedadEntidad(eUsuario, "esPremium"));
 

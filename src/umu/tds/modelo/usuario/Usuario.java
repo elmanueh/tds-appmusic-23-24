@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import umu.tds.modelo.descuento.Descuento;
@@ -17,6 +18,8 @@ public class Usuario {
 	// ATRIBUTOS
 	public static final double TARIFA_PREMIUM = 10;
 	public static final int TAMAÑO_PLAYLIST_RECIENTES = 5;
+	public static final String ICONO_USUARIO_PREMIUM = "/umu/tds/vista/imagenes/corona-de-usuario.png";
+	public static final String ICONO_USUARIO_NORMAL = "/umu/tds/vista/imagenes/usuario.png";
 
 	private final String nombre;
 	private final String email;
@@ -103,9 +106,9 @@ public class Usuario {
 	}
 
 	public String getIconoUsuario() {
-		if (isPremium())
-			return new String("/umu/tds/vista/imagenes/corona-de-usuario.png");
-		return new String("/umu/tds/vista/imagenes/usuario.png");
+		if (this.isPremium())
+			return ICONO_USUARIO_PREMIUM;
+		return ICONO_USUARIO_NORMAL;
 	}
 
 	public void addPlayList(PlayList p) {
@@ -119,13 +122,10 @@ public class Usuario {
 		}
 		return false;
 	}
-
+	
 	public PlayList getPlayList(String nombre) {
-		for (PlayList p : listaPlayList) {
-			if (p.getNombre().equals(nombre))
-				return p;
-		}
-		return null;
+		Optional<PlayList> playlistOpcional = listaPlayList.stream().filter(playlist -> playlist.getNombre().equals(nombre)).findFirst();
+		return playlistOpcional.orElse(null);
 	}
 
 	public void removePlayList(PlayList p) {
