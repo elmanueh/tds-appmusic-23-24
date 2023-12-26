@@ -360,7 +360,11 @@ public enum Controlador implements CancionesListener {
 	}
 
 	// LOGIN GITHUB
-	public Boolean loginGitHub(String usuario, String githubPropertiesPath) {
-		return LoginGitHub.INSTANCE.verificar(usuario, githubPropertiesPath);
+	public Boolean loginGitHub(String nombreUsuario, String githubPropertiesPath) {
+		boolean login = LoginGitHub.INSTANCE.verificar(nombreUsuario, githubPropertiesPath);
+		if (login && existeUsuario(nombreUsuario)) {
+			this.usuarioActual = catalogoUsuarios.getUsuario(nombreUsuario);
+		}
+		return login;
 	}
 }
