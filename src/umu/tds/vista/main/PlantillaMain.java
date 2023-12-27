@@ -750,17 +750,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 			if (timer == null) {	// si no hay nada reproduciendose
 				inicializarTimerSlider();
 			} else {	// reproduciendose
-				System.out.println(actualizar);
-				if (actualizar) {	// se ejecuta el boton play
-					if (!cancionOld.equals(lblCancionActual.getText())) {
-						reiniciarTimerSlider();
-						inicializarTimerSlider();
-					} else {
-						timer.start();
-					}
-					
-				} else {	// se ejecuta el boton pause
-					timer.stop();
+				if (!cancionOld.equals(lblCancionActual.getText())) {
+					reiniciarTimerSlider();
+					inicializarTimerSlider();
+				} else {
+					timer.start();
 				}
 			}
 		}
