@@ -11,10 +11,16 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 
+/**
+ * Clase VentanaRegistro
+ */
 public class VentanaRegistro extends JPanel implements ActionListener {
 
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private JPanel WindowRegister;
 	private JTextPane labelTitulo;
 	private JLabel labelEmail;
@@ -78,6 +84,9 @@ public class VentanaRegistro extends JPanel implements ActionListener {
 	private CardLayout cardLayout;
 	private JCheckBox mostrarContraseña;
 
+	/**
+	 * Constructor de la clase VentanaRegistro
+	 */
 	public VentanaRegistro() {
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);

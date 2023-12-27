@@ -24,10 +24,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
 
+/**
+ * Clase VentanaGestionPlaylist
+ */
 public class VentanaGestionPlaylist extends JPanel implements ActionListener {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTextField txtTitulo;
 	private JTable tablaCanciones;
 	private JButton botonEliminarCancion;
@@ -40,7 +46,9 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 	private JButton botonEliminar;
 	private Component verticalStrut_1;
 
-	// METODOS
+	/**
+	 * Metodo para cargar la ventana
+	 */
 	public void cargarVentana(String playlistNombre) {
 		if (playlistNombre != null) {
 			if (Controlador.INSTANCIA.getCancionesSeleccionadas().size() > 0) {
@@ -62,6 +70,10 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		configuracionTabla(playlistNombre);
 	}
 
+	/**
+	 * Metodo para congiurar la tabla de playlist
+	 * @param playlistNombre Nombre de la playlist
+	 */
 	public void configuracionTabla(String playlistNombre) {
 		panelTabla.setVisible(true);
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
@@ -123,7 +135,9 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 		}
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase VentanaGestionPlaylist
+	 */
 	public VentanaGestionPlaylist() {
 		setLayout(new BorderLayout(0, 0));
 
@@ -293,5 +307,4 @@ public class VentanaGestionPlaylist extends JPanel implements ActionListener {
 			}
 		}
 	}
-
 }

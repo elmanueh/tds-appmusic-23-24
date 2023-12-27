@@ -3,6 +3,9 @@ package umu.tds.modelo.reproductor;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
+/**
+ * Clase que representa un Modo de Reproduccion Secuencial.
+ */
 public class ModoSecuencial implements IModoReproduccion {
 
 	@Override
@@ -19,6 +22,11 @@ public class ModoSecuencial implements IModoReproduccion {
 			return null;
 		Cancion cancionAnterior = playlistActual.getAnteriorCancion(cancionActual);
 		return cancionAnterior;
+	}
+
+	@Override
+	public String getModoReproduccion() {
+		return "Modo: Secuencial";
 	}
 
 }

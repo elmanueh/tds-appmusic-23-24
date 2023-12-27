@@ -16,12 +16,22 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JTextArea;
 
+/**
+ * Clase PlantillaInicio
+ */
 public class PlantillaInicio extends JFrame {
 
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
+	
 	private static CardLayout cardLayout;
 	private static JPanel panelCardLayout;
 
+	/**
+	 * Metodo que inicializa PlantillaMain
+	 */
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
@@ -34,14 +44,23 @@ public class PlantillaInicio extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
+	/**
+	 * Metodo que cambia al panel de Registro
+	 */
 	public static void empezarRegistro() {
 		cardLayout.next(panelCardLayout);
 	}
 
+	/**
+	 * Metodo que cambia al panel de Login
+	 */
 	public static void salirRegistro() {
 		cardLayout.previous(panelCardLayout);
 	}
 
+	/**
+	 * Constructor de la clase PlantillaInicio
+	 */
 	public PlantillaInicio() {
 		inicializar();
 

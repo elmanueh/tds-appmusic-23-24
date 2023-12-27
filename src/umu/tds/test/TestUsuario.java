@@ -5,13 +5,12 @@ import static org.junit.Assert.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashSet;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import umu.tds.modelo.descuento.Descuento;
-import umu.tds.modelo.descuento.DescuentoFijo;
+import umu.tds.modelo.descuento.IDescuento;
+import umu.tds.modelo.descuento.DescuentoCodigo;
 import umu.tds.modelo.descuento.DescuentoNulo;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
@@ -37,19 +36,19 @@ public class TestUsuario {
 
     @Test  //Comprobar se crea una playlist en usuario
     public void test1() {
-        usuario.crearPlayList("NuevaPlaylist", new LinkedHashSet<>());
+        usuario.crearPlayList("NuevaPlaylist");
         assertTrue(usuario.existePlayList("NuevaPlaylist"));
     }
 
     @Test // Verificar que la eliminación y la inserción de playlists en usuario funciona correctamente
     public void test2() {
-        usuario.addPlayList(playlist1);
-        usuario.addPlayList(playlist2);
+        usuario.añadirPlayList(playlist1);
+        usuario.añadirPlayList(playlist2);
 
         assertTrue(usuario.existePlayList("Playlist1"));
         assertTrue(usuario.existePlayList("Playlist2"));
 
-        usuario.removePlayList(playlist1);
+        usuario.eliminarPlayList(playlist1.getNombre());
         assertFalse(usuario.existePlayList("Playlist1"));
         assertTrue(usuario.existePlayList("Playlist2"));
     }
@@ -67,11 +66,11 @@ public class TestUsuario {
 
     @Test  //Comprobar la aplicación de descuentos funciona correctamente
     public void test4() {
-        Descuento descuento = usuario.aplicarDescuento("");
+        IDescuento descuento = usuario.aplicarDescuento("");
         assertTrue(descuento instanceof DescuentoNulo);
 
         descuento = usuario.aplicarDescuento("SANTIAGO");
 
-        assertTrue(descuento instanceof DescuentoFijo);
+        assertTrue(descuento instanceof DescuentoCodigo);
     }
 }

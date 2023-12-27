@@ -47,10 +47,16 @@ import pulsador.Luz;
 import pulsador.IEncendidoListener;
 import java.util.EventObject;
 
+/**
+ * Clase PlantillaMain.
+ */
 public class PlantillaMain extends JFrame implements ActionListener {
+	
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private VentanaBuscar ventanaBuscar;
 	private VentanaGestionPlaylist ventanaGestionPlaylist;
 	private VentanaRecientes ventanaRecientes;
@@ -86,12 +92,10 @@ public class PlantillaMain extends JFrame implements ActionListener {
 	private JLabel lblModoReproduccion;
 	private JLabel tiempoActual;
 	private JLabel tiempoMaximo;
-	
-	private static final String modoSecuencial = "ModoSecuencial";
-	private static final String modoAleatorio = "ModoAleatorio";
-	private static final String modoBucleCancion = "ModoBucleCancion";
 
-	// METODOS
+	/**
+	 * Metodo para inicializar PlantillaMain
+	 */
 	private void inicializar() {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
@@ -110,16 +114,26 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		ventanaMisPlaylist = new VentanaMisPlaylist();
 	}
 
+	/**
+	 * Metodo para cargar la ventana PlantillaMain
+	 */
 	public void cargarVentana() {
 		configuracionTabla();
 	}
 
+	/**
+	 * Metodo para añadir o quitar las funcionalidades premium
+	 * @param premium boolean que indicar si es premium
+	 */
 	public void usuarioPremium(boolean premium) {
 		p_menuBotonesPremium.setVisible(premium);
 		mensajeBienvenida.setIcon(new ImageIcon(
 				PlantillaMain.class.getResource(Controlador.INSTANCIA.getUsuarioActual().getIconoUsuario())));
 	}
 
+	/**
+	 * Metodo que devuelve el nombre de la ventana 
+	 */
 	public String ventanaActual() {
 		for (Component comp : p_cardLayout.getComponents()) {
 			if (comp.isVisible())
@@ -128,6 +142,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		return null;
 	}
 
+	/**
+	 * Metodo para configurar la tabla de playlist
+	 */
 	public void configuracionTabla() {
 		DefaultTableModel modelo = new DefaultTableModel() {
 			private static final long serialVersionUID = 1L;
@@ -147,7 +164,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		tablaPlayList.setModel(modelo);
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Contructor de la clase PlantillaMain
+	 */
 	public PlantillaMain() {
 		inicializar();
 
@@ -452,7 +471,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		gbl_p_cancionActual.columnWidths = new int[] { 20, 0, 20 };
 		p_cancionActual.setLayout(gbl_p_cancionActual);
 		
-		lblModoReproduccion = new JLabel("Modo: LIBRE");
+		lblModoReproduccion = new JLabel(Controlador.INSTANCIA.getModoReproduccion());
 		GridBagConstraints gbc_lblModoReproduccion = new GridBagConstraints();
 		gbc_lblModoReproduccion.insets = new Insets(0, 0, 5, 5);
 		gbc_lblModoReproduccion.gridx = 1;
@@ -672,7 +691,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 
 		// MULTIMEDEA
 		if (e.getSource() == btnShuffle) {
-			Controlador.INSTANCIA.setModoActual(modoAleatorio);
+			Controlador.INSTANCIA.setModoAleatorioReproduccion();
 			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
 			btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		}
@@ -704,39 +723,49 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == btnSecuential) {
-			Controlador.INSTANCIA.setModoActual(modoSecuencial);
+			Controlador.INSTANCIA.setModoSecuencialReproduccion();
 			lblModoReproduccion.setText(Controlador.INSTANCIA.getModoReproduccion());
-			if (Controlador.INSTANCIA.getModoReproduccion().equals(modoBucleCancion))
+			if (Controlador.INSTANCIA.getModoReproduccion().equals("Modo: Bucle Cancion"))
 				btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/bucle-cancion.png")));
 			else
 				btnSecuential.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/secuencial.png")));
 		}
 	}
 
-	private void actualizarReproductor(boolean b) {
+	/**
+	 * Metodo para actualizar la reproduccion
+	 * @param actualizar indica si es pause o play
+	 */
+	private void actualizarReproductor(boolean actualizar) {
 		String cancionOld = lblCancionActual.getText();
 		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
 		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
-		btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource(Controlador.INSTANCIA.getEstadoReproductor())));	// quitar getEstadoReproductor() porque tenemos el valor en "b"
-
-		if (timer == null) {	// si no hay nada reproduciendose
-			inicializarTimerSlider();
-		} else {	// reproduciendose
-			System.out.println(b);
-			if (b) {	// se ejecuta el boton play
-				if (!cancionOld.equals(lblCancionActual.getText())) {
-					reiniciarTimerSlider();
-					inicializarTimerSlider();
-				} else {
-					timer.start();
+		if (!actualizar) {
+			btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
+		} else {
+			btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/pausa.png")));
+			if (timer == null) {	// si no hay nada reproduciendose
+				inicializarTimerSlider();
+			} else {	// reproduciendose
+				System.out.println(actualizar);
+				if (actualizar) {	// se ejecuta el boton play
+					if (!cancionOld.equals(lblCancionActual.getText())) {
+						reiniciarTimerSlider();
+						inicializarTimerSlider();
+					} else {
+						timer.start();
+					}
+					
+				} else {	// se ejecuta el boton pause
+					timer.stop();
 				}
-				
-			} else {	// se ejecuta el boton pause
-				timer.stop();
 			}
-		}
+		}		
 	}
 	
+	/**
+	 * Metodo que inicializa el Timer y el JSlider para llevar el tiempo de la cancion
+	 */
 	private void inicializarTimerSlider() {
 		sliderCancion.setMaximum(Controlador.INSTANCIA.getTiempoCancion());
 		tiempoActual.setText(sliderCancion.getValue()/60 + ":" + String.format("%02d", sliderCancion.getValue()%60));
@@ -764,6 +793,9 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		timer.start();
 	}
 	
+	/**
+	 * Metodo para reiniciar el Timer y el JSlider
+	 */
 	private void reiniciarTimerSlider() {
 		sliderCancion.setValue(0);
 		if (timer != null)

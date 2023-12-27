@@ -123,7 +123,7 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 		listaPlayList = obtenerPlayListDesdeCodigos(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "listaPlayList"));
 		for (PlayList pl : listaPlayList)
-			usuario.addPlayList(pl);
+			usuario.añadirPlayList(pl);
 
 		cancionesRecientes = obtenerCancionesDesdeCodigos(
 				servPersistencia.recuperarPropiedadEntidad(eUsuario, "playlistRecientes"));
@@ -154,13 +154,13 @@ public enum AdaptadorUsuarioTDS implements IAdaptadorUsuarioDAO {
 	}
 
 	private HashSet<PlayList> obtenerPlayListDesdeCodigos(String playlists) {
-		HashSet<PlayList> listaVentas = new HashSet<PlayList>();
+		HashSet<PlayList> listaPlayList = new HashSet<PlayList>();
 		StringTokenizer strTok = new StringTokenizer(playlists, " ");
 		AdaptadorPlayListTDS adaptadorPL = AdaptadorPlayListTDS.INSTANCIA;
 		while (strTok.hasMoreTokens()) {
-			listaVentas.add(adaptadorPL.recuperarPlayList(Integer.valueOf((String) strTok.nextElement())));
+			listaPlayList.add(adaptadorPL.recuperarPlayList(Integer.valueOf((String) strTok.nextElement())));
 		}
-		return listaVentas;
+		return listaPlayList;
 	}
 
 	private String obtenerCodigosCanciones(PlayList playlist) {

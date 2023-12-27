@@ -3,8 +3,14 @@ package umu.tds.modelo.reproductor;
 import umu.tds.modelo.musica.Cancion;
 import umu.tds.modelo.musica.PlayList;
 
+/**
+ * Clase que representa un Modo de Reproduccion Aleatoria.
+ */
 public class ModoAleatorio implements IModoReproduccion {
 	
+	/*
+	 * ATRIBUTOS
+	 */
 	private static final int MAX_ALEATORIO = 20;
 	
 	@Override
@@ -27,6 +33,11 @@ public class ModoAleatorio implements IModoReproduccion {
 			cancionActual = cancionAnterior.getTitulo();
 		}
 		return cancionAnterior;
+	}
+
+	@Override
+	public String getModoReproduccion() {
+		return "Modo: Aleatorio";
 	}
 
 }

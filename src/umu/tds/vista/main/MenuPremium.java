@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 
 import umu.tds.Controlador;
 import umu.tds.ControladorVentanas;
-import umu.tds.modelo.descuento.Descuento;
+import umu.tds.modelo.descuento.IDescuento;
 import umu.tds.vista.inicio.PlantillaInicio;
 
 import java.awt.Insets;
@@ -24,15 +24,23 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import javax.swing.JButton;
 
+/**
+ * Clase MenuPremium
+ */
 public class MenuPremium extends JFrame implements ActionListener {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTextField textoCodigoDescuento;
 	private JButton botonPremium;
 	private JButton botonDarDeBaja;
 
-	// METODOS
+	/**
+	 * Metodo para inicializar MenuPremium
+	 */
 	private void initialize() {
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(PlantillaInicio.class.getResource("/umu/tds/vista/imagenes/icono.png")));
@@ -44,7 +52,9 @@ public class MenuPremium extends JFrame implements ActionListener {
 		getContentPane().setLayout(new CardLayout(0, 0));
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Contructor de la clase MenuPremium
+	 */
 	public MenuPremium() {
 
 		initialize();
@@ -139,7 +149,7 @@ public class MenuPremium extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonPremium) {
-			Descuento d = Controlador.INSTANCIA.getUsuarioActual().aplicarDescuento(textoCodigoDescuento.getText());
+			IDescuento d = Controlador.INSTANCIA.getUsuarioActual().aplicarDescuento(textoCodigoDescuento.getText());
 
 			String mensaje;
 			switch (d.tipoDescuento()) {

@@ -2,13 +2,27 @@ package umu.tds.modelo.musica;
 
 import java.util.Objects;
 
+/**
+ * Clase EstiloMusical.
+ */
 public class EstiloMusical {
+	
+	/*
+	 * ATRIBUTOS
+	 */
 	public String estilo;
 
+	/**
+	 * Constructor de la clase EstiloMusical.
+	 * @param interprete Nombre del estiloMusical
+	 */
 	public EstiloMusical(String estilo) {
 		this.estilo = estilo;
 	}
 
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getEstilo() {
 		return estilo;
 	}

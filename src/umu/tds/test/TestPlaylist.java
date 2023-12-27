@@ -20,8 +20,8 @@ public class TestPlaylist {
 
 		Cancion c1 = new Cancion("Con la luna llena", "xx", "Melendi", "Pop");
 
-		p1.addCancion(c1);
-		p2.addCancion(c1);
+		p1.añadirCancion(c1);
+		p2.añadirCancion(c1);
 	}
 	
 	@Test //Comprobar nombre playlist
@@ -50,7 +50,7 @@ public class TestPlaylist {
 
         assertTrue("Prueba4: La Playlist 1 contiene la canción antes de la eliminación", p1.getListaCanciones().contains(cancionAEliminar));
 
-        p1.removeCancion(cancionAEliminar);
+        p1.eliminarCancion(cancionAEliminar);
 
         assertFalse("Prueba5: La Playlist 1 no contiene la canción después de la eliminación",
                 p1.getListaCanciones().contains(cancionAEliminar));

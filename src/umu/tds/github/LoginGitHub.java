@@ -6,9 +6,18 @@ import org.kohsuke.github.GHUser;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
+/**
+ * Clase para verificar el inicio de sesion en GitHub.
+ */
 public enum LoginGitHub {
 	INSTANCE;
 
+	/**
+	 * Metodo para verificar un usuario en GitHub.
+	 * @param usuario nombre de usuario
+	 * @param githubPropertiesPath Path del archivo Properties
+	 * @return True / False
+	 */
 	public boolean verificar(String usuario, String githubPropertiesPath) {
 		try {
 			GitHub github = GitHubBuilder.fromPropertyFile(githubPropertiesPath).build();

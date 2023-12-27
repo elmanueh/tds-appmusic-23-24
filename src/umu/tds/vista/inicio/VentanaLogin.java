@@ -13,10 +13,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
+/**
+ * Clase VentanaLogin
+ */
 public class VentanaLogin extends JPanel implements ActionListener, MouseListener {
 
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	private JTextField textoUsuario;
 	private JPasswordField textoContraseña;
 	private JButton botonLogin;
@@ -24,6 +30,9 @@ public class VentanaLogin extends JPanel implements ActionListener, MouseListene
 	private JButton botonGitHub;
 	private JLabel labelRecuperarContraseña;
 
+	/**
+	 * Constructor de la clase VentanaLogin
+	 */
 	public VentanaLogin() {
 
 		GridBagLayout gridBagLayout = new GridBagLayout();

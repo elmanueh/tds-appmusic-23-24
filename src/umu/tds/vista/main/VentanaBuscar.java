@@ -23,10 +23,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 import java.awt.Font;
 
+/**
+ * Clase VentanaBuscar
+ */
 public class VentanaBuscar extends JPanel implements ActionListener {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTextField txtTitulo;
 	private JTextField txtInterprete;
 	private JTable tablaCanciones;
@@ -41,7 +47,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 	private JButton botonCancelar;
 	private JButton botonAñadirPlaylist;
 
-	// METODOS
+	/**
+	 * Metodo para cargar la Ventana Buscar
+	 */
 	public void cargarVentana() {
 		panelTabla.setVisible(false);
 		panelBotonera.setVisible(false);
@@ -51,6 +59,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		comboBoxEstilo.setSelectedIndex(0);
 	}
 
+	/**
+	 * Metodo para guardar las canciones seleccionadas
+	 */
 	public void guardarSeleccionados() {
 		for (int fila = 0; fila < tablaCanciones.getRowCount(); fila++) {
 			if ((Boolean) tablaCanciones.getValueAt(fila, 3) == true) {
@@ -60,12 +71,18 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Metodo para actualizar los estilos en el comboBox de estilos
+	 */
 	public void actualizarEstilos() {
 		comboBoxEstilo.removeAllItems();
 		for (String s : Controlador.INSTANCIA.getEstilos())
 			comboBoxEstilo.addItem(s);
 	}
 
+	/**
+	 * Metodo para configurar la tabla de las playlist
+	 */
 	public void configuracionTabla(String tituloFiltrado, String interpreteFiltrado, String estiloFiltrado,
 			boolean favorito) {
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
@@ -120,7 +137,9 @@ public class VentanaBuscar extends JPanel implements ActionListener {
 		}
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase VentanaBuscar
+	 */
 	public VentanaBuscar() {
 		setLayout(new BorderLayout(0, 0));
 

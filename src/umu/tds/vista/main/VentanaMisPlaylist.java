@@ -18,21 +18,33 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Font;
 
+/**
+ * Clase VentanaMisPlaylist
+ */
 public class VentanaMisPlaylist extends JPanel {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTable tablaCanciones;
 	private JScrollPane scrollPane;
 	private JLabel lblNewLabel;
 
-	// METODOS
+	/**
+	 * Metodo cargar VentanaMisPaylist
+	 */
 	public void cargarVentana(String playlistNombre) {
 		scrollPane.setVisible(false);
 		lblNewLabel.setVisible(false);
 		configuracionTabla(playlistNombre);
 	}
 
+	/**
+	 * Metodo para congiurar la tabla de playlist
+	 * @param playlistNombre Nombre de la playlist
+	 */
 	public void configuracionTabla(String playlistNombre) {
 
 		if (playlistNombre != null) {
@@ -84,7 +96,9 @@ public class VentanaMisPlaylist extends JPanel {
 
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase VentanaMisPlaylist
+	 */
 	public VentanaMisPlaylist() {
 		setLayout(new BorderLayout(0, 0));
 

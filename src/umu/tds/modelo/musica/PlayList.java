@@ -5,21 +5,31 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Clase PlayList
+ */
 public class PlayList {
 
-	// ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private final String nombre;
 	private final LinkedHashSet<Cancion> listaCanciones;
 	private int codigo;
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase PlayList.
+	 * @param nombre Nombre de la PlayList
+	 */
 	public PlayList(String nombre) {
 		this.nombre = nombre;
 		this.listaCanciones = new LinkedHashSet<Cancion>();
 		this.codigo = 0;
 	}
 
-	// GETTERS AND SETTERS
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getNombre() {
 		return nombre;
 	}
@@ -44,23 +54,35 @@ public class PlayList {
 		this.codigo = id;
 	}
 
-	// METODOS
-	public void addCancion(Cancion c) {
+	/**
+	 * Metodo para añadir una Cancion.
+	 * @param c Cancion a añadir
+	 */
+	public void añadirCancion(Cancion c) {
 		listaCanciones.add(c);
 	}
 
-	public void addAllCanciones(LinkedHashSet<Cancion> cancionesSeleccionadas) {
+	/**
+	 * Metodo para añadir una lista de Canciones.
+	 * @param cancionesSeleccionadas Lista de Canciones
+	 */
+	public void añadirTodasCanciones(LinkedHashSet<Cancion> cancionesSeleccionadas) {
 		listaCanciones.addAll(cancionesSeleccionadas);
 	}
 
-	public void removeCancion(Cancion c) {
+	/**
+	 * Metodo para eliminar una Cancion.
+	 * @param c Cancion a eliminar
+	 */
+	public void eliminarCancion(Cancion c) {
 		listaCanciones.remove(c);
 	}
 
-	public boolean consultarCancion(Cancion c) {
-		return listaCanciones.contains(c);
-	}
-
+	/**
+	 * Metodo para consultar si existe una Cancion en la PlayList.
+	 * @param c Nombre de la Cancion
+	 * @return True / False
+	 */
 	public boolean consultarCancion(String c) {
 		for (Cancion cancion : listaCanciones) {
 			if (cancion.getTitulo().equals(c))
@@ -69,6 +91,11 @@ public class PlayList {
 		return false;
 	}
 	
+	/**
+	 * Metodo que devuelve la siguiente cancion de la PlayList.
+	 * @param cancionReproduciendo Nombre de la Cancion actual
+	 * @return Cancion siguiente
+	 */
 	public Cancion getSiguienteCancion(String cancionReproduciendo) {
 		boolean cancionSiguiente = false;
 		for (Cancion cancion : listaCanciones) {
@@ -80,6 +107,11 @@ public class PlayList {
 		return new LinkedList<>(listaCanciones).get(0);	// devuelvo la primera de la lista
 	}
 	
+	/**
+	 * Metodo que devuelve la anterior cancion de la PlayList.
+	 * @param cancionReproduciendo Nombre de la Cancion actual
+	 * @return Cancion anterior
+	 */
 	public Cancion getAnteriorCancion(String cancionReproduciendo) {
 		Cancion cancionAnterior = null;
 		for (Cancion cancion : listaCanciones) {
@@ -95,7 +127,7 @@ public class PlayList {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(codigo, /* listaCanciones, */ nombre);
+		return Objects.hash(nombre);
 	}
 
 	@Override
@@ -107,8 +139,7 @@ public class PlayList {
 		if (getClass() != obj.getClass())
 			return false;
 		PlayList other = (PlayList) obj;
-		return codigo == other.codigo /* && Objects.equals(listaCanciones, other.listaCanciones) */
-				&& Objects.equals(nombre, other.nombre);
+		return Objects.equals(nombre, other.nombre);
 	}
 
 }

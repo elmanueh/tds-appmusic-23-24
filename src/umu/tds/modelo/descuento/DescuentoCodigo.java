@@ -2,26 +2,33 @@ package umu.tds.modelo.descuento;
 
 import umu.tds.modelo.usuario.Usuario;
 
-public class DescuentoFijo implements Descuento {
+/**
+ * Clase que representa un Descuento Fijo.
+ */
+public class DescuentoCodigo implements IDescuento {
 
-	// ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private static final String CODIGO_PROMOCIONAL = "SANTIAGO";
 	private String codigo;
 
-	// CONSTRUCTOR
-	public DescuentoFijo(String codigo) {
+	/**
+	 * Constructor de la clase Descuento Fijo.
+	 * @param codigo
+	 */
+	public DescuentoCodigo(String codigo) {
 		super();
 		this.codigo = codigo;
 	}
 
-	// METODOS
 	@Override
 	public double Precio() {
 		return Usuario.TARIFA_PREMIUM * 0.5;
 	}
 
 	@Override
-	public boolean isAplicable(Usuario u) {
+	public boolean isAplicable(Usuario usuario) {
 		if (CODIGO_PROMOCIONAL.equals(codigo))
 			return true;
 		return false;

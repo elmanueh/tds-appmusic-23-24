@@ -8,25 +8,39 @@ import java.util.List;
 import umu.tds.componente.Canciones;
 import umu.tds.componente.MapperCancionesXMLtoJava;
 
+/**
+ * Clase Cargador de Canciones.
+ */
 public enum CargadorCanciones implements Serializable {
 	INSTANCIA;
 
-	// ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 	private String archivoCanciones; // propiedad ligada
 	private List<CancionesListener> cancionesListeners;
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase Cargador de Canciones.
+	 */
 	private CargadorCanciones() {
 		archivoCanciones = "";
 		cancionesListeners = new LinkedList<>();
 	}
 
-	// METODOS
+	/**
+	 * Metodo para obtener la ruta del archivo.
+	 * @return
+	 */
 	public String getArchivoCanciones() {
 		return archivoCanciones;
 	}
 
+	/**
+	 * Metodo para establecer la ruta del archivo con las canciones.
+	 * @param archivoCanciones Ruta del archivo
+	 */
 	public void setArchivoCanciones(String archivoCanciones) {
 		this.archivoCanciones = archivoCanciones;
 
@@ -35,19 +49,35 @@ public enum CargadorCanciones implements Serializable {
 		notificarCancionesEvent(evento);
 	}
 
-	public LinkedList<CancionesListener> getCancionesLister(CancionesListener listener) {
+	/**
+	 * Metodo que devuelve una lista con los oyentes.
+	 * @return Lista de oyentes
+	 */
+	public LinkedList<CancionesListener> getCancionesLister() {
 		return new LinkedList<CancionesListener>(cancionesListeners);
 	}
 
+	/**
+	 * Metodo que añade un nuevo oyente a la lista.
+	 * @param listener Nuevo oyente
+	 */
 	public synchronized void addCancionesListener(CancionesListener listener) {
 		System.out.println("añadido un listener");
 		cancionesListeners.add(listener);
 	}
 
+	/**
+	 * Metodo que elimina un oyente de la lista
+	 * @param listener Oyente a eliminar
+	 */
 	public synchronized void removeCancionesListener(CancionesListener listener) {
 		cancionesListeners.remove(listener);
 	}
 
+	/**
+	 * Metodo para notificar a todos los oyentes de un nuevo evento.
+	 * @param evento Evento a notificar
+	 */
 	private void notificarCancionesEvent(CancionesEvent evento) {
 		ArrayList<CancionesListener> copia = null;
 		synchronized (cancionesListeners) {

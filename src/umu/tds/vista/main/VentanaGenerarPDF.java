@@ -15,11 +15,19 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 
-
+/**
+ * Clase VentanaGenerarPDF
+ */
 public class VentanaGenerarPDF extends JPanel {
 
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor de la clase VentanaGenerarPDF
+	 */
 	public VentanaGenerarPDF() {
 		setLayout(new BorderLayout(0, 0));
 		
@@ -65,6 +73,9 @@ public class VentanaGenerarPDF extends JPanel {
 
 	}
 	
+	/**
+	 * Metodo para realizar el proceso de generarPDF
+	 */
     private void generarPDF() {
         // Crear un objeto JFileChooser
     	JFileChooser fileChooser = new JFileChooser();

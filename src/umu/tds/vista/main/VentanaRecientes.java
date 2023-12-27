@@ -18,13 +18,21 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 
+/**
+ * Clase VentanaRecientes
+ */
 public class VentanaRecientes extends JPanel {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTable tablaCanciones;
 
-	// METODOS
+	/**
+	 * Metodo para congiurar la tabla de canciones recientes
+	 */
 	public void configuracionTabla() {
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
@@ -70,7 +78,9 @@ public class VentanaRecientes extends JPanel {
 
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase VentanaRecientes
+	 */
 	public VentanaRecientes() {
 		setLayout(new BorderLayout(0, 0));
 

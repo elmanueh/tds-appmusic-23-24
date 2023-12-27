@@ -12,10 +12,15 @@ import java.nio.file.StandardCopyOption;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+/**
+ * Clase que representa el Reproductor.
+ */
 public enum Reproductor {
 	INSTANCIA;
 
-	// ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private MediaPlayer mediaPlayer;
 	private String binPath;
 	private String tempPath;
@@ -23,7 +28,9 @@ public enum Reproductor {
 	private boolean reproduciendo;
 	private double volumen;
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase Reproductor.
+	 */
 	private Reproductor() {
 		url = "";
 		mediaPlayer = null;
@@ -34,11 +41,18 @@ public enum Reproductor {
 		volumen = 0.3;
 	}
 
-	// METODOS
+	/**
+	 * Metodo que devuelve si se esta reproduciendo algun contenido.
+	 * @return True / False
+	 */
 	public boolean isReproduciendo() {
 		return reproduciendo;
 	}
 
+	/**
+	 * Metodo para reproducir/parar una Cancion.
+	 * @param urlNueva URL de la Cancion
+	 */
 	public void playCancion(String urlNueva) {
 		if (url.equals(urlNueva) && reproduciendo) {
 			pauseCancion();
@@ -81,6 +95,9 @@ public enum Reproductor {
 		}
 	}
 
+	/**
+	 * Metodo para detener una Cancion.
+	 */
 	public void stopCancion() {
 		if (mediaPlayer != null) {
 			mediaPlayer.stop();
@@ -96,6 +113,9 @@ public enum Reproductor {
 		url = "";
 	}
 
+	/**
+	 * Metodo para pausar una Cancion.
+	 */
 	public void pauseCancion() {
 		if (mediaPlayer != null) {
 			mediaPlayer.pause();
@@ -103,6 +123,10 @@ public enum Reproductor {
 		}
 	}
 
+	/**
+	 * Metodo para establecer el volumen del Reproductor.
+	 * @param v Volumen a establecer
+	 */
 	public void establecerVolumen(int v) {
 		if (mediaPlayer != null) {
 			double volumen = (double) v / 100;
@@ -111,9 +135,13 @@ public enum Reproductor {
 		}
 	}
 
-	public double getDuracionCancion() { //TODO: eliminar estar 3 lineas
+	/**
+	 * Metodo que devuelve el tiempo en segundos de la cancion que se esta reproduciendo.
+	 * @return Tiempo en segundos
+	 */
+	public double getDuracionCancion() {
 		if (mediaPlayer == null)
-			return 1;
+			return 0;
 		return mediaPlayer.getMedia().getDuration().toSeconds();
 	}
 }

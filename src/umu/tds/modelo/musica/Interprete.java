@@ -2,14 +2,27 @@ package umu.tds.modelo.musica;
 
 import java.util.Objects;
 
+/**
+ * Clase Interprete.
+ */
 public class Interprete {
 	
+	/*
+	 * ATRIBUTOS
+	 */
 	public String interprete;
 
+	/**
+	 * Constructor de la clase Interprete.
+	 * @param interprete Nombre del interprete
+	 */
 	public Interprete(String interprete) {
 		this.interprete = interprete;
 	}
 
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getInterprete() {
 		return interprete;
 	}

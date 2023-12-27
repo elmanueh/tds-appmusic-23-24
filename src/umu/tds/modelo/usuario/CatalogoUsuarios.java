@@ -9,15 +9,22 @@ import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorUsuarioDAO;
 
+/**
+ * Interfaz que representa el catalogo de usuarios
+ */
 public enum CatalogoUsuarios {
 	INSTANCIA;
 
-	// ATRIBUTOS
+	/**
+	 * ATRIBUTOS
+	 */
 	private Map<LinkedList<String>, Usuario> usuarios;
 	private FactoriaDAO dao;
 	private IAdaptadorUsuarioDAO adaptadorUsuario;
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la interfaz CatalogoUsuarios.
+	 */
 	private CatalogoUsuarios() {
 		try {
 			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -29,7 +36,9 @@ public enum CatalogoUsuarios {
 		}
 	}
 
-	// GETTERS AND SETTERS
+	/**
+	 * GETTERS AND SETTERS
+	 */
 	public List<Usuario> getUsuarios() {
 		LinkedList<Usuario> lista = new LinkedList<Usuario>(usuarios.values());
 		return lista;
@@ -42,7 +51,10 @@ public enum CatalogoUsuarios {
 		return null;
 	}
 
-	// METODOS
+	/**
+	 * Metodo que añade un usuario al mapa de usuarios
+	 * @param usuario Usuario a añadir en el mapa
+	 */
 	public void addUsuario(Usuario usuario) {
 		LinkedList<String> lista = new LinkedList<>();
 		lista.add(usuario.getNombre());
@@ -50,6 +62,9 @@ public enum CatalogoUsuarios {
 		usuarios.put(lista, usuario);
 	}
 
+	/**
+	 * Metodo que carga todas las canciones de la base de datos
+	 */
 	private void cargarCatalogo() throws DAOException {
 		List<Usuario> usuariosBD = adaptadorUsuario.recuperarTodosUsuarios();
 		for (Usuario usuario : usuariosBD) {

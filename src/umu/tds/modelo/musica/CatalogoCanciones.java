@@ -8,15 +8,22 @@ import umu.tds.dao.DAOException;
 import umu.tds.dao.FactoriaDAO;
 import umu.tds.dao.IAdaptadorCancionDAO;
 
+/**
+ * Interfaz que representa el catalogo de canciones
+ */
 public enum CatalogoCanciones {
 	INSTANCIA;
 
-	// ATRIBUTOS
+	/**
+	 * ATRIBUTOS
+	 */
 	private HashMap<String, Cancion> canciones;
 	private FactoriaDAO dao;
 	private IAdaptadorCancionDAO adaptadorCancion;
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la interfaz CatalogoCanciones.
+	 */
 	private CatalogoCanciones() {
 		try {
 			dao = FactoriaDAO.getInstancia(FactoriaDAO.DAO_TDS);
@@ -28,7 +35,9 @@ public enum CatalogoCanciones {
 		}
 	}
 
-	// GETTERS AND SETTERS
+	/**
+	 * GETTERS AND SETTERS
+	 */
 	public List<Cancion> getCanciones() {
 		return new LinkedList<Cancion>(canciones.values());
 	}
@@ -37,15 +46,17 @@ public enum CatalogoCanciones {
 		return canciones.get(titulo);
 	}
 
-	// METODOS
-	public void addCancion(Cancion c) {
-		canciones.put(c.getTitulo(), c);
+	/**
+	 * Metodo que añade una cancion al mapa de canciones
+	 * @param cancion Canciona a añadir en el mapa
+	 */
+	public void addCancion(Cancion cancion) {
+		canciones.put(cancion.getTitulo(), cancion);
 	}
 
-	public void removeCancion(Cancion c) {
-		canciones.remove(c.getTitulo());
-	}
-
+	/**
+	 * Metodo que carga todas las canciones de la base de datos
+	 */
 	private void cargarCatalogo() throws DAOException {
 		List<Cancion> cancionesBD = adaptadorCancion.recuperarTodasCanciones();
 		for (Cancion cancion : cancionesBD)

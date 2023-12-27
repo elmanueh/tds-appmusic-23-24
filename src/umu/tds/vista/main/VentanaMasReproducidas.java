@@ -16,13 +16,21 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
 
+/**
+ * Clase VentanaMasReproducidas
+ */
 public class VentanaMasReproducidas extends JPanel {
+
+	/**
+	 * ATRIBUTOS
+	 */
 	private static final long serialVersionUID = 1L;
 
-	// ATRIBUTOS
 	private JTable tablaCanciones;
 
-	// METODOS
+	/**
+	 * Metodo para configurara la tabla de las playlist mas reproducidas
+	 */
 	public void configuracionTabla() {
 		tablaCanciones.getTableHeader().setReorderingAllowed(false);
 
@@ -68,7 +76,9 @@ public class VentanaMasReproducidas extends JPanel {
 
 	}
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase VentanaMasReproducidas
+	 */
 	public VentanaMasReproducidas() {
 		setLayout(new BorderLayout(0, 0));
 

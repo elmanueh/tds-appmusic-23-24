@@ -73,7 +73,7 @@ public enum AdaptadorPlayListTDS implements IAdaptadorPlayListDAO {
 		playlist.setCodigo(codigo);
 
 		canciones = obtenerCancionesDesdeCodigos(servPersistencia.recuperarPropiedadEntidad(ePlayList, "canciones"));
-		playlist.addAllCanciones(canciones);
+		playlist.añadirTodasCanciones(canciones);
 		return playlist;
 	}
 

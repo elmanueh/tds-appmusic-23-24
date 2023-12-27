@@ -4,17 +4,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Clase Cancion
+ */
 public class Cancion {
 
-	// ATRIBUTOS
+	/*
+	 * ATRIBUTOS
+	 */
 	private String titulo;
 	private String rutaFichero;
 	private EstiloMusical estiloMusical;
 	private Interprete interprete;
 	private int numReproducciones;
 	private int codigo;
+	private static List<Interprete> registroInterpretes = new LinkedList<>();
+	private static List<EstiloMusical> registroEstilo = new LinkedList<>();
 
-	// CONSTRUCTOR
+	/**
+	 * Constructor de la clase Cancion.
+	 * @param titulo Nombre de la Cancion
+	 * @param rutaFichero Ruta donde se encuentra
+	 * @param estiloMusical Estilo Musical
+	 * @param interprete Interprete de la Cancion
+	 */
 	public Cancion(String titulo, String rutaFichero, String estiloMusical, String interprete) {
 		this.titulo = titulo;
 		this.rutaFichero = rutaFichero;
@@ -24,10 +37,9 @@ public class Cancion {
 		this.codigo = 0;
 	}
 
-	private static List<Interprete> registroInterpretes = new LinkedList<>();
-	private static List<EstiloMusical> registroEstilo = new LinkedList<>();
-
-	// GETTERS AND SETTERS
+	/*
+	 * GETTERS AND SETTERS
+	 */
 	public String getTitulo() {
 		return titulo;
 	}
@@ -64,28 +76,38 @@ public class Cancion {
 		return new LinkedList<>(registroEstilo);
 	}
 
-	// METODOS
-	public void addReproducciones() {
+	/**
+	 * Metodo para incrementar el numero de reproducciones de una Cancion.
+	 */
+	public void añadirReproducciones() {
 		numReproducciones++;
 	}
 
-	private Interprete obtenerOCrearInterprete(String inter) {
-		for (Interprete i : registroInterpretes) {
-			if (i.getInterprete().equals(inter))
-				return i;
+	/**
+	 * Metodo para obtener un Intreprete.
+	 * @param interprete Nombre del interprete
+	 * @return Interprete
+	 */
+	private Interprete obtenerOCrearInterprete(String interprete) {
+		for (Interprete interpreteAux : registroInterpretes) {
+			if (interpreteAux.getInterprete().equals(interprete))
+				return interpreteAux;
 		}
-
-		Interprete interprete = new Interprete(inter);
-		registroInterpretes.add(interprete);
-		return interprete;
+		Interprete interpreteAux = new Interprete(interprete);
+		registroInterpretes.add(interpreteAux);
+		return interpreteAux;
 	}
 
+	/**
+	 * Metodo para obtener un Estilo Musical.
+	 * @param estilo Nombre del estilo musical
+	 * @return Estilo Musical
+	 */
 	private EstiloMusical obtenerOCrearEstilo(String estilo) {
-		for (EstiloMusical e : registroEstilo) {
-			if (e.getEstilo().equals(estilo))
-				return e;
+		for (EstiloMusical estiloMusicalAux : registroEstilo) {
+			if (estiloMusicalAux.getEstilo().equals(estilo))
+				return estiloMusicalAux;
 		}
-
 		EstiloMusical estiloMusical = new EstiloMusical(estilo);
 		registroEstilo.add(estiloMusical);
 		return estiloMusical;

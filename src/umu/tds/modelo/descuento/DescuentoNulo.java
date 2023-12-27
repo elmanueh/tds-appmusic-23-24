@@ -2,16 +2,18 @@ package umu.tds.modelo.descuento;
 
 import umu.tds.modelo.usuario.Usuario;
 
-public class DescuentoNulo implements Descuento {
+/*
+ * Clase que representa un Descuento Nulo.
+ */
+public class DescuentoNulo implements IDescuento {
 
-	// METODOS
 	@Override
 	public double Precio() {
 		return Usuario.TARIFA_PREMIUM;
 	}
 
 	@Override
-	public boolean isAplicable(Usuario u) {
+	public boolean isAplicable(Usuario usuario) {
 		return true;
 	}
 
