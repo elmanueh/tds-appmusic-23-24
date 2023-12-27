@@ -740,8 +740,11 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		String cancionOld = lblCancionActual.getText();
 		lblCancionActual.setText("Cancion: " + Controlador.INSTANCIA.getCancionReproduciendo());
 		lblPlaylistActual.setText("Playlist: " + Controlador.INSTANCIA.getPlaylistReproduciendo());
+		
 		if (!actualizar) {
 			btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/tocar.png")));
+			if (timer != null)
+				timer.stop();
 		} else {
 			btnPlayPause.setIcon(new ImageIcon(PlantillaMain.class.getResource("/umu/tds/vista/imagenes/pausa.png")));
 			if (timer == null) {	// si no hay nada reproduciendose
@@ -760,7 +763,7 @@ public class PlantillaMain extends JFrame implements ActionListener {
 					timer.stop();
 				}
 			}
-		}		
+		}
 	}
 	
 	/**

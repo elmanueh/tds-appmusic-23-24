@@ -53,6 +53,7 @@ public enum Reproductor {
 	 * Metodo para reproducir/parar una Cancion.
 	 * @param urlNueva URL de la Cancion
 	 */
+	@SuppressWarnings("deprecation")
 	public void playCancion(String urlNueva) {
 		if (url.equals(urlNueva) && reproduciendo) {
 			pauseCancion();
