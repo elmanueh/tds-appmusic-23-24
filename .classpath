@@ -19,8 +19,9 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/DriverPersistencia.jar"/>
-	<classpathentry kind="lib" path="lib/CargadorCanciones.jar"/>
 	<classpathentry kind="lib" path="lib/miLuz.jar"/>
+	<classpathentry kind="lib" path="lib/CargadorCanciones.jar"/>
+	<classpathentry kind="lib" path="lib/javabean-cargadorcanciones.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

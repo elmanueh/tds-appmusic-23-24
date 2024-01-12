@@ -72,11 +72,11 @@ public enum Reproductor {
 				Path mp3 = Files.createTempFile("now-playing", ".mp3");
 				mp3.toFile().deleteOnExit();
 
-				System.out.println(mp3.getFileName());
+				// System.out.println(mp3.getFileName());
 				try (InputStream stream = uri.openStream()) {
 					Files.copy(stream, mp3, StandardCopyOption.REPLACE_EXISTING);
 				}
-				System.out.println("finished-copy: " + mp3.getFileName());
+				// System.out.println("finished-copy: " + mp3.getFileName());
 
 				Media media = new Media(mp3.toFile().toURI().toString());
 				mediaPlayer = new MediaPlayer(media);

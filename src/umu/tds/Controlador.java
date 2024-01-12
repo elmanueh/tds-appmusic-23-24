@@ -30,9 +30,9 @@ import umu.tds.modelo.reproductor.ModoSecuencial;
 import umu.tds.modelo.reproductor.Reproductor;
 import umu.tds.modelo.usuario.CatalogoUsuarios;
 import umu.tds.modelo.usuario.Usuario;
-import umu.tds.modelo.cargador.CancionesEvent;
-import umu.tds.modelo.cargador.CancionesListener;
-import umu.tds.modelo.cargador.CargadorCanciones;
+import umu.tds.cargador.CancionesEvent;
+import umu.tds.cargador.CancionesListener;
+import umu.tds.cargador.CargadorCanciones;
 
 public enum Controlador implements CancionesListener {
 	INSTANCIA;

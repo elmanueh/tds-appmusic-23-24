@@ -768,13 +768,13 @@ public class PlantillaMain extends JFrame implements ActionListener {
 		tiempoActual.setText(sliderCancion.getValue()/60 + ":" + String.format("%02d", sliderCancion.getValue()%60));
 		int tiempoSec = Controlador.INSTANCIA.getTiempoCancion();
 		tiempoMaximo.setText(Integer.toString(tiempoSec/60) + ":" + String.format("%02d", tiempoSec%60));
-		System.out.println(Controlador.INSTANCIA.getTiempoCancion());
+		// System.out.println(Controlador.INSTANCIA.getTiempoCancion());
 		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				sliderCancion.setValue(sliderCancion.getValue() + 1);
 				tiempoActual.setText(sliderCancion.getValue()/60 + ":" + String.format("%02d", sliderCancion.getValue()%60));
-				System.out.println(sliderCancion.getValue());
+				// System.out.println(sliderCancion.getValue());
 				if (sliderCancion.getValue() == Controlador.INSTANCIA.getTiempoCancion()) {
 					boolean hayCancion = Controlador.INSTANCIA.siguienteCancion();
 					if (hayCancion){
